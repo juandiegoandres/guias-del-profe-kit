@@ -135,6 +135,8 @@ knowledge/
   vocabulario-v5.md        vocabulario semántico del design system
   imagenes-nanobanana.md   cómo generar el arte con NanoBanana (Gemini)
 templates/                 plantillas a rellenar (guia, guia_profe, worksheet, quiz, beamer)
+tikzlib/                   librería de figuras TikZ reutilizables (Punnett, Möller, iconos…)
+gallery/                   galería de diseños de la comunidad (estilo Overleaf)
 assets/imgs/               arte de los documentos (placeholders si falta)
 commands/setup.md          onboarding del profe
 examples/                  ejemplos que compilan (guía, worksheet, quiz, presentación)

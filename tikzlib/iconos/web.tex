@@ -1,0 +1,47 @@
+% =====================================================================
+%  tikzlib · iconos/web — iconos vectoriales planos (sin archivos externos)
+%  Requiere: \usepackage{tikz}  (+ xcolor)
+%  Color: argumento opcional [#1] (por defecto el color `accent`).
+%  Uso:   \input{tikzlib/iconos/web.tex}   y luego  \iconcloud  \iconlaptop[blue] ...
+%  Preview: tikzlib/previews/iconos.png
+% =====================================================================
+\providecolor{accent}{HTML}{1A8917}   % color por defecto si el host no lo define
+
+\newcommand{\iconlaptop}[1][accent]{\begin{tikzpicture}[scale=0.5,baseline=0]
+  \fill[#1] (0.05,0.28) rectangle (1.35,1.12);
+  \fill[white] (0.18,0.40) rectangle (1.22,1.00);
+  \fill[#1] (-0.18,0.10) -- (1.55,0.10) -- (1.38,0.28) -- (0.02,0.28) -- cycle;
+\end{tikzpicture}}
+\newcommand{\iconcloud}[1][accent]{\begin{tikzpicture}[scale=0.5,baseline=0]
+  \fill[#1] (0.42,0.40) circle(0.33) (0.90,0.55) circle(0.43) (1.40,0.40) circle(0.31);
+  \fill[#1] (0.38,0.12) rectangle (1.44,0.46);
+\end{tikzpicture}}
+\newcommand{\icondeploy}[1][accent]{\begin{tikzpicture}[scale=0.5,baseline=0]
+  \fill[#1] (0.70,1.25) -- (1.30,0.55) -- (0.95,0.55) -- (0.95,0.0)
+            -- (0.45,0.0) -- (0.45,0.55) -- (0.10,0.55) -- cycle;
+\end{tikzpicture}}
+\newcommand{\iconchip}[1][accent]{\begin{tikzpicture}[scale=0.5,baseline=0]
+  \foreach \x in {0.45,0.66,0.87}{\fill[#1] (\x,1.18) rectangle +(0.08,0.20);
+    \fill[#1] (\x,0.02) rectangle +(0.08,0.20);}
+  \foreach \y in {0.45,0.66,0.87}{\fill[#1] (1.18,\y) rectangle +(0.20,0.08);
+    \fill[#1] (0.02,\y) rectangle +(0.20,0.08);}
+  \fill[#1] (0.20,0.20) rectangle (1.20,1.20);
+  \fill[white] (0.36,0.36) rectangle (1.04,1.04);
+  \node[text=#1,font=\sffamily\bfseries\scriptsize] at (0.70,0.70){IA};
+\end{tikzpicture}}
+\newcommand{\iconpalette}[1][accent]{\begin{tikzpicture}[scale=0.5,baseline=0]
+  \fill[#1] (0.70,0.60) ellipse (0.62 and 0.50);
+  \fill[white] (0.98,0.42) circle(0.13);
+  \foreach \p in {(0.45,0.88),(0.85,0.92),(1.12,0.62),(0.34,0.50)}{\fill[white] \p circle(0.075);}
+\end{tikzpicture}}
+\newcommand{\iconbrowser}[1][accent]{\begin{tikzpicture}[scale=0.5,baseline=0]
+  \draw[#1,line width=1.1pt,fill=white] (0.0,0.0) rectangle (1.4,1.05);
+  \fill[#1] (0.0,0.78) rectangle (1.4,1.05);
+  \foreach \x in {0.13,0.29,0.45}{\fill[white] (\x,0.915) circle(0.05);}
+\end{tikzpicture}}
+\newcommand{\iconbombilla}[1][accent]{\begin{tikzpicture}[scale=0.5,baseline=0]
+  \fill[#1] (0.7,1.18) circle(0.42);
+  \fill[#1] (0.5,0.0) rectangle (0.9,0.45);
+  \fill[white] (0.55,0.12) rectangle (0.85,0.18);
+  \fill[white] (0.55,0.26) rectangle (0.85,0.32);
+\end{tikzpicture}}

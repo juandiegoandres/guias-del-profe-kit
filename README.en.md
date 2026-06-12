@@ -139,6 +139,8 @@ knowledge/
   vocabulario-v5.md        semantic vocabulary of the design system
   imagenes-nanobanana.md   how to generate art with NanoBanana (Gemini)
 templates/                 fill-in templates (guia, guia_profe, worksheet, quiz, beamer)
+tikzlib/                   reusable TikZ figure library (Punnett, Möller, icons…)
+gallery/                   community design gallery (Overleaf-style)
 assets/imgs/               document art (placeholders if missing)
 commands/setup.md          teacher onboarding
 examples/                  examples that compile (guide, worksheet, quiz, slides)

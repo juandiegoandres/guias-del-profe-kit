@@ -1,0 +1,28 @@
+% =====================================================================
+%  tikzlib · ciencias/orbitales — diagramas de orbitales (cajas + flechas)
+%  Requiere: \usepackage{tikz}  (+ amsmath para las flechas)
+%  Flechas:  \flup (↑)  \fldn (↓)  \fludn (↑↓)
+%  \sub{etiqueta}{n.º de orbitales}        → cajas VACÍAS (p. ej. \sub{2p}{3})
+%  \subll{etiqueta}{lista}                 → cajas LLENAS
+%        p. ej.  \subll{2p}{\fludn,\flup,\flup}
+%  Preview: tikzlib/previews/orbitales.png
+% =====================================================================
+\newcommand{\flup}{\ensuremath{\uparrow}}
+\newcommand{\fldn}{\ensuremath{\downarrow}}
+\newcommand{\fludn}{\ensuremath{\uparrow\!\downarrow}}
+
+\newcommand{\sub}[2]{%
+\begin{tikzpicture}[baseline=-0.6ex]
+  \foreach \i in {1,...,#2}{%
+    \draw[line width=0.6pt] ({(\i-1)*0.72},0) rectangle ({(\i-1)*0.72+0.66},0.66);}
+  \node[font=\sffamily\footnotesize\bfseries] at ({#2*0.72/2-0.03},-0.28) {#1};
+\end{tikzpicture}}
+
+\newcommand{\subll}[2]{%
+\begin{tikzpicture}[baseline=-0.6ex]
+  \foreach \c [count=\j from 0] in {#2}{%
+    \draw[line width=0.6pt] ({\j*0.72},0) rectangle ({\j*0.72+0.66},0.66);
+    \node at ({\j*0.72+0.33},0.33) {\c};
+    \xdef\last{\j}}
+  \node[font=\sffamily\footnotesize\bfseries] at ({(\last+1)*0.72/2-0.03},-0.28) {#1};
+\end{tikzpicture}}

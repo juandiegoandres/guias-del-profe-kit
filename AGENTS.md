@@ -139,6 +139,17 @@ Reglas del paquete:
 
 ---
 
+## Figuras (tikzlib) y galería
+
+- **Antes de dibujar una figura, busca en `tikzlib/`** (catálogo en
+  `tikzlib/README.md`). Si existe (Punnett, Möller, orbitales, iconos…), **reúsala**
+  en vez de regenerarla: `\input{tikzlib/<cat>/<fig>.tex}` si el documento vive en
+  el kit, o **copia el snippet** si es un `.tex` suelto para compartir.
+- Si creas una figura nueva reutilizable, **añádela a `tikzlib/`** (macro + cabecera
+  con requisitos + preview) y al catálogo. Así la librería crece.
+- En **`gallery/`** hay diseños de la comunidad por categoría. Puedes ofrecer al
+  profe: «¿el estilo base o uno de la galería?».
+
 ## Reglas de edición
 
 - Lee el archivo antes de editar; corrige solo la parte pedida.

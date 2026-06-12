@@ -27,6 +27,21 @@ Ponlo en la sección que corresponda (fuentes, tablas, TikZ, contenido…).
    ```
 3. (Opcional) Añade una captura en `docs/img/` y enséñala en el README.
 
+## Aportar una figura TikZ (`tikzlib/`)
+
+Para que el agente no la regenere cada vez:
+1. Crea `tikzlib/<categoría>/<nombre>.tex` con **solo las macros** (sin
+   `\documentclass`) y una cabecera: qué es, requisitos, uso.
+2. Genera su preview en `tikzlib/previews/<nombre>.png` y añádela al catálogo
+   `tikzlib/README.md`.
+
+## Aportar un diseño a la galería (`gallery/`)
+
+Comparte un estilo hecho con IA: crea
+`gallery/<categoría>/<autor>-<nombre>/` con `example.tex` (que compile),
+`preview.png` y `meta.md` (usa `gallery/_template/`). Detalle en
+[`gallery/README.md`](gallery/README.md).
+
 ## Mejorar una plantilla
 
 Las plantillas viven en `templates/`. Manténlas **mínimas y que compilen** con
