@@ -50,15 +50,15 @@ diseño editorial consistente — **sin saber LaTeX**.
 El agente nunca dispara LaTeX a ciegas: **propone, tú apruebas, genera, verifica.**
 
 ```mermaid
-flowchart LR
-  A["🧑‍🏫 Profe pide algo<br/>en español"] --> B["📋 Lee el<br/>preflight-checklist"]
-  B --> C["✏️ Propone un<br/>esquema didáctico"]
-  C --> D{"¿Apruebas?"}
-  D -- "No" --> C
-  D -- "Sí" --> E["⚙️ Genera LaTeX<br/>semántico"]
-  E --> F["🖨️ Compila<br/>(compile_quiet.sh)"]
-  F --> G["🔍 Verifica el<br/>PDF en imagen"]
-  G --> H["✅ Material listo"]
+flowchart TD
+  A["🧑‍🏫 Profe pide algo en español"] --> B["📋 El agente lee el preflight-checklist"]
+  B --> C["✏️ Propone un esquema didáctico"]
+  C --> D{"¿Apruebas el esquema?"}
+  D -- "No · ajusta" --> C
+  D -- "Sí" --> E["⚙️ Genera LaTeX semántico"]
+  E --> F["🖨️ Compila con compile_quiet.sh"]
+  F --> G["🔍 Verifica el PDF en imagen"]
+  G --> H["✅ Material listo para imprimir"]
 ```
 
 **Borrador primero** (no escribe LaTeX sin tu visto bueno) · **semántica pura**
@@ -102,6 +102,9 @@ Skills/hooks de Claude Code son extras opcionales.
 
    Te da un esquema → lo apruebas → lo genera y compila.
 
+📖 **Guía completa:** instalación Mac/Windows en [`SETUP.md`](SETUP.md) · paso a
+paso de uso y paquete de clase en [`USAGE.md`](USAGE.md).
+
 ---
 
 ## 🧠 Se entrena con el uso
@@ -119,16 +122,23 @@ LaTeX/lualatex/Beamer.
 ```
 AGENTS.md                  cerebro canónico (portable)
 CLAUDE.md  GEMINI.md        adaptadores → AGENTS.md
-SETUP.md  check.sh          requisitos y verificación de entorno
+SETUP.md                   instalación Mac/Windows + requisitos
+USAGE.md                   paso a paso de uso + paquete de clase
+check.sh                   verifica tu entorno
 compile_quiet.sh           compilación (lualatex, 2 pasadas, log limpio)
 design/                    design system (preamble.tex, beamer.tex)
 knowledge/
   preflight-checklist.md   gotchas (se va engordando)
   vocabulario-v5.md        vocabulario semántico del design system
+templates/                 plantillas a rellenar (guia, worksheet, quiz, beamer)
 commands/setup.md          onboarding del profe
 examples/                  ejemplos que compilan (guía, worksheet, quiz, presentación)
 profile.example.md         plantilla del perfil (el real, profile.md, es local)
 ```
+
+> **Paquete de clase:** pídele *«el paquete de fracciones para 6.º: guía,
+> presentación, taller y quiz»* y genera los cuatro coherentes en
+> `material/<grado>/<asignatura>/<tema>/`. Detalle en [`USAGE.md`](USAGE.md).
 
 ---
 

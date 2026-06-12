@@ -1,0 +1,38 @@
+% =====================================================================
+%  PLANTILLA · Worksheet / Taller (hoja recortable para llenar a mano)
+%    ./compile_quiet.sh material/<g>/<asig>/<tema>/worksheet.tex worksheet pdfs/<g>/<asig>/<tema>
+% =====================================================================
+\input{design/preamble.tex}
+
+\setsubject{mat}                 % mat | cnat | csoc | eco
+\renewcommand{\hdrcapitulo}{<Asignatura> · <Grado> · <Tema>}
+
+\begin{document}
+
+\section{<Título del taller>}
+
+\begin{hoja}{<Subtítulo de la hoja>}
+
+\textbf{1.}\enspace <Instrucción del primer ejercicio.>
+
+% OJO: dentro de `hoja` (caja breakable) NO uses tablahoja/nicematrix
+% (no dibuja la rejilla). Usa tabular con \hline:
+\par\smallskip
+{\centering\renewcommand{\arraystretch}{2.4}\sffamily\small
+\begin{tabular}{|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3.6cm}|}
+\hline
+\textbf{<Col 1>} & \textbf{<Col 2>} & \textbf{<Col 3>} \\\hline
+<dato> & & \\\hline
+<dato> & & \\\hline
+\end{tabular}\par}
+
+\vspace{0.6em}
+\textbf{2.}\enspace <Pregunta corta.>\quad \linea[3.5cm]
+
+\vspace{0.4em}
+\textbf{3.}\enspace <Pregunta para explicar con palabras:>
+\lineaescritura\lineaescritura
+
+\end{hoja}
+
+\end{document}

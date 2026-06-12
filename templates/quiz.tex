@@ -1,0 +1,25 @@
+% =====================================================================
+%  PLANTILLA · Quiz tipo ICFES (selección múltiple + pregunta abierta)
+%    ./compile_quiet.sh material/<g>/<asig>/<tema>/quiz.tex quiz pdfs/<g>/<asig>/<tema>
+% =====================================================================
+\input{design/preamble.tex}
+
+\setsubject{csoc}                % mat | cnat | csoc | eco
+\renewcommand{\hdrcapitulo}{<Asignatura> · <Grado> · <Tema>}
+
+\begin{document}
+
+\section{Quiz · <Tema>}
+
+\begin{evaluacion}[<tiempo, p. ej. 20 minutos>]
+\begin{multicols}{2}
+% \icfes{enunciado}{opción A}{opción B}{opción C}{opción D}
+\icfes{<pregunta 1>}{<A>}{<B>}{<C>}{<D>}
+\icfes{<pregunta 2>}{<A>}{<B>}{<C>}{<D>}
+\icfes{<pregunta 3>}{<A>}{<B>}{<C>}{<D>}
+\icfes{<pregunta 4>}{<A>}{<B>}{<C>}{<D>}
+\end{multicols}
+\pregabierta{<pregunta abierta de argumentación>}
+\end{evaluacion}
+
+\end{document}

@@ -80,6 +80,36 @@ bug nuevo, añádelo al checklist** — así el kit «aprende» con el uso.
 
 ---
 
+## Paquete de clase + dónde se guardan los archivos
+
+Cuando el profe pide **un solo documento**, genéralo en
+`material/<grado>/<asignatura>/<tema>/<tipo>.tex` y compílalo a
+`pdfs/<grado>/<asignatura>/<tema>/<tipo>.pdf`.
+
+Cuando pide **varios** («el paquete de clase de fracciones para 6.º: guía,
+presentación, taller y quiz»), genera todos los documentos **coherentes** (mismo
+`\setsubject`, mismo tema, misma firma del profe) en la **misma carpeta del tema**:
+
+```
+material/6/matematicas/fracciones/
+  guia.tex   beamer.tex   quiz.tex   worksheet.tex
+pdfs/6/matematicas/fracciones/
+  guia.pdf   beamer.pdf   quiz.pdf   worksheet.pdf
+```
+
+Reglas del paquete:
+- **Aprueba primero el esquema del conjunto** (qué documentos y qué cubre cada
+  uno) antes de generar ninguno.
+- Parte de las plantillas de `templates/` (guia / worksheet / quiz / beamer) y
+  rellénalas; no maquetes desde cero.
+- Mantén consistencia: mismo grado, asignatura/color y tema en los metadatos de
+  los cuatro.
+- Compila y **verifica cada uno en imagen** antes de darlo por hecho.
+
+(Para el profe, el paso a paso está en `USAGE.md`.)
+
+---
+
 ## Design system (resumen)
 
 - **Fuentes:** cuerpo **Charter** (serif legible) · títulos/etiquetas **Inter

@@ -1,0 +1,28 @@
+% =====================================================================
+%  PLANTILLA · Presentación Beamer 16:9
+%    ./compile_quiet.sh material/<g>/<asig>/<tema>/beamer.tex beamer pdfs/<g>/<asig>/<tema>
+% =====================================================================
+\input{design/beamer.tex}
+
+\setsubject{cnat}                % mat | cnat | csoc | eco
+\renewcommand{\bmrtema}{<Asignatura> · <Grado> · <Tema>}
+\renewcommand{\bmrprofe}{Prof. <Nombre>}
+
+\begin{document}
+
+\portada{<Asignatura> · <Grado>}{<Título>}{<Subtítulo / gancho>}
+
+\begin{frame}{<Título de la lámina>}
+\large
+<Idea principal, una por lámina.>\par
+\vspace{0.6em}
+\normalsize
+<Apoyo breve.>\par
+\vspace{0.5em}
+\centering\resalta{<Frase clave, CORTA.>}
+\end{frame}
+
+% Otras láminas: \pregunta{...}  ·  \idea{...}  ·  \seccion{...} (divisor)
+\pregunta{<Una pregunta viva para enganchar al grupo.>}
+
+\end{document}

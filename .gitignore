@@ -1,6 +1,9 @@
 # Perfil local del profe (cada quien el suyo — NO se versiona)
 profile.md
 
+# Material que genera cada profe (sus propios documentos)
+material/
+
 # PDFs y salidas
 pdfs/
 *.pdf
