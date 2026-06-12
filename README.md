@@ -126,6 +126,7 @@ AGENTS.md                  cerebro canónico (portable)
 CLAUDE.md  GEMINI.md        adaptadores → AGENTS.md
 SETUP.md                   instalación Mac/Windows + requisitos
 USAGE.md                   paso a paso de uso + paquete de clase
+WORKFLOW.md                flujo local del autor + cómo entrenar el kit
 check.sh · check.ps1       verifica tu entorno (Mac·Linux · Windows)
 compile_quiet.sh · .ps1    compilación (lualatex, 2 pasadas, log limpio)
 design/                    design system (preamble.tex, beamer.tex)
