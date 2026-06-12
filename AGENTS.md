@@ -50,8 +50,12 @@ sección (`Edit`), no reescribas todo.
 
 **Paso 4 · Compilación + verificación.**
 ```bash
+# Mac / Linux
 ./compile_quiet.sh <ruta>.tex <nombre_salida> <carpeta_pdf>
+# Windows (PowerShell)
+powershell -ExecutionPolicy Bypass -File .\compile_quiet.ps1 <ruta>.tex <nombre_salida> <carpeta_pdf>
 ```
+- Detecta el SO y usa el script correcto (`.sh` en Mac/Linux, `.ps1` en Windows).
 - **Nunca** llames `lualatex` directo.
 - **Máximo 2 intentos.** Si falla el 2.º: reporta errores y para.
 - **Verifica SIEMPRE en imagen** (renderiza a PNG y revísalo): compilar sin

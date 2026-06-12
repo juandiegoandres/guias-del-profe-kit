@@ -4,6 +4,9 @@ profile.md
 # Material que genera cada profe (sus propios documentos)
 material/
 
+# Temporales de compilación (Windows .ps1)
+.build/
+
 # PDFs y salidas
 pdfs/
 *.pdf

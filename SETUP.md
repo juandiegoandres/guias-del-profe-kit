@@ -40,9 +40,9 @@
 
 ## 🪟 Windows — paso a paso
 
-> Usa **Git Bash** (viene con [Git para Windows](https://git-scm.com/download/win))
-> para correr `./check.sh` y `./compile_quiet.sh`. Tu agente normalmente ya abre
-> una terminal compatible.
+> En Windows usa los scripts **`.ps1` (PowerShell nativo)** — no necesitas Git
+> Bash. (Los `.sh` son para Mac/Linux; en Windows funcionan solo dentro de Git
+> Bash/WSL, opcional.)
 
 1. **Instala MiKTeX** (incluye `lualatex`): https://miktex.org/download →
    instálalo "para el usuario actual" → al primer uso, acepta que instale
@@ -61,9 +61,9 @@
    [Scoop](https://scoop.sh) → `scoop install poppler`. *(Opcional: el agente
    puede verificar de otras formas; si no lo instalas, igual compila.)*
 
-5. **Verifica** (en Git Bash, dentro de la carpeta del kit):
-   ```bash
-   ./check.sh
+5. **Verifica** (en PowerShell, dentro de la carpeta del kit):
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File .\check.ps1
    ```
 
 ---
@@ -81,8 +81,13 @@ Abre la carpeta del kit con tu herramienta; cada una lee su archivo, que apunta 
 
 ## Prueba que todo compila
 
+**Mac / Linux:**
 ```bash
 ./compile_quiet.sh examples/ejemplo_guia.tex prueba pdfs/examples
+```
+**Windows (PowerShell):**
+```powershell
+powershell -ExecutionPolicy Bypass -File .\compile_quiet.ps1 examples\ejemplo_guia.tex prueba pdfs\examples
 ```
 Debe terminar en `PDF OK`. El PDF queda en `pdfs/examples/prueba.pdf`.
 
@@ -90,5 +95,7 @@ Debe terminar en `PDF OK`. El PDF queda en `pdfs/examples/prueba.pdf`.
 
 - **`lualatex: command not found`** → no instalaste TeX o no reabriste la terminal.
 - **`cannot find font "Charter"/"Inter"`** → falta instalar esa fuente (paso 2/3).
-- En Windows, corre los `./...sh` desde **Git Bash**, no desde CMD.
+- **Windows:** usa los scripts `.ps1` con
+  `powershell -ExecutionPolicy Bypass -File .\<script>.ps1`. Los `.sh` solo corren
+  en Mac/Linux (o en Git Bash/WSL).
 - Más errores comunes y sus arreglos: `knowledge/preflight-checklist.md`.
