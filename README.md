@@ -1,65 +1,131 @@
-# Guías del Profe — Kit
+<div align="center">
 
-Un **kit para profesores** que convierte a un agente de IA de terminal (Claude
-Code, Antigravity, OpenCode) en tu **diagramador y asesor pedagógico**: generas
-guías, talleres, quizzes, exámenes, presentaciones y fichas en LaTeX con diseño
-editorial consistente — **sin saber LaTeX**.
+# 📚 Guías del Profe — Kit
 
-> **Se entrena con el uso.** Cada error que encuentras se guarda en
-> `knowledge/preflight-checklist.md` para que el agente no lo repita. Entre más
-> lo uses, mejor diagrama.
+**Convierte tu agente de IA de terminal en tu diagramador y asesor pedagógico.**
+Genera guías, talleres, quizzes, exámenes, presentaciones y fichas en LaTeX con
+diseño editorial consistente — **sin saber LaTeX**.
 
-## Para quién
+![License](https://img.shields.io/badge/licencia-MIT-1A8917)
+![LaTeX](https://img.shields.io/badge/motor-lualatex-3D6117)
+![Tools](https://img.shields.io/badge/funciona%20con-Claude%20Code%20·%20Antigravity%20·%20OpenCode-1E4078)
 
-Profes que quieren material bonito y consistente sin pelear con la maquetación.
-Hablas en español; el agente propone la estructura didáctica, espera tu visto
-bueno y luego genera y compila.
+</div>
 
-## Empezar
+---
 
-1. **Requisitos e instalación:** ver [`SETUP.md`](SETUP.md) (TeX con `lualatex`
-   + fuentes Charter e Inter). Verifica con `./check.sh`.
-2. Abre este repo con tu agente (Claude Code / Antigravity / OpenCode). Leerá
-   `AGENTS.md` automáticamente.
-3. La primera vez te ofrecerá el onboarding *«¿quién eres y qué das?»*
-   (ver `commands/setup.md`). Es opcional.
-4. Pídele lo que necesitas: *«un taller de fracciones para 6.º, para imprimir»*.
-   Te dará un esquema; apruébalo y lo genera.
+## ✨ Lo que genera el agente
 
-## Cómo funciona (filosofía)
+<table>
+<tr>
+<td width="46%" valign="top">
+<img src="docs/img/ejemplo-guia.png" alt="Guía de aprendizaje" width="100%"/>
+<br/><sub><b>Guía de aprendizaje</b> — teoría, ejemplos resueltos y práctica por niveles. Imprime en B/N o pantalla a color.</sub>
+</td>
+<td width="54%" valign="top">
+<img src="docs/img/ejemplo-beamer-portada.png" alt="Presentación — portada" width="100%"/>
+<br/>
+<img src="docs/img/ejemplo-beamer-pregunta.png" alt="Presentación — pregunta" width="100%"/>
+<br/><sub><b>Presentación Beamer 16:9</b> — minimalista, una idea por lámina. Ideal para clase o YouTube.</sub>
+</td>
+</tr>
+</table>
 
-- **Borrador primero:** nunca genera LaTeX sin aprobar antes el esquema.
-- **Semántica pura:** escribes el *qué* (definición, ejemplo, práctica…); el
-  diseño vive en `design/` y es intercambiable.
-- **Pre-flight de calidad:** antes de generar, el agente consulta el checklist de
-  gotchas; al terminar, verifica el PDF en imagen.
+> Todo sale del **mismo design system** (Charter + Inter Display, un color por
+> asignatura). Cambias el tipo de documento, no la estética.
 
-## Estructura
+---
+
+## 🔧 Cómo funciona
+
+El agente nunca dispara LaTeX a ciegas: **propone, tú apruebas, genera, verifica.**
+
+```mermaid
+flowchart LR
+  A["🧑‍🏫 Profe pide algo<br/>en español"] --> B["📋 Lee el<br/>preflight-checklist"]
+  B --> C["✏️ Propone un<br/>esquema didáctico"]
+  C --> D{"¿Apruebas?"}
+  D -- "No" --> C
+  D -- "Sí" --> E["⚙️ Genera LaTeX<br/>semántico"]
+  E --> F["🖨️ Compila<br/>(compile_quiet.sh)"]
+  F --> G["🔍 Verifica el<br/>PDF en imagen"]
+  G --> H["✅ Material listo"]
+```
+
+**Borrador primero** (no escribe LaTeX sin tu visto bueno) · **semántica pura**
+(escribes el *qué*; el diseño vive aparte) · **pre-flight de calidad** (consulta
+el checklist de errores antes de generar y verifica el PDF al terminar).
+
+---
+
+## 🧩 Una sola fuente, tres herramientas
+
+`AGENTS.md` es el cerebro canónico; cada herramienta entra por su propia puerta.
+
+```mermaid
+flowchart TD
+  CC["Claude Code"] -->|"CLAUDE.md"| X["📖 AGENTS.md<br/>instrucciones canónicas"]
+  AG["Antigravity"] -->|"GEMINI.md"| X
+  OC["OpenCode"] -->|"AGENTS.md"| X
+  X --> DS["🎨 design system<br/>+ compile_quiet.sh"]
+  X --> KN["🧠 knowledge/<br/>checklist + vocabulario"]
+  X --> PR["👤 profile.md<br/>(perfil local del profe)"]
+```
+
+El núcleo (AGENTS.md + scripts + design system + checklist) funciona en las tres.
+Skills/hooks de Claude Code son extras opcionales.
+
+---
+
+## 🚀 Empezar
+
+1. **Requisitos:** TeX con `lualatex` + fuentes Charter e Inter. Detalle en
+   [`SETUP.md`](SETUP.md). Verifica tu entorno:
+   ```bash
+   ./check.sh
+   ```
+2. Abre esta carpeta con tu agente (Claude Code / Antigravity / OpenCode):
+   leerá `AGENTS.md` solo.
+3. La primera vez te ofrece el onboarding *«¿quién eres y qué das?»* y guarda tu
+   perfil local (`profile.md`, no se versiona).
+4. Pídele lo que necesitas:
+   > *«Un taller de fracciones equivalentes para 6.º, para imprimir en B/N.»*
+
+   Te da un esquema → lo apruebas → lo genera y compila.
+
+---
+
+## 🧠 Se entrena con el uso
+
+Cada error que aparece se guarda en
+[`knowledge/preflight-checklist.md`](knowledge/preflight-checklist.md) con el
+formato **Regla · Síntoma · Causa · Fix**. El agente lo lee antes de generar, así
+que **entre más lo usas, menos se equivoca.** Ya trae decenas de gotchas reales de
+LaTeX/lualatex/Beamer.
+
+---
+
+## 📂 Estructura
 
 ```
-AGENTS.md                 instrucciones canónicas (portable)
-CLAUDE.md  GEMINI.md       adaptadores → AGENTS.md
-SETUP.md  check.sh         requisitos y verificación de entorno
+AGENTS.md                  cerebro canónico (portable)
+CLAUDE.md  GEMINI.md        adaptadores → AGENTS.md
+SETUP.md  check.sh          requisitos y verificación de entorno
 compile_quiet.sh           compilación (lualatex, 2 pasadas, log limpio)
 design/                    design system (preamble.tex, beamer.tex)
 knowledge/
   preflight-checklist.md   gotchas (se va engordando)
   vocabulario-v5.md        vocabulario semántico del design system
-templates/                 plantillas por tipo de documento
 commands/setup.md          onboarding del profe
-examples/                  ejemplos de muestra
+examples/                  ejemplos que compilan (guía, presentación)
 profile.example.md         plantilla del perfil (el real, profile.md, es local)
 ```
 
-## Compatibilidad
+---
 
-| Herramienta | Lee | Notas |
-|---|---|---|
-| **Claude Code** | `CLAUDE.md` → `AGENTS.md` | Puede usar skills/hooks/commands (extras opcionales). |
-| **OpenCode** | `AGENTS.md` | Núcleo completo. |
-| **Antigravity** | `GEMINI.md` → `AGENTS.md` | Núcleo completo. |
+## 📜 Licencia
 
-## Licencia
+[MIT](LICENSE) © 2026 Juan Diego Andrés Prada Ramírez · Instituto Técnico Santo
+Tomás, Zapatoca. Úsalo, modifícalo y compártelo libremente.
 
-[MIT](LICENSE) © 2026 Juan Diego Andrés Prada Ramírez. Úsalo, modifícalo y
-compártelo libremente.
+<div align="center"><sub>Hecho para profes, por un profe 👨‍🏫</sub></div>

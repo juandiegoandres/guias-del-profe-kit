@@ -1,0 +1,32 @@
+% =====================================================================
+%  EJEMPLO — Presentación Beamer con el design system del kit.
+%  Compilar (desde la raíz del kit):
+%    ./compile_quiet.sh examples/ejemplo_beamer.tex ejemplo_beamer pdfs/examples
+% =====================================================================
+\input{design/beamer.tex}
+
+\setsubject{cnat}
+\renewcommand{\bmrtema}{Ejemplo · Guías del Profe}
+\renewcommand{\bmrprofe}{Prof. Juan Diego A. Prada R.}
+
+\begin{document}
+
+\portada{Ciencias Naturales · 7°}{La célula}%
+  {La unidad básica de todo lo que está vivo.}
+
+\begin{frame}{¿Qué tienen en común un árbol y tú?}
+\large
+Los dos están hechos de \textbf{células}: las piezas mínimas con las que se
+construye cualquier ser vivo.\par
+\vspace{0.7em}
+\normalsize
+Una sola célula ya puede \textbf{nacer}, \textbf{alimentarse} y \textbf{morir}.
+Tú tienes billones trabajando en equipo.\par
+\vspace{0.6em}
+\centering\resalta{Si está vivo, está hecho de células. Sin excepción.}
+\end{frame}
+
+\pregunta{Si todo ser vivo está hecho de células, ¿por qué no las vemos a
+simple vista?}
+
+\end{document}
