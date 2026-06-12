@@ -10,6 +10,8 @@ diseño editorial consistente — **sin saber LaTeX**.
 ![LaTeX](https://img.shields.io/badge/motor-lualatex-3D6117)
 ![Tools](https://img.shields.io/badge/funciona%20con-Claude%20Code%20·%20Antigravity%20·%20OpenCode-1E4078)
 
+**🌐 Español · [English](README.en.md)**
+
 </div>
 
 ---
