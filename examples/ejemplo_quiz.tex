@@ -1,0 +1,30 @@
+% =====================================================================
+%  EJEMPLO — Quiz tipo ICFES (selección múltiple + pregunta abierta).
+%  Compilar (desde la raíz del kit):
+%    ./compile_quiet.sh examples/ejemplo_quiz.tex ejemplo_quiz pdfs/examples
+% =====================================================================
+\input{design/preamble.tex}
+
+\setsubject{csoc}
+\renewcommand{\hdrcapitulo}{Ejemplo · Guías del Profe}
+
+\begin{document}
+
+\section{Quiz · Civilizaciones antiguas}
+
+\begin{evaluacion}[20 minutos]
+\begin{multicols}{2}
+\icfes{¿Qué río fue clave para el desarrollo de Egipto?}
+  {El Tigris}{El Nilo}{El Éufrates}{El Amazonas}
+\icfes{La escritura de los egipcios se llamaba…}
+  {cuneiforme}{jeroglífica}{alfabética}{rúnica}
+\icfes{Mesopotamia se ubicaba entre los ríos…}
+  {Nilo y Congo}{Tigris y Éufrates}{Amarillo y Azul}{Ganges e Indo}
+\icfes{Una pirámide servía, sobre todo, como…}
+  {mercado}{tumba de un faraón}{escuela}{fortaleza militar}
+\end{multicols}
+\pregabierta{¿Por qué los grandes ríos favorecieron el nacimiento de las
+primeras civilizaciones?}
+\end{evaluacion}
+
+\end{document}

@@ -18,15 +18,24 @@ diseño editorial consistente — **sin saber LaTeX**.
 
 <table>
 <tr>
-<td width="46%" valign="top">
+<td width="50%" valign="top">
 <img src="docs/img/ejemplo-guia.png" alt="Guía de aprendizaje" width="100%"/>
-<br/><sub><b>Guía de aprendizaje</b> — teoría, ejemplos resueltos y práctica por niveles. Imprime en B/N o pantalla a color.</sub>
+<br/><sub><b>Guía de aprendizaje</b> — teoría, ejemplos resueltos y práctica por niveles.</sub>
 </td>
-<td width="54%" valign="top">
+<td width="50%" valign="top">
+<img src="docs/img/ejemplo-worksheet.png" alt="Worksheet recortable" width="100%"/>
+<br/><sub><b>Worksheet recortable</b> — hoja con tablas y espacios para llenar a mano.</sub>
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+<img src="docs/img/ejemplo-quiz.png" alt="Quiz tipo ICFES" width="100%"/>
+<br/><sub><b>Quiz tipo ICFES</b> — selección múltiple con burbujas + pregunta abierta.</sub>
+</td>
+<td width="50%" valign="top">
 <img src="docs/img/ejemplo-beamer-portada.png" alt="Presentación — portada" width="100%"/>
-<br/>
 <img src="docs/img/ejemplo-beamer-pregunta.png" alt="Presentación — pregunta" width="100%"/>
-<br/><sub><b>Presentación Beamer 16:9</b> — minimalista, una idea por lámina. Ideal para clase o YouTube.</sub>
+<br/><sub><b>Presentación Beamer 16:9</b> — una idea por lámina. Para clase o YouTube.</sub>
 </td>
 </tr>
 </table>
@@ -117,7 +126,7 @@ knowledge/
   preflight-checklist.md   gotchas (se va engordando)
   vocabulario-v5.md        vocabulario semántico del design system
 commands/setup.md          onboarding del profe
-examples/                  ejemplos que compilan (guía, presentación)
+examples/                  ejemplos que compilan (guía, worksheet, quiz, presentación)
 profile.example.md         plantilla del perfil (el real, profile.md, es local)
 ```
 

@@ -1,0 +1,39 @@
+% =====================================================================
+%  EJEMPLO — Worksheet recortable (hoja de trabajo con espacios para llenar).
+%  Compilar (desde la raíz del kit):
+%    ./compile_quiet.sh examples/ejemplo_worksheet.tex ejemplo_worksheet pdfs/examples
+% =====================================================================
+\input{design/preamble.tex}
+
+\setsubject{mat}
+\renewcommand{\hdrcapitulo}{Ejemplo · Guías del Profe}
+
+\begin{document}
+
+\section{Taller · Operaciones básicas}
+
+\begin{hoja}{Operaciones básicas}
+
+\textbf{1.}\enspace Completa la tabla con el resultado de cada operación.
+% Nota: dentro de `hoja` (tcolorbox breakable) usamos tabular+\hline, NO
+% tablahoja/nicematrix (no dibuja la rejilla dentro de cajas breakable).
+\par\smallskip
+{\centering\renewcommand{\arraystretch}{2.4}\sffamily\small
+\begin{tabular}{|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{3.6cm}|}
+\hline
+\textbf{Operación} & \textbf{Resultado} & \textbf{¿Cómo lo comprobaste?} \\\hline
+$47 + 38$  & & \\\hline
+$120 - 64$ & & \\\hline
+$15 \times 6$ & & \\\hline
+\end{tabular}\par}
+
+\vspace{0.6em}
+\textbf{2.}\enspace Un número más $17$ da $42$. ¿Cuál es el número?\quad \linea[3.5cm]
+
+\vspace{0.4em}
+\textbf{3.}\enspace Explica con tus palabras cómo restaste en la fila 2:
+\lineaescritura\lineaescritura
+
+\end{hoja}
+
+\end{document}

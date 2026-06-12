@@ -54,6 +54,12 @@
   `tabular` en `\resizebox{\linewidth}{!}{ ... }`.
 - **Tablas para rellenar a mano** → rejilla completa (nicematrix `hvlines` /
   entorno `tablahoja`). **Tablas didácticas (cuerpo)** → `booktabs`, sin rejilla.
+- **`tablahoja`/nicematrix NO dibuja la rejilla dentro de `hoja`** (ni de otra
+  tcolorbox `breakable`). · Síntoma: la tabla sale como texto suelto, sin líneas,
+  aunque compile sin error. · Causa: nicematrix no rastrea posiciones dentro de
+  cajas partibles. · Fix: dentro de `hoja` usa `tabular` con `\hline` en todas las
+  filas (`\renewcommand{\arraystretch}{2.4}` para celdas altas), o saca la tabla
+  fuera de la caja breakable.
 - **B/N (fotocopia):** encabezado con `\rowcolor{black!12}` y texto **negro**
   (mejor que blanco sobre fondo oscuro al fotocopiar).
 
