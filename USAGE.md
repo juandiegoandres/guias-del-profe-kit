@@ -49,29 +49,44 @@ presentación, el taller y el quiz** del mismo tema. Pídelo así:
 > Matemáticas: guía, presentación, taller y quiz.»*
 
 El agente genera **todos los documentos coherentes** (mismo tema, misma
-asignatura/color, tu firma) en una estructura de carpetas ordenada:
+asignatura/color, tu firma) en una estructura de carpetas ordenada. El paquete
+típico incluye **guía del estudiante, guía del profe, presentación, taller y
+quiz**:
 
 ```
-material/
-└── 6/                      ← grado
-    └── matematicas/        ← asignatura
-        └── fracciones/     ← tema
-            ├── guia.tex
-            ├── beamer.tex
-            ├── quiz.tex
-            └── worksheet.tex
+material/                       ← los archivos .tex que tú editas
+└── 6/                          ← grado
+    └── matematicas/            ← asignatura
+        └── fracciones/         ← tema
+            ├── guia.tex            (estudiante)
+            ├── guia_profe.tex      (docente: secuencia, errores, soluciones)
+            ├── beamer.tex          (presentación)
+            ├── worksheet.tex       (taller)
+            └── quiz.tex
 
-pdfs/
+assets/imgs/fracciones/         ← arte (opcional)
+    └── PROMPTS.md  + imágenes
+
+pdfs/                           ← los PDF (se crean al COMPILAR cada .tex)
 └── 6/matematicas/fracciones/
-    ├── guia.pdf
-    ├── beamer.pdf
-    ├── quiz.pdf
-    └── worksheet.pdf
+    ├── guia.pdf      guia_profe.pdf   beamer.pdf
+    └── worksheet.pdf  quiz.pdf
 ```
+
+**¿Cómo se generan los PDF?** El agente compila **cada `.tex` por separado** con
+`compile_quiet.sh` (o `.ps1` en Windows), y cada uno deja su PDF en la carpeta
+`pdfs/` espejo. Tú solo pides; él compila y verifica.
 
 Así cada tema queda autocontenido y fácil de reutilizar el próximo año. Puedes
-pedir solo algunos («solo guía y quiz») o agregar uno después («ahora súmale la
-ficha de estudio»).
+pedir solo algunos («solo guía y quiz») o agregar uno después.
+
+### Imágenes (opcional)
+
+Los documentos pueden llevar ilustraciones. Si aún no existen, salen como
+**placeholder** y el PDF igual se genera. Cuando quieras el arte real, el agente
+lo genera con **NanoBanana** (el modelo de imagen de Gemini) usando
+**Antigravity / Gemini CLI** y lo guarda en `assets/imgs/...`. Detalle en
+[`knowledge/imagenes-nanobanana.md`](knowledge/imagenes-nanobanana.md).
 
 ---
 

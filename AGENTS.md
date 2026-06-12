@@ -75,7 +75,8 @@ bug nuevo, añádelo al checklist** — así el kit «aprende» con el uso.
 
 | Tipo | Cuándo | Tamaño |
 |---|---|---|
-| Guía de aprendizaje | Teoría + ejemplos + ejercicios | 4–12 pág · twoside |
+| Guía de aprendizaje | Teoría + ejemplos + ejercicios (estudiante) | 4–12 pág · twoside |
+| Guía del profe | Secuencia de clase, errores comunes, soluciones | acompaña a la guía |
 | Worksheet / Taller | Solo ejercicios con espacio de respuesta | 1–4 pág |
 | Quiz | Evaluación corta formativa (~20 min) | 1–2 pág |
 | Examen | Evaluación formal con puntaje | 2–4 pág |
@@ -90,25 +91,35 @@ Cuando el profe pide **un solo documento**, genéralo en
 `material/<grado>/<asignatura>/<tema>/<tipo>.tex` y compílalo a
 `pdfs/<grado>/<asignatura>/<tema>/<tipo>.pdf`.
 
-Cuando pide **varios** («el paquete de clase de fracciones para 6.º: guía,
-presentación, taller y quiz»), genera todos los documentos **coherentes** (mismo
-`\setsubject`, mismo tema, misma firma del profe) en la **misma carpeta del tema**:
+Cuando pide **varios** («el paquete de clase de fracciones para 6.º»), genera
+todos los documentos **coherentes** (mismo `\setsubject`, mismo tema, misma firma)
+en la **misma carpeta del tema**. El paquete típico incluye **guía del estudiante,
+guía del profe, presentación, taller y quiz**:
 
 ```
 material/6/matematicas/fracciones/
-  guia.tex   beamer.tex   quiz.tex   worksheet.tex
-pdfs/6/matematicas/fracciones/
-  guia.pdf   beamer.pdf   quiz.pdf   worksheet.pdf
+  guia.tex        guia_profe.tex   beamer.tex
+  worksheet.tex   quiz.tex
+assets/imgs/fracciones/
+  PROMPTS.md      <imágenes>.png        ← arte (opcional; ver abajo)
+pdfs/6/matematicas/fracciones/          ← se generan al compilar cada .tex
+  guia.pdf  guia_profe.pdf  beamer.pdf  worksheet.pdf  quiz.pdf
 ```
+
+- **guia.tex** = versión del estudiante · **guia_profe.tex** = versión docente
+  (secuencia de clase, errores comunes, soluciones).
+- El profe puede pedir solo algunos («solo guía y quiz») o sumar otro después.
 
 Reglas del paquete:
 - **Aprueba primero el esquema del conjunto** (qué documentos y qué cubre cada
   uno) antes de generar ninguno.
-- Parte de las plantillas de `templates/` (guia / worksheet / quiz / beamer) y
-  rellénalas; no maquetes desde cero.
-- Mantén consistencia: mismo grado, asignatura/color y tema en los metadatos de
-  los cuatro.
-- Compila y **verifica cada uno en imagen** antes de darlo por hecho.
+- Parte de las plantillas de `templates/` (guia · guia_profe · worksheet · quiz ·
+  beamer) y rellénalas; no maquetes desde cero.
+- Consistencia: mismo grado, asignatura/color y tema en los metadatos de todos.
+- Compila **cada** `.tex` por separado (un `pdf` por documento) y **verifica
+  cada uno en imagen**.
+- **Imágenes:** usa `\figura{...}` con placeholder; para generar el arte real con
+  NanoBanana (vía Antigravity/Gemini) sigue `knowledge/imagenes-nanobanana.md`.
 
 (Para el profe, el paso a paso está en `USAGE.md`.)
 

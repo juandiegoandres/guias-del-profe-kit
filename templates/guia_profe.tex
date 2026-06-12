@@ -1,0 +1,40 @@
+% =====================================================================
+%  PLANTILLA · Guía del Profe (versión docente: orientaciones + soluciones)
+%    ./compile_quiet.sh material/<g>/<asig>/<tema>/guia_profe.tex guia_profe pdfs/<g>/<asig>/<tema>
+% =====================================================================
+\input{design/preamble.tex}
+
+\setsubject{mat}                 % mat | cnat | csoc | eco
+\renewcommand{\hdrcapitulo}{<Asignatura> · <Grado> · Guía del Profe}
+\renewcommand{\docgrado}{<Grado>}
+\renewcommand{\docasignatura}{<Asignatura>}
+\renewcommand{\doctipo}{GUÍA DEL PROFESOR}
+\renewcommand{\doctitulo}{<Tema>}
+\renewcommand{\docsubtitulo}{Secuencia de clase · Errores comunes · Soluciones}
+\renewcommand{\docperiodo}{<Período>}
+
+\begin{document}
+
+\section{Notas pedagógicas}
+
+\begin{nota}[Secuencia recomendada de la clase]
+\textbf{1. Gancho (5 min):} <cómo enganchar; una pregunta o imagen, sin dar la respuesta>.\\
+\textbf{2. Desarrollo (X min):} <explicación principal en el tablero>.\\
+\textbf{3. Práctica guiada (X min):} <ejercicios juntos; el profe circula y corrige>.\\
+\textbf{4. Práctica independiente (X min):} <los estudiantes solos>.\\
+\textbf{5. Cierre (5 min):} <síntesis y vista previa de lo que sigue>.
+\end{nota}
+
+\begin{alerta}{Errores muy frecuentes a vigilar}
+\caso{<error típico 1>}{<por qué pasa y cómo prevenirlo>}
+\caso{<error típico 2>}{<cómo corregirlo en clase>}
+\end{alerta}
+
+\section{Soluciones}
+
+% Respuestas del taller / quiz, resueltas paso a paso.
+\begin{ejemplo}{<Ejercicio 1 — resuelto>}
+<solución completa>
+\end{ejemplo}
+
+\end{document}

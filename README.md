@@ -130,15 +130,18 @@ design/                    design system (preamble.tex, beamer.tex)
 knowledge/
   preflight-checklist.md   gotchas (se va engordando)
   vocabulario-v5.md        vocabulario semántico del design system
-templates/                 plantillas a rellenar (guia, worksheet, quiz, beamer)
+  imagenes-nanobanana.md   cómo generar el arte con NanoBanana (Gemini)
+templates/                 plantillas a rellenar (guia, guia_profe, worksheet, quiz, beamer)
+assets/imgs/               arte de los documentos (placeholders si falta)
 commands/setup.md          onboarding del profe
 examples/                  ejemplos que compilan (guía, worksheet, quiz, presentación)
 profile.example.md         plantilla del perfil (el real, profile.md, es local)
 ```
 
-> **Paquete de clase:** pídele *«el paquete de fracciones para 6.º: guía,
-> presentación, taller y quiz»* y genera los cuatro coherentes en
-> `material/<grado>/<asignatura>/<tema>/`. Detalle en [`USAGE.md`](USAGE.md).
+> **Paquete de clase:** pídele *«el paquete de fracciones para 6.º»* y genera
+> coherentes la **guía del estudiante, la guía del profe, la presentación, el
+> taller y el quiz** en `material/<grado>/<asignatura>/<tema>/`, con sus PDF en
+> `pdfs/` espejo. Detalle en [`USAGE.md`](USAGE.md).
 
 ---
 
