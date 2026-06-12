@@ -1,0 +1,602 @@
+% =====================================================================
+%  DESIGN SYSTEM v5 — EDITORIAL ITSTZ
+%  Filosofía: texto primero · un solo color de asignatura · sin sombras
+%  · sin marcos pesados · tratamientos planos (filete lateral / regla).
+%
+%  Vocabulario semántico (esto es TODO lo disponible):
+%    \section / \subsection      jerarquía
+%    definicion{título}          concepto/regla clave (filete color)
+%    ejemplo{título}             ejemplo resuelto (numerado, sin caja)
+%    procedimiento{título}       pasos (filete neutro) + \paso{n}{texto}
+%    nota[título]                aparte único gris (sabías/dato/video/margen)
+%    alerta{título}              advertencia ámbar (usar rara vez)
+%    practica{título}            ejercicios/hoja/ICFES (regla superior)
+%    \figura{archivo}{pie}       imagen real o placeholder automático
+%    \desbloquea{lista}          pie discreto de prerrequisitos
+%
+%  REGLA DE ORO: las secciones (sNN.tex) NO llevan \vspace, color ni
+%  minipage de maquetación. Solo contenido semántico. El diseño vive aquí.
+% =====================================================================
+\documentclass[11pt, letterpaper, twoside]{article}
+
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setdefaultlanguage{spanish}
+\usepackage[inner=2.1cm, outer=3.7cm, top=2.6cm, bottom=2.3cm,
+            marginparwidth=2.55cm, marginparsep=0.45cm,
+            headheight=16pt, headsep=18pt, footskip=24pt]{geometry}
+\usepackage{microtype}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc, arrows.meta, positioning}
+\usepackage{wrapfig}
+\usepackage[most]{tcolorbox}
+\usepackage{amsmath, amssymb}
+\usepackage{siunitx}
+\usepackage{fontawesome5}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{etoolbox}
+\usepackage{titletoc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{nicematrix}   % rejilla completa (hvlines) para tablas de hojas
+
+% --- TIPOGRAFÍA -------------------------------------------------------
+% Cuerpo: Charter (serif cálida y muy legible). La matemática (Latin
+% Modern, serif) combina con ella. Títulos/etiquetas/UI: Inter Display.
+\setmainfont{Charter}[
+  UprightFont    = {Charter},
+  BoldFont       = {Charter Bold},
+  ItalicFont     = {Charter Italic},
+  BoldItalicFont = {Charter Bold Italic},
+  Ligatures = TeX, Numbers = Lining ]
+\setsansfont{Inter}[
+  UprightFont = Inter-Regular, BoldFont = Inter-SemiBold,
+  ItalicFont  = Inter-Italic, Ligatures = TeX, Numbers = Lining ]
+\newfontfamily\InterLight{Inter-Light}[ItalicFont=Inter-LightItalic, Ligatures=TeX]
+\newfontfamily\InterDisplay{Inter Display}[Ligatures=TeX]
+\newfontfamily\InterDisplaySB{Inter Display SemiBold}[Ligatures=TeX]
+\newfontfamily\InterDisplayThin{Inter Display Thin}[Ligatures=TeX]
+\newfontfamily\InterDisplayBlk{Inter Display Black}[Ligatures=TeX]
+
+% --- RITMO --------------------------------------------------------------
+\linespread{1.22}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\newlength{\bloqueskip}\setlength{\bloqueskip}{1.0em}   % aire entre bloques
+\setlength{\columnsep}{1.6em}                            % medianil multicols
+
+% =====================================================================
+%  COLOR — UNA sola variable de asignatura + neutros. Sin arcoíris.
+% =====================================================================
+\definecolor{mat} {RGB}{ 30,  64, 120}   % azul profundo
+\definecolor{cnat}{RGB}{ 16, 110,  80}   % esmeralda
+\definecolor{csoc}{RGB}{165,  75,  45}   % terracota
+\definecolor{eco} {RGB}{ 70,  55, 130}   % índigo
+\definecolor{alertcolor}{RGB}{180, 95, 10}  % ámbar — solo advertencias
+
+\colorlet{subjectcolor}{mat}             % por defecto
+\newcommand{\setsubject}[1]{\colorlet{subjectcolor}{#1}}
+
+% =====================================================================
+%  JERARQUÍA TIPOGRÁFICA
+% =====================================================================
+\setcounter{secnumdepth}{0}
+\titleformat{\section}
+  {\LARGE\InterDisplaySB\color{subjectcolor}}{}{0pt}{}
+  [\vspace{2pt}{\color{subjectcolor!30}\titlerule[0.8pt]}]
+\titlespacing*{\section}{0pt}{3.2ex plus 0.6ex}{1.8ex plus 0.3ex}
+
+\titleformat{\subsection}
+  {\large\InterDisplaySB\color{black!82}}{}{0pt}{}
+\titlespacing*{\subsection}{0pt}{2.0ex plus 0.4ex}{0.5ex}
+
+% --- TABLA DE CONTENIDO -------------------------------------------------
+\titlecontents{section}[0em]
+  {\addvspace{0.45pc}\sffamily\bfseries\small\color{black!85}}
+  {}{}{\titlerule*[0.35pc]{.}\contentspage}
+\titlecontents{subsection}[1.4em]
+  {\sffamily\footnotesize\color{black!60}}
+  {}{}{\titlerule*[0.35pc]{.}\contentspage}
+
+% =====================================================================
+%  ENCABEZADO / PIE — editorial limpio (regla fina, sin franjas)
+% =====================================================================
+\newcommand{\hdrinstituto}{Instituto Técnico Santo Tomás · Zapatoca}
+\newcommand{\hdrcapitulo}{}            % se fija en el documento maestro
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[LE]{\footnotesize\sffamily\color{black!55}\hdrinstituto}
+\fancyhead[RO]{\footnotesize\sffamily\color{subjectcolor}\hdrcapitulo}
+\fancyhead[LO,RE]{}
+\renewcommand{\headrule}{\vspace{2pt}{\color{black!18}\hrule height 0.4pt}}
+
+% --- PIE: número exterior (cuadro de color) + crédito interior + filete ---
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand{\footrule}{{\color{black!15}\hrule height 0.4pt}\vspace{3pt}}
+\newcommand{\pagenumbox}{%
+  \tikz[baseline=-3.2pt]{\node[fill=subjectcolor, text=white, inner xsep=7pt,
+     inner ysep=3pt, font=\sffamily\bfseries\footnotesize]{\thepage};}}
+\fancyfoot[RO,LE]{\pagenumbox}
+\fancyfoot[LO,RE]{\footnotesize\sffamily\color{black!45}%
+  \hdrcapitulo\ \textcolor{black!22}{·}\ Prof.\ Juan Diego A.\ Prada R.}
+
+% =====================================================================
+%  HELPERS
+% =====================================================================
+% Etiqueta de bloque:  TAG · título   (color del tag configurable)
+\newcommand{\blocklabel}[3]{% #1=color  #2=TAG  #3=título
+  {\sffamily\bfseries\footnotesize\color{#1}\MakeUppercase{#2}}%
+  \ifblank{#3}{}{\,{\color{black!35}\textbf{·}}\,%
+    {\sffamily\bfseries\footnotesize\color{black!78}#3}}%
+  \par\nopagebreak\vspace{0.4em}}
+
+% --- CAJAS AL MARGEN — personajes históricos e hitos -------------------
+% Van en el margen exterior ancho (\marginpar respeta la geometría twoside
+% y flota para no chocar). Son contenido semántico: colócalas en el cuerpo,
+% cerca del párrafo que comentan, ENTRE párrafos. NO usarlas dentro de
+% multicols, tcolorbox, tablas, ni en la misma línea que un \section.
+%   \personaje{Nombre}{años · rol}{descripción breve}
+%   \hito{año}{qué pasó (breve)}
+\setlength{\marginparpush}{8pt}
+\newcommand{\margenbox}[1]{\marginpar{%
+  \begingroup\raggedright\footnotesize\sffamily
+  \setlength{\parskip}{0.18em}\linespread{1.05}\selectfont
+  #1\par\endgroup}}
+\newcommand{\personaje}[3]{\margenbox{%
+  {\color{subjectcolor}\rule{\linewidth}{1.1pt}}\par
+  {\InterDisplaySB\scriptsize\color{subjectcolor}#1}\par
+  {\fontsize{6.8pt}{8pt}\selectfont\itshape\color{black!50}#2}\par
+  \vspace{0.15em}{\scriptsize\color{black!72}#3}}}
+\newcommand{\hito}[2]{\margenbox{%
+  {\sffamily\bfseries\scriptsize\colorbox{subjectcolor}{\textcolor{white}{\,#1\,}}}\par
+  \vspace{0.15em}{\scriptsize\color{black!72}#2}}}
+
+% =====================================================================
+%  ENTORNOS — todos planos: filete lateral, sin marco, sin sombra
+% =====================================================================
+
+% --- DEFINICIÓN / concepto clave ---------------------------------------
+\newtcolorbox{definicion}[1]{
+  enhanced, breakable, sharp corners, boxrule=0pt, frame hidden,
+  colback=subjectcolor!6!white,
+  borderline west={2.2pt}{0pt}{subjectcolor},
+  left=5mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={\blocklabel{subjectcolor}{Definición}{#1}}
+}
+
+% --- PROCEDIMIENTO / pasos ---------------------------------------------
+\newtcolorbox{procedimiento}[1]{
+  enhanced, breakable, sharp corners, boxrule=0pt, frame hidden,
+  colback=black!3!white,
+  borderline west={2.2pt}{0pt}{black!45},
+  left=5mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={\blocklabel{black!60}{Procedimiento}{#1}}
+}
+\newcommand{\paso}[2]{%
+  \par\vspace{0.45em}\noindent
+  \tikz[baseline=-0.6ex]\node[circle, fill=subjectcolor, text=white,
+     inner sep=0pt, minimum size=1.45em,
+     font=\sffamily\bfseries\footnotesize]{#1};\hspace{0.5em}#2\par}
+
+% Glosa "¿por qué?" bajo un paso — narración en lenguaje cercano
+\newcommand{\porque}[1]{\par\vspace{0.1em}\noindent\hspace{2.0em}%
+  {\sffamily\footnotesize\itshape\color{subjectcolor}¿por qué?\,}%
+  {\sffamily\footnotesize\itshape\color{black!55}#1}\par}
+
+% Operación glosada: cuenta a la izquierda + porqué al margen derecho
+% (estilo "comentario al lado del código"). Úsala dentro de ejemplo.
+% \opg{ecuación}{porqué}   — primer arg en modo display (mat, cap0)
+% \opgt{etiqueta}{porqué}  — primer arg en texto sans bold (física, ciencias)
+\newcommand{\opg}[2]{\par\vspace{0.25em}\noindent
+  \makebox[0.46\linewidth][l]{$\displaystyle #1$}%
+  {\sffamily\footnotesize\itshape\color{black!52}#2}\par}
+\newcommand{\opgt}[2]{\par\vspace{0.25em}\noindent
+  \makebox[0.46\linewidth][l]{\sffamily\bfseries\color{subjectcolor!80}#1}%
+  {\sffamily\footnotesize\itshape\color{black!52}#2}\par}
+
+% --- NOTA / aparte único (sabías · dato · video · margen) --------------
+\newtcolorbox{nota}[1][]{
+  enhanced, breakable, sharp corners, boxrule=0pt, frame hidden,
+  colback=black!4!white,
+  borderline west={2.2pt}{0pt}{black!35},
+  left=5mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={\ifblank{#1}{}{\blocklabel{black!55}{Nota}{#1}}}
+}
+
+% --- ALERTA / advertencia (única en ámbar, uso escaso) -----------------
+\newtcolorbox{alerta}[1]{
+  enhanced, breakable, sharp corners, boxrule=0pt, frame hidden,
+  colback=alertcolor!7!white,
+  borderline west={2.2pt}{0pt}{alertcolor},
+  left=5mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={\blocklabel{alertcolor}{Atención}{#1}}
+}
+% Sub-ítem de alerta (antes \caso)
+\newcommand{\caso}[2]{\par\vspace{0.35em}\noindent
+  {\sffamily\bfseries\color{alertcolor!85!black}#1.}\enspace #2\par}
+
+% --- CONTRASTE (la virtud y su exceso → pregunta que cuestiona) --------
+%   \contraste{Concepto}{La virtud / lo valioso}{Su exceso / su riesgo}{Pregunta}
+\newtcolorbox{contrastebox}{
+  enhanced, breakable, sharp corners, boxrule=0pt, frame hidden,
+  colback=subjectcolor!5!white,
+  borderline west={2.2pt}{0pt}{subjectcolor},
+  left=5mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+}
+\newcommand{\contraste}[4]{%
+\begin{contrastebox}
+\blocklabel{subjectcolor}{Cuestiona esto}{\faBalanceScale\ #1}
+\noindent\begin{minipage}[t]{0.45\linewidth}
+  {\sffamily\footnotesize\bfseries\color{subjectcolor!85!black}La virtud}\par
+  \vspace{0.2em}#2
+\end{minipage}\hfill
+{\color{subjectcolor!35}\vrule width 0.4pt}\hfill
+\begin{minipage}[t]{0.45\linewidth}
+  {\sffamily\footnotesize\bfseries\color{alertcolor!85!black}Su exceso}\par
+  \vspace{0.2em}#3
+\end{minipage}
+\par\vspace{0.6em}
+{\color{subjectcolor!25}\titlerule[0.6pt]}\par\vspace{0.4em}
+\noindent{\sffamily\itshape\color{subjectcolor}\faArrowRight\ #4}
+\end{contrastebox}}
+
+% --- EJEMPLO (sin caja: regla fina + etiqueta numerada) ----------------
+\newcounter{ejemplo}[section]
+\newenvironment{ejemplo}[1]
+  {\par\addvspace{\bloqueskip}\refstepcounter{ejemplo}%
+   \noindent{\color{subjectcolor!28}\rule{\linewidth}{0.5pt}}\par\vspace{0.4em}%
+   \noindent{\sffamily\bfseries\color{subjectcolor}Ejemplo \theejemplo.}%
+   \enspace{\sffamily\bfseries\color{black!78}#1}\par\vspace{0.3em}}
+  {\par\addvspace{\bloqueskip}}
+
+% --- PRÁCTICA (ejercicios / hoja / ICFES) ------------------------------
+\newtcolorbox{practica}[1]{
+  enhanced, breakable, sharp corners, boxrule=0pt, frame hidden,
+  colback=white,
+  borderline north={1.4pt}{0pt}{subjectcolor},
+  left=0mm, right=0mm, top=3mm, bottom=2mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={\blocklabel{subjectcolor}{Práctica}{#1}\raggedright}
+}
+
+% Ejercicio numerado con nivel opcional [básico|intermedio|reto]
+\newcounter{ejer}[section]
+\newcommand{\ejer}[2][]{%
+  \stepcounter{ejer}\par\vspace{0.5em}\noindent
+  {\sffamily\bfseries\color{subjectcolor}\theejer.}\enspace #2%
+  \ifblank{#1}{}{\ \textcolor{black!45}{\footnotesize[\textit{#1}]}}\par}
+
+% Niveles = un solo color a tres intensidades (NO nuevos colores)
+\newcommand{\nivel}[2]{\par\smallskip\noindent
+  \textcolor{subjectcolor!#1}{\small\faCircle}\enspace
+  {\sffamily\bfseries\footnotesize\color{black!70}#2}\par}
+\newcommand{\basico}{\nivel{40}{Básico}}
+\newcommand{\intermedio}{\nivel{70}{Intermedio}}
+\newcommand{\reto}{\nivel{100}{Reto}}
+
+% Selección múltiple tipo ICFES — opciones con burbuja (estilo Saber)
+\newcounter{pregicfes}[section]
+\newcommand{\bubbleletter}[1]{\tikz[baseline=(bc.base)]\node[circle,
+  draw=subjectcolor!55, line width=0.6pt, inner sep=1.5pt,
+  font=\sffamily\bfseries\scriptsize, text=subjectcolor!90!black](bc){#1};}
+\newcommand{\icfes}[5]{%
+  \stepcounter{pregicfes}\par\vspace{0.6em}\noindent
+  {\sffamily\bfseries\color{subjectcolor}\thepregicfes.}\enspace #1\par
+  \begin{enumerate}[label={\protect\bubbleletter{\Alph*}}, leftmargin=1.5cm,
+                    itemsep=3pt, topsep=3pt]
+    \item #2 \item #3 \item #4 \item #5
+  \end{enumerate}}
+% Pregunta abierta de argumentación
+\newcommand{\pregabierta}[1]{\par\vspace{0.6em}\noindent
+  {\sffamily\bfseries\color{subjectcolor}\faComment\ Argumenta:}\enspace
+  \textit{#1}\par\lineaescritura\lineaescritura\lineaescritura}
+
+% --- LÍNEAS DE RESPUESTA -----------------------------------------------
+\newcommand{\linea}[1][7cm]{\underline{\hspace{#1}}}
+\newcommand{\lineaescritura}{\par\vspace{0.9em}\noindent
+  {\color{black!30}\rule{\linewidth}{0.3pt}}}
+
+% =====================================================================
+%  EVALUACIÓN TIPO ICFES — cierre de unidad (banner + 2 columnas)
+%  Uso:  \begin{evaluacion} \begin{multicols}{2} \icfes... \end{multicols}
+%        \pregabierta{...} \end{evaluacion}
+% =====================================================================
+\newtcolorbox{evaluacion}[1][cierre de sección]{
+  enhanced, breakable, sharp corners,
+  colback=white, colframe=subjectcolor, boxrule=1pt,
+  colbacktitle=subjectcolor, coltitle=white,
+  fonttitle=\InterDisplaySB\normalsize,
+  title={\faClipboardCheck\ \ EVALUACIÓN TIPO ICFES\ \ %
+         \textnormal{\sffamily\small· #1}},
+  toptitle=2mm, bottomtitle=2mm, left=4mm, right=4mm, top=3.5mm, bottom=3mm,
+  before={\clearpage},
+  before upper={\small\itshape\color{black!55}%
+    Selección múltiple. Marca una sola opción por pregunta.\par\medskip\raggedright}
+}
+
+% =====================================================================
+%  HOJA DE TRABAJO — recortable: borde punteado, escala de grises,
+%  en página aparte (clearpage antes; el contenido que sigue continúa).
+% =====================================================================
+\newtcolorbox{hoja}[1]{
+  enhanced, breakable, sharp corners,
+  colback=black!2!white, boxrule=0pt, frame hidden,
+  borderline={0.8pt}{0pt}{black!50, dash pattern=on 3pt off 2.5pt},
+  before={\clearpage}, after={\par},
+  left=6mm, right=6mm, top=6mm, bottom=6mm,
+  before upper={%
+    {\sffamily\bfseries\footnotesize\color{black!60}\faCut\ \ HOJA DE TRABAJO}%
+    {\color{black!35}\ \textbf{·}\ }{\sffamily\bfseries\footnotesize\color{black!80}#1}%
+    \hfill{\sffamily\footnotesize\color{black!55}%
+      Nombre:\ \underline{\hspace{4.2cm}}\quad Fecha:\ \underline{\hspace{2cm}}}\par
+    \vspace{2mm}{\color{black!30}\hrule height 0.4pt}\vspace{3mm}\raggedright}
+}
+
+% =====================================================================
+%  TABLAHOJA — tabla con TODAS las líneas (rejilla) para hojas de trabajo.
+%  Celdas altas para llenar a mano. Centrada. El encabezado se marca con
+%  \rowcolor en la primera fila.
+%  Uso:  \begin{tablahoja}{ccc} enc & enc & enc \\ a & b & c \\ \end{tablahoja}
+% =====================================================================
+\NewDocumentEnvironment{tablahoja}{m}{%
+  \par\smallskip\centering\small\setlength{\tabcolsep}{4pt}%
+  \begin{NiceTabular}{#1}[hvlines, cell-space-top-limit=5pt,
+     cell-space-bottom-limit=9pt, colortbl-like]%
+}{%
+  \end{NiceTabular}\par\smallskip
+}
+
+% =====================================================================
+%  FIGURAS — imagen real o placeholder automático (\IfFileExists)
+% =====================================================================
+\newcounter{figura}[section]
+\newcommand{\figura}[3][0.7\linewidth]{% [ancho]{archivo}{pie}
+  \par\addvspace{\bloqueskip}\refstepcounter{figura}%
+  \begin{center}%
+  \IfFileExists{assets/imgs/#2}{%
+    \includegraphics[width=#1]{assets/imgs/#2}}{%
+    \begin{tikzpicture}
+      \node[draw=black!30, dashed, line width=0.6pt, fill=black!3,
+            text width=0.66\linewidth, minimum height=2.6cm,
+            align=center, inner sep=8pt,
+            text=black!55, font=\sffamily\footnotesize]
+        {{\Large\faImage}\\[4pt]\textbf{[ imagen pendiente ]}\\#3};
+    \end{tikzpicture}}%
+  \par\vspace{0.4em}%
+  {\footnotesize\sffamily\color{black!60}%
+    \textbf{Figura \thefigura.}\enspace #3}%
+  \end{center}\par\addvspace{\bloqueskip}}
+
+% =====================================================================
+%  APERTURA DE SECCIÓN — marco branded de serie + título + "qué verás"
+%  El "marco" es CONSTANTE en todas las secciones (= identidad de marca):
+%  número grande de serie, kicker, cuadro-firma, franja de acento y sello
+%  del instituto. El arte (imagen real o placeholder) va DENTRO del marco.
+%  Uso (1ª línea de cada sNN.tex):
+%    \aperturaseccion{ruta/img.png}{Título}{Una o dos frases.}
+%  Personaliza por documento (opcional):  \renewcommand{\seccionkicker}{...}
+% =====================================================================
+\newcounter{secportada}
+\newcounter{unidadnum}                       % nº de unidad actual (lo fija \aperturacapitulo)
+% Número visible de sección = Unidad.Sección (ej. 1.2). Si no hay unidad
+% definida (unidadnum=0), cae al número simple de sección.
+\newcommand{\numseccion}{\ifnum\value{unidadnum}>0 \theunidadnum.\thesecportada\else\thesecportada\fi}
+\newcommand{\seccionkicker}{\hdrcapitulo}   % por defecto, lo del encabezado
+
+% El escenario branded (contenedor constante del arte)
+\newtcolorbox{secstage}{%
+  enhanced, sharp corners, boxrule=0pt, frame hidden,
+  colback=subjectcolor!6, halign=center, valign=center,
+  height=5.0cm, left=2mm, right=2mm, top=10mm, bottom=8mm,
+  overlay={%
+    % cuadro-firma + kicker (arriba-izquierda)
+    \fill[subjectcolor] ([shift={(4mm,-4mm)}]frame.north west) rectangle ++(2.6mm,-2.6mm);
+    \node[anchor=north west, font=\InterDisplaySB\footnotesize, text=subjectcolor!85]
+      at ([shift={(8.5mm,-3.4mm)}]frame.north west) {\seccionkicker};
+    % número de serie grande y tenue (arriba-derecha) = marca
+    \node[anchor=north east, font=\InterDisplayBlk, text=subjectcolor!18, inner sep=0pt]
+      at ([shift={(-4mm,-1.5mm)}]frame.north east)
+      {\fontsize{34}{34}\selectfont \numseccion};
+    % franja de acento (abajo-izquierda)
+    \fill[subjectcolor] ([shift={(4mm,4mm)}]frame.south west) rectangle ++(2.8cm,2.2mm);
+    % sello del instituto (abajo-derecha)
+    \node[anchor=south east, font=\sffamily\scriptsize, text=subjectcolor!55]
+      at ([shift={(-4mm,3.4mm)}]frame.south east) {ITSTZ · Zapatoca};
+  }}
+
+\newcommand{\aperturaseccion}[3]{% {archivo}{título}{intro}
+  \clearpage\refstepcounter{secportada}%
+  \begin{secstage}
+  \IfFileExists{assets/imgs/#1}{%
+    \includegraphics[width=0.9\linewidth, height=3.2cm, keepaspectratio]{assets/imgs/#1}}{%
+    \begin{tikzpicture}
+      \node[draw=subjectcolor!35, dashed, line width=0.6pt, fill=white,
+            minimum width=0.86\linewidth, minimum height=2.9cm,
+            align=center, text=subjectcolor!50, font=\sffamily\small]
+        {{\fontsize{22}{22}\selectfont\faImage}\\[5pt]
+         \textbf{[ imagen pendiente ]}\\[1pt]
+         \scriptsize\ttfamily assets/imgs/#1};
+    \end{tikzpicture}}%
+  \end{secstage}
+  \vspace{0.5em}
+  {\color{subjectcolor}\rule{3.2cm}{2.5pt}}\par\vspace{0.3em}
+  \section{{\color{subjectcolor}\numseccion}\enspace #2}%
+  {\InterLight\fontsize{12.5}{17}\selectfont\color{black!58} #3\par}
+  \vspace{0.4em}}
+
+% =====================================================================
+%  DESTACADO — "lo esencial": triángulo lateral + degradado muy sutil
+% =====================================================================
+\newtcolorbox{destacado}[1]{
+  enhanced, breakable, sharp corners, boxrule=0pt, frame hidden,
+  interior style={left color=subjectcolor!16, right color=subjectcolor!2},
+  borderline west={2.4pt}{0pt}{subjectcolor},
+  left=7mm, right=5mm, top=3.5mm, bottom=3.5mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  overlay unbroken and first={%
+    \fill[subjectcolor] ([yshift=-4.5mm]frame.north west)
+        -- ++(5.5pt,2.75pt) -- ++(0,-5.5pt) -- cycle;},
+  before upper={\blocklabel{subjectcolor}{Lo esencial}{#1}}
+}
+
+% --- Resaltado inline suave ---
+\newtcbox{\resaltar}{on line, nobeforeafter, boxsep=0pt,
+  left=2.5pt, right=2.5pt, top=1pt, bottom=1pt, arc=2.5pt,
+  colback=subjectcolor!15, colframe=subjectcolor!15}
+
+% =====================================================================
+%  EXTENSIONES SANTILLANA (opt-in) — cajas temáticas para dar variedad
+%  visual y romper la monotonía. NO alteran los entornos base; úsalas
+%  donde aporten. Mantienen el color de asignatura (coherencia de marca).
+% =====================================================================
+
+% --- ¿SABÍAS QUE? — curiosidad breve · tarjeta redondeada con bombillo --
+\newtcolorbox{sabias}{
+  enhanced, breakable, arc=2.5mm, boxrule=0.8pt,
+  colback=subjectcolor!6!white, colframe=subjectcolor!30,
+  left=4mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={{\sffamily\bfseries\footnotesize\color{subjectcolor}%
+    \faLightbulb\enspace\MakeUppercase{¿Sabías que?}}%
+    \par\nopagebreak\vspace{0.45em}}
+}
+
+% --- CIENCIA Y SOCIEDAD — impacto/ética · banner de título -------------
+\newtcolorbox{cienciasociedad}[1]{
+  enhanced, breakable, sharp corners,
+  colback=subjectcolor!5!white, colframe=subjectcolor, boxrule=0pt,
+  colbacktitle=subjectcolor, coltitle=white,
+  fonttitle=\sffamily\bfseries\footnotesize,
+  title={\faGlobeAmericas\ \ \MakeUppercase{Ciencia y sociedad}%
+         \ifblank{#1}{}{\ \ \textnormal{\sffamily\small· #1}}},
+  toptitle=1.6mm, bottomtitle=1.6mm,
+  left=4mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+}
+
+% --- MANOS A LA OBRA — práctica experimental · marco sólido con matraz --
+\newtcolorbox{laboratorio}[1]{
+  enhanced, breakable, sharp corners, arc=0pt,
+  colback=white, colframe=subjectcolor!55, boxrule=1pt,
+  left=4mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={{\sffamily\bfseries\footnotesize\color{subjectcolor}%
+    \faFlask\enspace\MakeUppercase{Manos a la obra}}%
+    \ifblank{#1}{}{\ {\color{black!35}\textbf{·}}\ %
+      {\sffamily\bfseries\footnotesize\color{black!78}#1}}%
+    \par\nopagebreak\vspace{0.45em}}
+}
+% Lista de materiales dentro de \begin{laboratorio}
+\newcommand{\materiales}[1]{\par\noindent
+  {\sffamily\bfseries\footnotesize\color{black!70}Materiales:}\ %
+  {\footnotesize #1}\par\vspace{0.3em}}
+
+% --- IMAGEN INLINE con texto alrededor (Santillana) -------------------
+%   \figinline[r|l]{ancho}{archivo}{pie}   — colócala al inicio de un párrafo
+\newcommand{\figinline}[4][r]{%
+  \begin{wrapfigure}{#1}{#2}
+  \centering\vspace{-0.5\baselineskip}
+  \IfFileExists{assets/imgs/#3}{%
+    \includegraphics[width=\linewidth]{assets/imgs/#3}}{%
+    \fbox{\parbox[c][3cm][c]{0.92\linewidth}{\centering\sffamily\scriptsize
+      \color{black!55}{\Large\faImage}\\[3pt][imagen pendiente]\\\ttfamily\tiny #3}}}%
+  \par\vspace{2pt}{\footnotesize\sffamily\color{black!60}\textbf{Fig.}\enspace #4}%
+  \vspace{-0.4\baselineskip}
+  \end{wrapfigure}}
+
+% --- APERTURA CON HERO LATERAL (imagen grande al lado del título) ------
+%   \aperturahero{archivo}{título}{intro}  — alternativa a \aperturaseccion
+\newcommand{\aperturahero}[3]{%
+  \clearpage\refstepcounter{secportada}\stepcounter{section}%
+  \addcontentsline{toc}{section}{\numseccion\enspace #2}%
+  \noindent\begin{minipage}[c]{0.62\linewidth}
+    {\InterDisplaySB\footnotesize\color{subjectcolor!85}\MakeUppercase{\seccionkicker}}\par
+    \vspace{1.8mm}
+    {\LARGE\InterDisplaySB\color{subjectcolor}%
+      {\color{subjectcolor!35}\numseccion}\,\,#2}\par
+    \vspace{2mm}{\color{subjectcolor!30}\rule{\linewidth}{0.8pt}}\par\vspace{2mm}
+    {\InterLight\fontsize{12}{16}\selectfont\color{black!58}#3}
+  \end{minipage}\hfill
+  \begin{minipage}[c]{0.34\linewidth}\centering
+    \IfFileExists{assets/imgs/#1}{%
+      \includegraphics[width=\linewidth]{assets/imgs/#1}}{%
+      \fbox{\parbox[c][3.4cm][c]{0.95\linewidth}{\centering\sffamily\scriptsize
+        \color{black!55}{\Large\faImage}\\[3pt][imagen pendiente]\\\ttfamily\tiny #1}}}%
+  \end{minipage}\par\vspace{1.3em}}
+
+% --- MAPAS (conceptual y mental) — estilos TikZ con texto nítido -------
+\tikzset{
+  croot/.style={draw=subjectcolor, fill=subjectcolor, text=white, rounded corners=3pt,
+    font=\sffamily\bfseries\footnotesize, align=center, inner sep=5pt, minimum height=9mm},
+  cnode/.style={draw=subjectcolor!55, fill=subjectcolor!8, rounded corners=2.5pt,
+    font=\sffamily\footnotesize, align=center, inner sep=4pt, text width=2.5cm},
+  cleaf/.style={draw=subjectcolor!45, fill=white, rounded corners=2.5pt,
+    font=\sffamily\footnotesize, align=center, inner sep=4pt},
+  clink/.style={-{Stealth[length=5pt]}, subjectcolor!65, semithick},
+  cline/.style={subjectcolor!55, semithick},
+}
+% Caja contenedora para un mapa (título + regla superior)
+\newtcolorbox{mapabox}[2][Mapa conceptual]{
+  enhanced, sharp corners, boxrule=0pt, frame hidden, colback=white,
+  borderline north={1.4pt}{0pt}{subjectcolor},
+  left=1mm, right=1mm, top=3mm, bottom=2mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={\blocklabel{subjectcolor}{#1}{#2}}
+}
+
+% --- Papel cuadriculado para graficar a mano (hojas de trabajo) --------
+%   \papelcuadricula[filas]{ancho en cm}   (cada celda = 0.6 cm)
+\newcommand{\papelcuadricula}[2][8]{%
+  \par\smallskip\begin{center}
+  \begin{tikzpicture}
+    \draw[step=0.6cm, black!16, line width=0.3pt] (0,0) grid (#2,{#1*0.6});
+    \draw[black!45, line width=0.7pt] (0,0) -- (#2,0);
+    \draw[black!45, line width=0.7pt] (0,0) -- (0,{#1*0.6});
+  \end{tikzpicture}
+  \end{center}\par\smallskip}
+
+% =====================================================================
+%  APERTURA DE CAPÍTULO — título grande, número marca de agua, aire
+% =====================================================================
+\newcommand{\aperturacapitulo}[3]{% {número}{título}{subtítulo}
+  \setcounter{unidadnum}{#1}\setcounter{secportada}{0}% fija unidad y reinicia secciones
+  \thispagestyle{empty}%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node[anchor=north east, text=subjectcolor!9,
+          font=\InterDisplayThin]
+      at ([xshift=-0.9cm, yshift=-2.2cm]current page.north east)
+      {\fontsize{210}{210}\selectfont #1};
+  \end{tikzpicture}%
+  \begingroup\raggedright\null\vspace{3.8cm}\par
+  {\InterDisplaySB\fontsize{12}{14}\selectfont\color{subjectcolor}%
+    CAP\'ITULO\ #1}\par
+  \vspace{0.18cm}{\color{black!16}\rule{4cm}{1pt}}\par
+  \vspace{0.9cm}
+  {\InterDisplaySB\fontsize{46}{50}\selectfont\color{black!88}#2}\par
+  \vspace{0.5cm}{\color{subjectcolor}\rule{3.2cm}{2.5pt}}\par
+  \vspace{0.55cm}
+  {\InterLight\fontsize{15}{21}\selectfont\color{black!55}#3}\par
+  \vfill
+  {\sffamily\footnotesize\color{black!45}\hdrinstituto\quad
+    \textcolor{black!22}{·}\quad Prof.\ Juan Diego A.\ Prada R.}\par
+  \endgroup\clearpage}
+
+% =====================================================================
+%  DESBLOQUEA — pie discreto, no caja
+% =====================================================================
+\newcommand{\desbloquea}[1]{%
+  \par\addvspace{\bloqueskip}%
+  \noindent{\color{subjectcolor!25}\rule{\linewidth}{0.5pt}}\par\vspace{0.4em}%
+  {\footnotesize\sffamily\color{black!60}%
+    \textcolor{subjectcolor}{\faUnlock}\ \textbf{Dominar esto te desbloquea:}\ #1}\par}

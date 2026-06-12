@@ -1,0 +1,224 @@
+% =====================================================================
+%  DESIGN SYSTEM BEAMER v5 — ITSTZ · 16:9
+%  Coherente con el libro: Inter Display (títulos) + Inter (cuerpo),
+%  un color de asignatura, fondo claro, texto GRANDE y contrastado.
+%  Filosofía slide: una idea por lámina, mucho aire, cero relleno.
+%
+%  Vocabulario:
+%    \portada{kicker}{TÍTULO}{subtítulo}
+%    \seccion{texto}                  lámina divisoria a pantalla completa
+%    \idea{TEXTO GRANDE}              una afirmación que llena la slide
+%    \resalta{texto}                  realce inline (fondo color)
+%    frames de contenido normales con \frametitle
+%    \begin{lineah} \hito{x}{etiqueta} ... \end{lineah}   timeline horizontal
+%    \begin{lineav} \hitov{x}{título}{texto} ... \end{lineav} timeline vertical
+%    \begin{mapa}{NODO CENTRAL} \rama{ang}{dist}{texto} ... \end{mapa}
+%    \pregunta{texto}                 pregunta viva (apertura)
+%    \accion{texto}                   cierre "de la queja a la acción"
+%  Uso: \input{design/beamer.tex} ; \setsubject{csoc} ; \begin{document}...
+% =====================================================================
+\documentclass[aspectratio=169, 11pt]{beamer}
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{}   % sin botones de navegación
+
+\usepackage{fontspec}
+\usepackage{polyglossia}\setdefaultlanguage{spanish}
+\usepackage{tikz}
+\usetikzlibrary{calc, positioning, arrows.meta, decorations.pathreplacing}
+\usepackage{amsmath}
+
+% --- TIPOGRAFÍA (idéntica familia que el libro) -----------------------
+\setsansfont{Inter}[UprightFont=Inter-Regular, BoldFont=Inter-SemiBold,
+  ItalicFont=Inter-Italic, Ligatures=TeX, Numbers=Lining]
+\newfontfamily\Display{Inter Display}[Ligatures=TeX]
+\newfontfamily\DisplayBlk{Inter Display Black}[Ligatures=TeX]
+\newfontfamily\DisplaySB{Inter Display SemiBold}[Ligatures=TeX]
+\newfontfamily\DisplayThin{Inter Display Thin}[Ligatures=TeX]
+
+% --- COLOR (mismas 4 paletas que el libro) ----------------------------
+\definecolor{mat} {RGB}{ 30,  64, 120}
+\definecolor{cnat}{RGB}{ 16, 110,  80}
+\definecolor{csoc}{RGB}{165,  75,  45}
+\definecolor{eco} {RGB}{ 70,  55, 130}
+\definecolor{ink}{RGB}{28,28,30}        % casi-negro para texto
+\definecolor{paper}{RGB}{250,250,248}   % blanco cálido de fondo
+\colorlet{subjectcolor}{csoc}
+% \setsubject re-aplica los colores de beamer además de actualizar el alias
+\newcommand{\setsubject}[1]{%
+  \colorlet{subjectcolor}{#1}%
+  \setbeamercolor{structure}{fg=#1}%
+  \setbeamercolor{frametitle}{fg=#1,bg=}%
+}
+
+\setbeamercolor{normal text}{fg=ink, bg=paper}
+\setbeamercolor{structure}{fg=subjectcolor}
+\setbeamerfont{frametitle}{family=\DisplaySB}
+\setbeamercolor{frametitle}{fg=subjectcolor, bg=}
+\setbeamertemplate{frametitle}{%
+  \vspace{0.6em}\hspace{0.2em}%
+  {\DisplaySB\large\color{subjectcolor}\insertframetitle}\par
+  \vspace{-0.2em}{\color{subjectcolor!30}\rule{\dimexpr\paperwidth-1.4em\relax}{1.2pt}}}
+
+% Pie minimal: instituto · profe · tema · número en cuadro de color
+\newcommand{\bmrtema}{}
+\newcommand{\bmrprofe}{}   % ← \renewcommand{\bmrprofe}{Prof. Nombre} en cada beamer
+\setbeamertemplate{footline}{%
+  \hbox{}\vspace{2pt}\hspace{0.6em}%
+  {\footnotesize\color{ink!45}ITSTZ%
+   \ifx\bmrprofe\empty\else\space·\space\bmrprofe\fi}%
+  \hfill{\footnotesize\color{ink!45}\bmrtema}\hspace{0.6em}%
+  \tikz[baseline=-3pt]{\node[fill=subjectcolor, text=white, inner xsep=6pt,
+     inner ysep=2.5pt, font=\DisplaySB\scriptsize]{\insertframenumber};}%
+  \hspace{0.6em}\vspace{4pt}}
+
+% =====================================================================
+%  PORTADA y DIVISORES
+% =====================================================================
+\newcommand{\portada}[3]{% {kicker}{TÍTULO}{subtítulo}
+{\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[paper] (current page.south west) rectangle (current page.north east);
+  \node[anchor=north west, text=subjectcolor!12, font=\DisplayBlk]
+    at ([xshift=-0.5cm,yshift=1.2cm]current page.north west)
+    {\fontsize{190}{190}\selectfont ·};
+  \node[anchor=west, text=subjectcolor, font=\DisplaySB\Large]
+    at ([xshift=1.2cm, yshift=1.6cm]current page.west) {#1};
+  \node[anchor=west, text=ink, font=\DisplayBlk, align=left]
+    at ([xshift=1.15cm, yshift=0.2cm]current page.west)
+    {\fontsize{40}{44}\selectfont #2};
+  \fill[subjectcolor] ([xshift=1.2cm, yshift=-1.4cm]current page.west)
+    rectangle ++(3.2cm, 0.16cm);
+  \node[anchor=west, text=ink!60, font=\Display, align=left, text width=0.7\paperwidth]
+    at ([xshift=1.2cm, yshift=-2.3cm]current page.west) {#3};
+\end{tikzpicture}
+\end{frame}}}
+
+% Lámina divisoria: solo una frase grande centrada sobre color
+\newcommand{\seccion}[1]{%
+{\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[subjectcolor] (current page.south west) rectangle (current page.north east);
+  \node[text=white, font=\DisplaySB, align=center, text width=0.85\paperwidth]
+    at (current page.center) {\fontsize{30}{36}\selectfont #1};
+\end{tikzpicture}
+\end{frame}}}
+
+% =====================================================================
+%  ELEMENTOS DE CONTENIDO
+% =====================================================================
+% Una afirmación gigante que llena la lámina
+\newcommand{\idea}[1]{%
+{\setbeamertemplate{footline}{}
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[paper] (current page.south west) rectangle (current page.north east);
+  \fill[subjectcolor] (current page.north west)
+    rectangle ([yshift=-0.32cm]current page.north east);
+  \node[text=ink, font=\DisplaySB, align=center,
+        text width=0.82\paperwidth]
+    at (current page.center)
+    {\fontsize{32}{44}\selectfont #1};
+\end{tikzpicture}
+\end{frame}}}
+
+% Realce inline (fondo color suave, texto oscuro)
+\newcommand{\resalta}[1]{\tikz[baseline=(R.base)]{\node[fill=subjectcolor!18,
+  rounded corners=2pt, inner xsep=3pt, inner ysep=1pt](R){#1};}}
+% Realce fuerte (fondo sólido, texto blanco)
+\newcommand{\marca}[1]{\tikz[baseline=(R.base)]{\node[fill=subjectcolor,
+  text=white, rounded corners=2pt, inner xsep=4pt, inner ysep=1.5pt](R){\textbf{#1}};}}
+
+% Pregunta viva de apertura
+\newcommand{\pregunta}[1]{%
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[subjectcolor!7] (current page.south west) rectangle (current page.north east);
+  \fill[subjectcolor] (current page.south west)
+    rectangle ([xshift=0.45cm]current page.north west);
+\end{tikzpicture}
+\vfill
+\hspace{1.5cm}\begin{minipage}{0.78\paperwidth}
+  {\color{subjectcolor}\DisplayBlk\fontsize{54}{54}\selectfont ¿}\par
+  \vspace{0.25em}
+  {\Display\color{ink}\fontsize{22}{28}\selectfont #1}\par
+  \vspace{0.4em}
+  {\hfill\color{subjectcolor}\DisplayBlk\fontsize{38}{38}\selectfont ?}
+\end{minipage}
+\vfill
+\end{frame}}
+
+% Cierre / acción — label opcional (default: "DE LA QUEJA A LA ACCIÓN")
+% Uso: \accion{texto}  o  \accion[ETIQUETA CUSTOM]{texto}
+\newcommand{\accion}[2][DE LA QUEJA A LA ACCIÓN]{%
+\begin{frame}[plain]
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[subjectcolor!10] (current page.south west) rectangle (current page.north east);
+  \node[anchor=west, text=subjectcolor, font=\DisplaySB]
+    at ([xshift=1cm, yshift=2.2cm]current page.west)
+    {\large #1};
+  \node[anchor=west, text=ink, font=\Display, align=left, text width=0.78\paperwidth]
+    at ([xshift=1cm, yshift=0cm]current page.west)
+    {\fontsize{20}{26}\selectfont #2};
+\end{tikzpicture}
+\end{frame}}
+
+% =====================================================================
+%  LÍNEA DE TIEMPO HORIZONTAL
+%  \begin{lineah}{año_ini}{año_fin}
+%     \hito{posición 0-1}{etiqueta}   ...
+%  \end{lineah}
+% =====================================================================
+\newenvironment{lineah}{%
+  \begin{center}\begin{tikzpicture}[x=0.92\paperwidth, font=\footnotesize\sffamily]
+  \draw[line width=2pt, subjectcolor, -{Stealth[length=5pt]}] (0,0) -- (1.02,0);
+}{%
+  \end{tikzpicture}\end{center}}
+% hito: #1 = posición relativa 0..1 ; #2 = etiqueta (texto corto)
+\newcommand{\hito}[2]{%
+  \fill[subjectcolor] (#1,0) circle (3.2pt);
+  \node[above, text=ink, align=center, text width=2.6cm, anchor=south,
+        yshift=2pt] at (#1,0) {\bfseries #2};}
+% hito bajo la línea (para alternar y no chocar)
+\newcommand{\hitob}[2]{%
+  \fill[subjectcolor] (#1,0) circle (3.2pt);
+  \node[below, text=ink, align=center, text width=2.6cm, anchor=north,
+        yshift=-2pt] at (#1,0) {#2};}
+
+% =====================================================================
+%  LÍNEA DE TIEMPO VERTICAL (ideal para listas cronológicas largas)
+%  \begin{lineav} \hitov{año}{Título}{detalle} ... \end{lineav}
+% =====================================================================
+\newcounter{lvrow}
+\newenvironment{lineav}{%
+  \setcounter{lvrow}{0}%
+  \begin{list}{}{\leftmargin=1.6cm \itemsep=0.55em \topsep=0.3em}%
+  \renewcommand{\hitov}[3]{\stepcounter{lvrow}%
+    \item[\tikz{\node[circle, fill=subjectcolor, text=white, inner sep=0pt,
+       minimum size=1.5em, font=\DisplaySB\scriptsize]{\thelvrow};}]%
+    {\DisplaySB\color{subjectcolor}##1}\quad{\bfseries ##2}\\[1pt]
+    {\small\color{ink!75}##3}}%
+}{%
+  \end{list}}
+\newcommand{\hitov}[3]{}  % placeholder; redefinido dentro del entorno
+
+% =====================================================================
+%  MAPA MENTAL — nodo central + ramas radiales
+%  \begin{mapa}{NODO CENTRAL}
+%     \rama{ángulo}{distancia cm}{texto de la rama}  ...
+%  \end{mapa}
+% =====================================================================
+\newenvironment{mapa}[2][1]{%   % [escala opcional, def=1]{NODO CENTRAL}
+  \begin{center}\begin{tikzpicture}[font=\sffamily\small, scale=#1, transform shape]
+  \node[circle, fill=subjectcolor, text=white, font=\DisplaySB,
+        align=center, text width=2.4cm, inner sep=4pt, minimum size=2.6cm]
+        (CENTRO) at (0,0) {#2};
+  \renewcommand{\rama}[3]{%
+    \node[draw=subjectcolor!55, fill=subjectcolor!8, rounded corners=4pt,
+          text=ink, align=center, text width=2.7cm, inner sep=4pt]
+          (R##1) at (##1:##2) {##3};
+    \draw[subjectcolor!55, line width=1.2pt] (CENTRO) -- (R##1);}%
+}{%
+  \end{tikzpicture}\end{center}}
+\newcommand{\rama}[3]{}  % placeholder; redefinido dentro del entorno

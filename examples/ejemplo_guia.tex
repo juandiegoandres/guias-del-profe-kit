@@ -1,0 +1,37 @@
+% =====================================================================
+%  EJEMPLO — Guía mínima que usa el design system del kit.
+%  Compilar (desde la raíz del kit):
+%    ./compile_quiet.sh examples/ejemplo_guia.tex ejemplo pdfs/examples
+% =====================================================================
+\input{design/preamble.tex}
+
+\setsubject{mat}
+\renewcommand{\hdrcapitulo}{Ejemplo · Guías del Profe}
+
+\begin{document}
+
+\section{Fracciones equivalentes}
+
+\begin{definicion}{¿Qué es una fracción equivalente?}
+Dos fracciones son \textbf{equivalentes} si representan la misma parte del todo,
+aunque se escriban con números distintos. Por ejemplo, $\tfrac{1}{2}$ y
+$\tfrac{2}{4}$ valen lo mismo.
+\end{definicion}
+
+\begin{ejemplo}{Amplificar una fracción}
+Para hallar una fracción equivalente, multiplicamos arriba y abajo por el mismo
+número:
+\[
+\frac{1}{2} \;=\; \frac{1\times 3}{2\times 3} \;=\; \frac{3}{6}.
+\]
+\end{ejemplo}
+
+\begin{practica}{Practica lo aprendido}
+\basico
+\ejer{Escribe dos fracciones equivalentes a $\tfrac{1}{3}$.}
+\ejer{¿Es $\tfrac{2}{5}$ equivalente a $\tfrac{4}{10}$? Justifica.}
+\intermedio
+\ejer{Simplifica $\tfrac{12}{18}$ hasta su mínima expresión.}
+\end{practica}
+
+\end{document}
