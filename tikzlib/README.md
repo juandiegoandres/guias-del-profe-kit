@@ -24,6 +24,23 @@ Dos formas (el agente elige según el caso):
 
 ## Catálogo
 
+### 📐 Matemáticas
+
+**`matematicas/recta-numerica.tex`** — recta numérica con marcas enteras.
+`\rectanumerica{-3}{3}` · `\rectapunto{-3}{3}{2}` (con punto marcado).
+
+![Recta numérica](previews/recta-numerica.png)
+
+**`matematicas/plano-cartesiano.tex`** — plano con rejilla, ejes y números.
+`\planocartesiano{xmin}{xmax}{ymin}{ymax}`. Requiere `arrows.meta`.
+
+![Plano cartesiano](previews/plano-cartesiano.png)
+
+**`matematicas/fracciones.tex`** — barras de fracción. `\fraccionbarra{n}{k}`
+(n partes, k sombreadas).
+
+![Fracciones](previews/fracciones.png)
+
 ### 🔬 Ciencias
 
 **`ciencias/punnett.tex`** — cuadros de Punnett 2×2 y 4×4 (genética).

@@ -1,0 +1,25 @@
+% =====================================================================
+%  tikzlib · matematicas/recta-numerica
+%  Requiere: \usepackage{tikz} ; \usetikzlibrary{arrows.meta}
+%  \rectanumerica{min}{max}        → recta con marcas enteras
+%  \rectapunto{min}{max}{p}        → igual, con un punto marcado en p
+%  Preview: tikzlib/previews/recta-numerica.png
+% =====================================================================
+\providecolor{accent}{HTML}{1A8917}
+
+\newcommand{\rectanumerica}[2]{%
+\begin{tikzpicture}[x=1cm, font=\sffamily\small]
+  \draw[-{Stealth[length=4pt]}, line width=0.9pt] (#1-0.6,0) -- (#2+0.7,0);
+  \foreach \n in {#1,...,#2}{%
+    \draw[line width=0.7pt] (\n,0.13) -- (\n,-0.13);
+    \node[below=1pt] at (\n,-0.13) {\n};}
+\end{tikzpicture}}
+
+\newcommand{\rectapunto}[3]{%
+\begin{tikzpicture}[x=1cm, font=\sffamily\small]
+  \draw[-{Stealth[length=4pt]}, line width=0.9pt] (#1-0.6,0) -- (#2+0.7,0);
+  \foreach \n in {#1,...,#2}{%
+    \draw[line width=0.7pt] (\n,0.13) -- (\n,-0.13);
+    \node[below=1pt] at (\n,-0.13) {\n};}
+  \fill[accent] (#3,0) circle (2.6pt);
+\end{tikzpicture}}
