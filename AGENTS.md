@@ -136,6 +136,9 @@ Reglas del paquete:
 - **Vocabulario semántico completo:** `knowledge/vocabulario-v5.md`.
 - Metadatos del documento (grado, asignatura, tipo, título…) van antes de
   `\begin{document}` con `\renewcommand{\doc...}{...}`.
+- **Material de ZapiaLab** (centro de interés de programación/IA para jóvenes):
+  lee `knowledge/zapialab-estilo.md` — fija tono hacker, regla del semáforo
+  🔴🟡🟢, caja Tech English y evaluación por diseño lógico.
 
 ---
 
