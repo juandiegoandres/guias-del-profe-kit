@@ -335,6 +335,40 @@ def spark(x, y, s=1.0):
 
 SPARKLES = "<g>" + spark(170, 240) + spark(250, 130, .65) + spark(846, 200, 1.05) + spark(880, 320, .55) + "</g>"
 
+TAP_TEMPLE = f"""
+  <g id="tap-temple">
+    <path d="M 660 470 C 700 420 738 366 748 320 C 752 300 736 288 722 300
+             C 700 320 674 372 654 424 Z" fill="{YELLOW}" stroke="{NAVY}" stroke-width="{SW}"
+          stroke-linejoin="round"/>
+    <ellipse cx="742" cy="308" rx="34" ry="30" fill="{YELLOW}" stroke="{NAVY}" stroke-width="{SW}"/>
+    <path d="M 730 296 L 738 282 M 744 292 L 750 276 M 756 300 L 766 288"
+          stroke="{NAVY}" stroke-width="7" stroke-linecap="round" opacity=".55"/>
+  </g>
+"""
+
+FIST_RAISED = f"""
+  <g id="fist-raised">
+    <path d="M 652 420 C 676 366 700 300 716 250" stroke="{YELLOW}" stroke-width="72"
+          stroke-linecap="round"/>
+    <path d="M 652 420 C 676 366 700 300 716 250" stroke="{NAVY}" stroke-width="{SW}"
+          fill="none" stroke-linecap="round"/>
+    <circle cx="726" cy="212" r="64" fill="{YELLOW}" stroke="{NAVY}" stroke-width="{SW}"/>
+    <path d="M 686 186 L 686 152 M 712 176 L 714 138 M 738 178 L 744 142 M 762 190 L 772 158"
+          stroke="{NAVY}" stroke-width="9" stroke-linecap="round"/>
+    <path d="M 692 224 C 704 232 716 234 728 232 M 700 244 C 712 250 722 250 732 246"
+          stroke="{NAVY}" stroke-width="6" fill="none" opacity=".55"/>
+    <path d="M 640 150 L 660 176 M 676 116 L 690 148 M 720 100 L 726 134"
+          stroke="{NAVY}" stroke-width="7" stroke-linecap="round" opacity=".5"/>
+  </g>
+"""
+
+ARROW_UP = f"""
+  <g id="arrow-up">
+    <path d="M 700 900 L 700 480 L 640 480 L 760 320 L 880 480 L 820 480 L 820 900 Z"
+          fill="{CNAT}" stroke="{NAVY}" stroke-width="{SW}" stroke-linejoin="round"/>
+  </g>
+"""
+
 ST = {
     "esto-esta-bien": ("base",        [], ["ESTO ESTÁ BIEN"], FLAMES, ""),
     "confia-en-mi":   ("ingeniero",   ["CONFÍA EN MÍ,"], ["SOY INGENIERO"], "", ""),
@@ -345,6 +379,9 @@ ST = {
     "que-miras-bobo": ("ganster",     [], ["¿QUÉ MIRAS,", "BOBO?"], "", ""),
     "receta-repasar": ("medico",      [], ["RECETA:", "REPASAR"], "", ""),
     "eureka":         ("cientifico",  [], ["¡EUREKA!"], SPARKLES, ""),
+    "roll-safe":      ("base",        [], ["SI NO HAY EXAMEN,", "NO TOCA ESTUDIAR"], "", TAP_TEMPLE),
+    "success-kid":    ("base",        [], ["ENTREGUÉ LA GUÍA", "A TIEMPO"], "", FIST_RAISED),
+    "stonks":         ("ganster",     [], ["NOTAS: STONKS"], ARROW_UP, ""),
 }
 
 STICKER_DEFS = f"""
@@ -639,7 +676,219 @@ def build_emoji(name):
     return out
 
 
-# ------------------------------------------------------------------ demo
+# ------------------------------------------------------------------ memes (formatos famosos)
+
+import re  # noqa: E402
+
+
+def leer_duck_static(variant):
+    """Como leer_duck pero sin ids (seguro para repetir varias veces en un mismo SVG)."""
+    return re.sub(r'\sid="[^"]*"', "", leer_duck(variant))
+
+
+MEME_SIZE = {}  # nombre -> (w, h) real, para exportar PNG sin deformar
+
+MEME_DEFS = f"""
+    <filter id="grayout">
+      <feColorMatrix type="matrix" values="0.33 0.33 0.33 0 0  0.33 0.33 0.33 0 0
+        0.33 0.33 0.33 0 0  0 0 0 0.55 0"/>
+    </filter>
+    <filter id="memeshadow" x="-16%" y="-16%" width="132%" height="132%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#1B2430" flood-opacity="0.3"/>
+    </filter>
+"""
+
+CAPTION_CSS = f"""  <style>
+    .cap {{ font-family: Georgia, 'DejaVu Serif', serif; font-weight: 700; fill: {NAVY};
+      dominant-baseline: middle; }}
+  </style>
+"""
+
+
+def _wrap_lines(text, maxchars=17):
+    words, lines, cur = text.split(), [], ""
+    for w in words:
+        trial = (cur + " " + w).strip()
+        if len(trial) > maxchars and cur:
+            lines.append(cur)
+            cur = w
+        else:
+            cur = trial
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def _caption_lines(x, y0, lines, size=44, lh=54, anchor="start"):
+    out = []
+    for i, line in enumerate(lines):
+        out.append(f'<text class="cap" x="{x}" y="{y0 + i * lh}" font-size="{size}" '
+                    f'text-anchor="{anchor}">{line}</text>')
+    return "\n      ".join(out)
+
+
+def build_drake(name, variant_reject, variant_approve, texto_reject, texto_approve):
+    """Formato 'Drake': dos paneles, arriba rechaza, abajo aprueba."""
+    W, PH = 900, 520
+    duck_r = leer_duck_static(variant_reject)
+    duck_a = leer_duck_static(variant_approve)
+    lines_r = _wrap_lines(texto_reject, 13)
+    lines_a = _wrap_lines(texto_approve, 13)
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {PH * 2}" width="{W}" height="{PH * 2}"
+     role="img" aria-label="Meme Dr. Cuack (formato Drake): {name}">
+  <defs>{MEME_DEFS}  </defs>
+{CAPTION_CSS}  <g filter="url(#memeshadow)">
+    <rect x="0" y="0" width="{W}" height="{PH * 2}" rx="26" fill="#FFFFFF" stroke="{NAVY}" stroke-width="10"/>
+    <line x1="0" y1="{PH}" x2="{W}" y2="{PH}" stroke="{NAVY}" stroke-width="8"/>
+    <line x1="480" y1="14" x2="480" y2="{PH - 14}" stroke="{NAVY}" stroke-width="6" opacity=".5"/>
+    <line x1="480" y1="{PH + 14}" x2="480" y2="{PH * 2 - 14}" stroke="{NAVY}" stroke-width="6" opacity=".5"/>
+
+    <g transform="translate(40 30) scale(0.44)" filter="url(#grayout)">{duck_r}</g>
+    <circle cx="120" cy="86" r="46" fill="#E14848" stroke="{NAVY}" stroke-width="8"/>
+    <path d="M 100 66 L 140 106 M 140 66 L 100 106" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+    {_caption_lines(516, 220 - (len(lines_r) - 1) * 27, lines_r, size=38)}
+
+    <g transform="translate(40 {PH + 6}) scale(0.44)">{duck_a}</g>
+    <circle cx="120" cy="{PH + 86}" r="46" fill="#1FA65A" stroke="{NAVY}" stroke-width="8"/>
+    <path d="M {100} {PH + 90} L {116} {PH + 106} L {144} {PH + 66}" fill="none"
+          stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    {_caption_lines(516, PH + 220 - (len(lines_a) - 1) * 27, lines_a, size=38)}
+  </g>
+</svg>
+"""
+    outdir = os.path.join(HERE, "memes", "svg")
+    os.makedirs(outdir, exist_ok=True)
+    out = os.path.join(outdir, f"meme-{name}.svg")
+    with open(out, "w") as f:
+        f.write(svg)
+    MEME_SIZE[name] = (W, PH * 2)
+    return out
+
+
+def _brain(cx, cy, r, fill, glow=False, rainbow=False):
+    grad_id = f"brainglow{cx}{cy}"
+    defs = ""
+    if rainbow:
+        defs = f"""<radialGradient id="{grad_id}" cx="50%" cy="45%" r="60%">
+          <stop offset="0%" stop-color="#FFD54F"/><stop offset="35%" stop-color="#F07B62"/>
+          <stop offset="65%" stop-color="#8B5FBF"/><stop offset="100%" stop-color="#4FA8E8"/>
+        </radialGradient>"""
+        fill = f"url(#{grad_id})"
+    glow_ring = (f'<circle cx="{cx}" cy="{cy}" r="{r + 34}" fill="none" stroke="{fill if not rainbow else "#FFD54F"}" '
+                 f'stroke-width="10" opacity=".45"/>'
+                 f'<circle cx="{cx}" cy="{cy}" r="{r + 58}" fill="none" stroke="{fill if not rainbow else "#8B5FBF"}" '
+                 f'stroke-width="8" opacity=".25"/>') if glow else ""
+    return f"""<defs>{defs}</defs>
+    {glow_ring}
+    <path transform="translate({cx} {cy}) scale({r / 90})"
+          d="M -70 -10 C -78 -46 -46 -70 -14 -64 C -4 -76 18 -76 28 -64
+             C 62 -70 82 -42 74 -12 C 88 -2 88 20 76 30 C 82 52 66 74 40 74
+             C 34 84 16 90 0 84 C -16 90 -34 84 -40 74 C -66 74 -82 52 -76 30
+             C -88 20 -88 -2 -74 -12 Z"
+          fill="{fill}" stroke="{NAVY}" stroke-width="9" stroke-linejoin="round"/>
+    <path transform="translate({cx} {cy}) scale({r / 90})"
+          d="M -30 -50 C -20 -40 -20 -24 -32 -16 M 6 -58 C 14 -46 12 -30 0 -20
+             M -50 10 C -38 4 -26 8 -22 20 M 30 6 C 40 0 52 6 54 18"
+          fill="none" stroke="{NAVY}" stroke-width="6" opacity=".55" stroke-linecap="round"/>
+"""
+
+
+def build_expanding_brain(name, etapas):
+    """etapas: lista de 4 (texto, duck_extra_svg, brain_kwargs)."""
+    W, PH = 1120, 420
+    H = PH * len(etapas)
+    panels = []
+    for idx, (texto, extra, bkw) in enumerate(etapas):
+        y0 = idx * PH
+        lines = _wrap_lines(texto, 19)
+        brain = _brain(150, y0 + PH / 2, 92, **bkw)
+        panels.append(f"""
+    <line x1="0" y1="{y0}" x2="{W}" y2="{y0}" stroke="{NAVY}" stroke-width="6" opacity=".35"/>
+    <g>{brain}</g>
+    <g transform="translate(320 {y0 + 20}) scale(0.36)">{extra}</g>
+    {_caption_lines(620, y0 + PH / 2 - (len(lines) - 1) * 27, lines, size=38, lh=48)}""")
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}"
+     role="img" aria-label="Meme Dr. Cuack (cerebro galáctico): {name}">
+  <defs>{MEME_DEFS}  </defs>
+{CAPTION_CSS}  <g filter="url(#memeshadow)">
+    <rect x="0" y="0" width="{W}" height="{H}" rx="26" fill="#FFFFFF" stroke="{NAVY}" stroke-width="10"/>
+    {"".join(panels)}
+  </g>
+</svg>
+"""
+    outdir = os.path.join(HERE, "memes", "svg")
+    os.makedirs(outdir, exist_ok=True)
+    out = os.path.join(outdir, f"meme-{name}.svg")
+    with open(out, "w") as f:
+        f.write(svg)
+    MEME_SIZE[name] = (W, H)
+    return out
+
+
+MESA = f"""
+  <g id="mesa">
+    <rect x="0" y="720" width="1024" height="220" fill="#8C5A32" stroke="{NAVY}" stroke-width="{SW}"/>
+    <rect x="0" y="720" width="1024" height="34" fill="#A9734A" stroke="{NAVY}" stroke-width="{SW}"/>
+    <path d="M 90 754 L 90 936 M 934 754 L 934 936" stroke="{NAVY}" stroke-width="16" opacity=".4"/>
+  </g>
+"""
+
+
+def build_change_my_mind(name, variant, texto):
+    W, H = 1024, 1024
+    duck = leer_duck_static(variant)
+    lines = _wrap_lines(texto, 22)
+    lh = 60
+    sign_h = 60 + len(lines) * lh + 40
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}"
+     role="img" aria-label="Meme Dr. Cuack (cámbiame de opinión): {name}">
+  <defs>{MEME_DEFS}  </defs>
+{CAPTION_CSS}  <g filter="url(#memeshadow)">
+    <rect x="0" y="0" width="{W}" height="{H}" rx="26" fill="#EFEAE0" stroke="{NAVY}" stroke-width="10"/>
+    <g transform="translate(232 40) scale(0.72)">{duck}</g>
+    {MESA}
+    <g transform="translate(300 610)">
+      <path d="M -20 -20 L 240 -50 L 500 -20 L 480 20 L 240 -6 L 0 20 Z" fill="#B9C2CC"
+            stroke="{NAVY}" stroke-width="9" stroke-linejoin="round"/>
+      <rect x="-30" y="20" width="500" height="{sign_h}" rx="14" fill="#FFFFFF" stroke="{NAVY}" stroke-width="11"/>
+      {_caption_lines(220, 20 + 60, lines, size=40, lh=lh, anchor="middle")}
+    </g>
+  </g>
+</svg>
+"""
+    outdir = os.path.join(HERE, "memes", "svg")
+    os.makedirs(outdir, exist_ok=True)
+    out = os.path.join(outdir, f"meme-{name}.svg")
+    with open(out, "w") as f:
+        f.write(svg)
+    MEME_SIZE[name] = (W, H)
+    return out
+
+
+MEMES_DRAKE = {
+    "drake-guias": dict(variant_reject="base", variant_approve="matematico",
+                        texto_reject="Enseñar todo de memoria",
+                        texto_approve="Usar guías con Dr. Cuack"),
+}
+
+def _brain_duck(*overlays):
+    return leer_duck_static("base") + "".join(overlays)
+
+
+MEMES_BRAIN = {
+    "cerebro-galactico": [
+        ("Copiar el tablero", _brain_duck(), dict(fill="#9AA0A8")),
+        ("Hacer un resumen", _brain_duck(GAFAS_NERD), dict(fill="#F0C24B", glow=True)),
+        ("Usar guías con Dr. Cuack", _brain_duck(GAFAS_NERD, BIRRETE), dict(fill="#F0913F", glow=True)),
+        ("Ser Dr. Cuack", _brain_duck(GAFAS_NERD, BIRRETE, SPARKLES), dict(fill="#FFD54F", glow=True, rainbow=True)),
+    ],
+}
+
+MEMES_TABLE = {
+    "cambiame-de-opinion": dict(variant="profesor",
+                                texto="Los patos con gafas enseñan mejor. Cámbiame de opinión."),
+}
+
 
 def build_demo():
     def card(path, name):
@@ -657,6 +906,9 @@ def build_demo():
     secs.append('</div><header><h1>Emojis</h1></header><div class="grid emoji">')
     for name in EMOJIS:
         secs.append(card(os.path.join(HERE, "emoji", "svg", f"emoji-{name}.svg"), name))
+    secs.append('</div><header><h1>Memes</h1></header><div class="grid memes">')
+    for name in list(MEMES_DRAKE) + list(MEMES_BRAIN) + list(MEMES_TABLE):
+        secs.append(card(os.path.join(HERE, "memes", "svg", f"meme-{name}.svg"), name))
     secs.append("</div>")
     html = """<!doctype html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -668,6 +920,7 @@ def build_demo():
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
           gap:20px; max-width:1150px; margin:18px auto 40px; padding:0 20px; }
   .grid.emoji { grid-template-columns:repeat(auto-fill,minmax(170px,1fr)); }
+  .grid.memes { grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); }
   .card { background:rgba(255,255,255,.6); border-radius:16px; padding:12px 8px 10px;
           text-align:center; box-shadow:0 3px 12px rgba(27,36,48,.10); }
   .card svg { width:100%; height:auto; display:block; }
@@ -688,6 +941,12 @@ if __name__ == "__main__":
         outs.append(build_sticker(name))
     for name in EMOJIS:
         outs.append(build_emoji(name))
+    for name, kw in MEMES_DRAKE.items():
+        outs.append(build_drake(name, **kw))
+    for name, etapas in MEMES_BRAIN.items():
+        outs.append(build_expanding_brain(name, etapas))
+    for name, kw in MEMES_TABLE.items():
+        outs.append(build_change_my_mind(name, **kw))
     outs.append(build_demo())
     for o in outs:
         print("→", os.path.relpath(o, HERE))
@@ -699,6 +958,13 @@ if __name__ == "__main__":
         for name in ST:
             render(os.path.join(HERE, "stickers", "svg", f"sticker-{name}.svg"),
                    os.path.join(HERE, "stickers", "png", f"sticker-{name}.png"), 1024)
+        os.makedirs(os.path.join(HERE, "memes", "png"), exist_ok=True)
+        for name in list(MEMES_DRAKE) + list(MEMES_BRAIN) + list(MEMES_TABLE):
+            w, h = MEME_SIZE[name]
+            scale = 1024 / max(w, h)
+            render(os.path.join(HERE, "memes", "svg", f"meme-{name}.svg"),
+                   os.path.join(HERE, "memes", "png", f"meme-{name}.png"),
+                   round(w * scale), round(h * scale))
         os.makedirs(os.path.join(HERE, "emoji", "png"), exist_ok=True)
         for name in EMOJIS:
             render(os.path.join(HERE, "emoji", "svg", f"emoji-{name}.svg"),

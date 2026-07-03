@@ -58,19 +58,20 @@ def write_png(fn, w, h, ct, rows):
     open(fn, "wb").write(b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", ihdr)
                          + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b""))
 
-def render(svg, out, size):
+def render(svg, out, size, height=None):
+    h_css = height if height is not None else size
     with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False) as f:
         f.write(f'<!doctype html><style>html,body{{margin:0;padding:0}}</style>'
-                f'<img src="file://{svg}" style="display:block;width:{size}px;height:{size}px">')
+                f'<img src="file://{svg}" style="display:block;width:{size}px;height:{h_css}px">')
         html = f.name
     try:
         subprocess.run([CHROMIUM, "--headless", "--no-sandbox", "--hide-scrollbars",
-                        f"--window-size={size},{size+PAD}",
+                        f"--window-size={size},{h_css+PAD}",
                         "--default-background-color=00000000",
                         f"--screenshot={out}", f"file://{html}"],
                        check=True, capture_output=True)
         w, h, ct, rows = read_png(out)
-        write_png(out, w, size, ct, rows[:size])
+        write_png(out, w, h_css, ct, rows[:h_css])
     finally:
         os.unlink(html)
 

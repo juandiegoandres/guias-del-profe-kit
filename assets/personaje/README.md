@@ -53,11 +53,19 @@ Genera:
   con estrella, número 10, balón, barba suave y bigote — sin escudo oficial,
   que tiene derechos). Las gafas siempre son **de nerd** (marco grueso) salvo
   el gánster, que lleva gafas oscuras.
-- `stickers/`: los 9 stickers meme con borde troquelado y texto.
+- `stickers/`: 12 stickers meme con borde troquelado y texto — los 9 originales
+  más **Roll Safe** (tocándose la sien), **Success Kid** (puño en alto) y
+  **Stonks** (traje + flecha verde).
 - `emoji/`: 15 emojis con la cara del pato — feliz, risa, amor, cool, nerd,
   triste, llorando, enojado, sorprendido, guiño, dormido, fiesta, pensando,
   mente explotada y saludo (512×512, fondo transparente, listos para
   WhatsApp/Telegram/Slack).
+- `memes/`: formatos de meme famosos recompuestos con Dr. Cuack (dibujo propio,
+  no las fotos originales con derechos):
+  - **drake-guias** — formato Drake (2 paneles: rechaza / aprueba).
+  - **cerebro-galactico** — formato *expanding brain* (4 etapas, cerebro con
+    brillo creciente + el pato cada vez con más accesorios).
+  - **cambiame-de-opinion** — formato *change my mind* (mesa + cartel).
 - `demo.html`: galería con todo.
 
 ## Variantes y paleta
