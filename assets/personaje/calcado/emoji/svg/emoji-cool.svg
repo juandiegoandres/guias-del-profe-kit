@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -30 532 542" width="512" height="512"
+     role="img" aria-label="Emoji Dr. Cuack: cool">
+  <g id="cara">
+    <path d="M 212 88 C 204 46 220 14 250 0 C 252 24 266 32 282 26
+             C 278 44 288 54 306 50 C 300 72 280 86 254 88 Z"
+          fill="#FBD213" stroke="#0B1838" stroke-width="12" stroke-linejoin="round"/>
+    <ellipse cx="256" cy="272" rx="214" ry="202" fill="#FBD213" stroke="#0B1838" stroke-width="13"/>
+    <ellipse cx="250" cy="86" rx="26" ry="10" fill="#FBD213"/>
+    <path d="M 116 148 C 158 84 240 56 314 66" fill="none" stroke="#FBE993" stroke-width="15" stroke-linecap="round" opacity=".9"/>
+
+    <g>
+      <path d="M 176 322 C 178 302 212 290 256 290 C 300 290 334 302 336 322
+               C 338 346 310 360 256 360 C 202 360 174 346 176 322 Z"
+            fill="#FB7A12" stroke="#0B1838" stroke-width="13"/>
+      <ellipse cx="256" cy="336" rx="52" ry="12" fill="#E9860D"/>
+      <path d="M 210 354 C 226 384 286 384 302 354 C 298 388 278 404 256 404
+               C 234 404 214 388 210 354 Z" fill="#D8502E" stroke="#0B1838" stroke-width="12" stroke-linejoin="round"/>
+    </g>
+    <g transform="translate(-108 -12) scale(0.711)">
+  <g id="gafas-sol">
+    <rect x="306" y="296" width="164" height="126" rx="34" fill="#101820" stroke="#0B1838" stroke-width="13"/>
+    <rect x="554" y="296" width="164" height="126" rx="34" fill="#101820" stroke="#0B1838" stroke-width="13"/>
+    <rect x="462" y="338" width="100" height="26" rx="13" fill="#0B1838"/>
+    <path d="M 308 352 L 270 342 M 716 352 L 754 342" stroke="#0B1838" stroke-width="24" stroke-linecap="round"/>
+    <path d="M 346 344 L 382 320 M 594 344 L 630 320" stroke="#5C6B7E" stroke-width="13"
+          stroke-linecap="round" opacity="0.9"/>
+  </g>
+</g>  </g>
+</svg>

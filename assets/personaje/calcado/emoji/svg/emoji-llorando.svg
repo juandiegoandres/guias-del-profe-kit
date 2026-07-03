@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -30 532 542" width="512" height="512"
+     role="img" aria-label="Emoji Dr. Cuack: llorando">
+  <g id="cara">
+    <path d="M 212 88 C 204 46 220 14 250 0 C 252 24 266 32 282 26
+             C 278 44 288 54 306 50 C 300 72 280 86 254 88 Z"
+          fill="#FBD213" stroke="#0B1838" stroke-width="12" stroke-linejoin="round"/>
+    <ellipse cx="256" cy="272" rx="214" ry="202" fill="#FBD213" stroke="#0B1838" stroke-width="13"/>
+    <ellipse cx="250" cy="86" rx="26" ry="10" fill="#FBD213"/>
+    <path d="M 116 148 C 158 84 240 56 314 66" fill="none" stroke="#FBE993" stroke-width="15" stroke-linecap="round" opacity=".9"/>
+    <g fill="none" stroke="#0B1838" stroke-width="18" stroke-linecap="round">
+      <path d="M 136 240 C 148 262 192 262 204 240"/>
+      <path d="M 308 240 C 320 262 364 262 376 240"/>
+    </g>
+    <g>
+      <path d="M 186 316 C 190 298 218 288 256 288 C 294 288 322 298 326 316
+               C 328 334 306 344 256 344 C 206 344 184 334 186 316 Z"
+            fill="#FB7A12" stroke="#0B1838" stroke-width="13"/>
+      <ellipse cx="256" cy="386" rx="34" ry="42" fill="#D8502E" stroke="#0B1838" stroke-width="12"/>
+    </g>
+    <path d="M 148 288 C 142 356 142 420 150 470 L 194 470 C 190 420 192 356 196 292 Z"
+          fill="#7EC8F7" opacity=".9"/>
+    <path d="M 316 292 C 320 356 322 420 318 470 L 362 470 C 370 420 370 356 364 288 Z"
+          fill="#7EC8F7" opacity=".9"/>  </g>
+</svg>

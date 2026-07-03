@@ -37,7 +37,25 @@ del SVG. Para que el calco salga bien la imagen fuente debe tener **fondo
 blanco sólido, colores planos y contornos definidos** (1024×1024+).
 
 Para variantes de profesión: generar en Nanobanana usando la imagen base como
-referencia («same duck character wearing…») y pasar cada PNG por `calcar.py`.
+referencia («same duck character wearing…») y pasar cada PNG por `calcar.py`
+— **o** usar `calcado/componer.py`, que superpone accesorios vectoriales en el
+mismo estilo plano sobre el calco base y regenera todo:
+
+```bash
+cd assets/personaje/calcado
+python3 componer.py --png
+```
+
+Genera:
+
+- `svg/` y `png/`: las 8 variantes (base, científico, matemático, profesor,
+  ingeniero, médico, programador y gánster). Las gafas siempre son **de nerd**
+  (marco grueso) salvo el gánster, que lleva gafas oscuras.
+- `stickers/`: los 9 stickers meme con borde troquelado y texto.
+- `emoji/`: 12 emojis con la cara del pato — feliz, risa, amor, cool, nerd,
+  triste, llorando, enojado, sorprendido, guiño, dormido y fiesta (512×512,
+  fondo transparente, listos para WhatsApp/Telegram/Slack).
+- `demo.html`: galería con todo.
 
 ## Variantes y paleta
 
