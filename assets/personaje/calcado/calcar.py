@@ -63,6 +63,31 @@ def quitar_fondo(src, dst, tol=40, dilatar=5):
             if 0 <= nx < w and 0 <= ny < h and not seen[ny][nx] and blanco(nx, ny):
                 seen[ny][nx] = True
                 q.append((nx, ny))
+    # limpiar islas: conservar solo la figura principal
+    comp = [[0]*w for _ in range(h)]
+    sizes = {}
+    cid = 0
+    for yy in range(h):
+        for xx in range(w):
+            if not seen[yy][xx] and comp[yy][xx] == 0:
+                cid += 1
+                qq = deque([(xx, yy)])
+                comp[yy][xx] = cid
+                n = 0
+                while qq:
+                    cx, cy = qq.popleft()
+                    n += 1
+                    for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
+                        nx, ny = cx+dx, cy+dy
+                        if 0 <= nx < w and 0 <= ny < h and not seen[ny][nx] and comp[ny][nx] == 0:
+                            comp[ny][nx] = cid
+                            qq.append((nx, ny))
+                sizes[cid] = n
+    main = max(sizes, key=sizes.get)
+    for yy in range(h):
+        for xx in range(w):
+            if not seen[yy][xx] and comp[yy][xx] != main:
+                seen[yy][xx] = True
     for _ in range(dilatar):
         grow = []
         for y in range(h):
