@@ -19,6 +19,26 @@ y proporciones editoriales — no figuras geométricas planas.
 | `build.py` | Generador: compone base + capas de profesión y regenera `svg/` y `demo.html`. |
 | `export_png.py` | Regenera los PNG con Chromium headless (`python3 export_png.py 1024`). |
 
+## Calcado (arte v2 — flujo Nanobanana → SVG)
+
+El arte definitivo del personaje se genera con IA de imagen (p. ej. Nanobanana
+en Antigravity) y se **calca a vector** con `calcado/calcar.py`:
+
+```bash
+cd assets/personaje/calcado
+python3 calcar.py ~/mi-pato.png dr-cuack-base
+# → fuente/  svg/ (vector limpio, fondo transparente, animación de respiración)
+# → png/ (1024 transparente)
+```
+
+El script quita el fondo blanco (flood fill + dilatación anti-halo), detecta la
+paleta plana automáticamente, vectoriza con imagetracerjs y elimina el fondo
+del SVG. Para que el calco salga bien la imagen fuente debe tener **fondo
+blanco sólido, colores planos y contornos definidos** (1024×1024+).
+
+Para variantes de profesión: generar en Nanobanana usando la imagen base como
+referencia («same duck character wearing…») y pasar cada PNG por `calcar.py`.
+
 ## Variantes y paleta
 
 Los acentos salen del design system del kit (`design/preamble.tex`):
