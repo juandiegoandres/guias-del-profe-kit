@@ -1,9 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -30 532 542" width="512" height="512"
      role="img" aria-label="Emoji Dr. Cuack: nerd">
   <g id="cara">
-    <path d="M 212 88 C 204 46 220 14 250 0 C 252 24 266 32 282 26
-             C 278 44 288 54 306 50 C 300 72 280 86 254 88 Z"
-          fill="#FBD213" stroke="#0B1838" stroke-width="12" stroke-linejoin="round"/>
+    <path d="M 212 88 C 204 46 220 14 250 0 C 252 24 266 32 282 26 C 278 44 288 54 306 50 C 300 72 280 86 254 88 Z" fill="#FBD213" stroke="#0B1838" stroke-width="12" stroke-linejoin="round"/>
     <ellipse cx="256" cy="272" rx="214" ry="202" fill="#FBD213" stroke="#0B1838" stroke-width="13"/>
     <ellipse cx="250" cy="86" rx="26" ry="10" fill="#FBD213"/>
     <path d="M 116 148 C 158 84 240 56 314 66" fill="none" stroke="#FBE993" stroke-width="15" stroke-linecap="round" opacity=".9"/>

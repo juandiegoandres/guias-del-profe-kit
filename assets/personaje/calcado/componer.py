@@ -251,6 +251,49 @@ FEDORA = f"""
 PALILLO = f"""
     <path d="M 606 502 L 684 478" stroke="#EFE2C0" stroke-width="13" stroke-linecap="round"/>"""
 
+MILLOS = "#2447A0"
+MILLOSD = "#1A3578"
+
+CAMISETA_MILLOS = f"""
+  <g id="camiseta">
+    <path d="M 512 588 C 448 584 390 574 352 562 C 294 646 272 772 296 872
+             C 380 906 644 906 728 872 C 752 772 730 646 672 562
+             C 634 574 576 584 512 588 Z" fill="{MILLOS}" stroke="{NAVY}" stroke-width="{SW}"/>
+    <path d="M 342 596 C 320 668 312 762 322 848 M 682 596 C 704 668 712 762 702 848"
+          stroke="#FFFFFF" stroke-width="16" fill="none" opacity=".9"/>
+    <path d="M 512 588 L 446 570 C 468 612 488 630 512 640 C 536 630 556 612 578 570 Z"
+          fill="#FFFFFF" stroke="{NAVY}" stroke-width="{SW}" stroke-linejoin="round"/>
+    <path transform="translate(392 668) scale(1.15)" fill="#FFFFFF" stroke="{NAVY}" stroke-width="7"
+          d="M 0 -22 L 6 -7 L 22 -7 L 9 3 L 14 19 L 0 9 L -14 19 L -9 3 L -22 -7 L -6 -7 Z"/>
+    <text x="580" y="810" text-anchor="middle" font-family="'Arial Black','DejaVu Sans',sans-serif"
+          font-weight="900" font-size="110" fill="#FFFFFF" stroke="{NAVY}" stroke-width="8"
+          paint-order="stroke">10</text>
+  </g>
+"""
+
+BIGOTE_BARBA = f"""
+  <g id="barba">
+    <path d="M 360 468 C 366 566 430 618 512 618 C 594 618 658 566 664 468
+             C 654 540 600 574 512 574 C 424 574 370 540 360 468 Z"
+          fill="#5F452F" stroke="{NAVY}" stroke-width="11" stroke-linejoin="round"/>
+    <path d="M 448 594 C 452 584 462 580 470 584 M 540 588 C 548 582 558 584 562 592"
+          stroke="{NAVY}" stroke-width="6" fill="none" opacity=".5"/>
+    <path d="M 512 414 C 486 390 444 390 420 410 C 406 424 414 442 434 440
+             C 462 436 488 428 512 426 C 536 428 562 436 590 440
+             C 610 442 618 424 604 410 C 580 390 538 390 512 414 Z"
+          fill="#5F452F" stroke="{NAVY}" stroke-width="11" stroke-linejoin="round"/>
+  </g>
+"""
+
+BALON = f"""
+  <g id="balon">
+    <circle cx="790" cy="858" r="64" fill="#FFFFFF" stroke="{NAVY}" stroke-width="{SW}"/>
+    <path d="M 790 828 L 816 848 L 806 878 L 774 878 L 764 848 Z" fill="{NAVY}"/>
+    <path d="M 790 828 L 790 800 M 816 848 L 844 840 M 806 878 L 822 902 M 774 878 L 758 902
+             M 764 848 L 736 840" stroke="{NAVY}" stroke-width="9"/>
+  </g>
+"""
+
 # ------------------------------------------------------------------ variantes
 
 V = {
@@ -262,6 +305,7 @@ V = {
     "medico":      [BATA, ESTETO],
     "programador": [HOODIE, GAFAS_NERD, AUDIFONOS, LAPTOP],
     "ganster":     [TRAJE, FEDORA, GAFAS_SOL, PALILLO],
+    "millos":      [CAMISETA_MILLOS, BIGOTE_BARBA, BALON],
 }
 
 # ------------------------------------------------------------------ stickers
@@ -385,17 +429,19 @@ def build_sticker(name):
 
 # ------------------------------------------------------------------ emojis
 
-def cabeza(ojos, boca, extras="", rubor=False, brillo=True):
+def cabeza(ojos, boca, extras="", rubor=False, brillo=True, copete=True):
     blush = (f'<ellipse cx="118" cy="300" rx="26" ry="16" fill="#FFAFA3"/>'
              f'<ellipse cx="394" cy="300" rx="26" ry="16" fill="#FFAFA3"/>') if rubor else ""
     shine = (f'<path d="M 116 148 C 158 84 240 56 314 66" fill="none" stroke="{CREMA}" '
              f'stroke-width="15" stroke-linecap="round" opacity=".9"/>') if brillo else ""
+    tuft = (f'<path d="M 212 88 C 204 46 220 14 250 0 C 252 24 266 32 282 26 '
+            f'C 278 44 288 54 306 50 C 300 72 280 86 254 88 Z" '
+            f'fill="{YELLOW}" stroke="{NAVY}" stroke-width="12" stroke-linejoin="round"/>') if copete else ""
+    patch = f'<ellipse cx="250" cy="86" rx="26" ry="10" fill="{YELLOW}"/>' if copete else ""
     return f"""  <g id="cara">
-    <path d="M 212 88 C 204 46 220 14 250 0 C 252 24 266 32 282 26
-             C 278 44 288 54 306 50 C 300 72 280 86 254 88 Z"
-          fill="{YELLOW}" stroke="{NAVY}" stroke-width="12" stroke-linejoin="round"/>
+    {tuft}
     <ellipse cx="256" cy="272" rx="214" ry="202" fill="{YELLOW}" stroke="{NAVY}" stroke-width="13"/>
-    <ellipse cx="250" cy="86" rx="26" ry="10" fill="{YELLOW}"/>
+    {patch}
     {shine}{blush}
 {ojos}
 {boca}
@@ -526,6 +572,39 @@ GUINO = f"""    <g>
             stroke-width="18" stroke-linecap="round"/>
     </g>"""
 
+MANO_BARBILLA = f"""    <ellipse cx="300" cy="452" rx="58" ry="34" fill="{YELLOW}" stroke="{NAVY}"
+          stroke-width="12" transform="rotate(-14 300 452)"/>
+    <path d="M 268 444 L 268 466 M 292 440 L 292 468 M 316 440 L 316 466"
+          stroke="{NAVY}" stroke-width="8" opacity=".5" transform="rotate(-14 300 452)"/>"""
+
+CEJA_PENSANDO = f"""    <g stroke="{NAVY}" stroke-width="14" stroke-linecap="round" fill="none">
+      <path d="M 138 186 C 154 176 188 178 202 188"/>
+      <path d="M 302 162 C 318 148 358 150 374 164"/>
+    </g>"""
+
+EXPLOSION = f"""    <g>
+      <path fill="{ORANGE}" stroke="{NAVY}" stroke-width="11" stroke-linejoin="round"
+            d="M 256 -24 L 288 32 L 352 6 L 340 68 L 408 78 L 356 116 L 396 160 L 330 158
+               L 336 216 L 276 178 L 256 236 L 236 178 L 176 216 L 182 158 L 116 160
+               L 156 116 L 104 78 L 172 68 L 160 6 L 224 32 Z"/>
+      <path fill="#FFD54F" d="M 256 22 L 276 58 L 318 44 L 310 84 L 352 92 L 318 114 L 342 142
+               L 300 140 L 302 176 L 266 152 L 256 188 L 246 152 L 210 176 L 212 140
+               L 170 142 L 194 114 L 160 92 L 202 84 L 194 44 L 236 58 Z"/>
+      <circle cx="96" cy="60" r="11" fill="{ORANGE}"/>
+      <circle cx="422" cy="48" r="9" fill="{ORANGE}"/>
+      <circle cx="448" cy="120" r="7" fill="#FFD54F"/>
+    </g>"""
+
+MANO_SALUDO = f"""    <g transform="rotate(-28 350 170)">
+      <rect x="288" y="142" width="128" height="58" rx="29" fill="{YELLOW}" stroke="{NAVY}" stroke-width="13"/>
+      <path d="M 318 152 L 318 192 M 344 148 L 344 196 M 370 148 L 370 196"
+            stroke="{NAVY}" stroke-width="8" opacity=".55"/>
+    </g>"""
+
+CEJAS_FIRMES = f"""    <g stroke="{NAVY}" stroke-width="15" stroke-linecap="round" fill="none">
+      <path d="M 136 182 L 204 190"/><path d="M 308 190 L 376 182"/>
+    </g>"""
+
 EMOJIS = {
     "feliz":       cabeza(OJOS_NORMAL, BOCA_SONRISA, rubor=True),
     "risa":        cabeza(OJOS_FELICES, BOCA_RISA, LAGRIMAS_RISA),
@@ -539,6 +618,9 @@ EMOJIS = {
     "guino":       cabeza(GUINO, BOCA_SONRISA, rubor=True),
     "dormido":     cabeza(OJOS_TRISTES, BOCA_CERRADA, ZZZ),
     "fiesta":      cabeza(OJOS_FELICES, BOCA_RISA, GORRO_FIESTA + CONFETI, rubor=True),
+    "pensando":    cabeza(OJOS_NORMAL, BOCA_CERRADA, CEJA_PENSANDO + MANO_BARBILLA),
+    "explotado":   cabeza(OJOS_SORPRESA, BOCA_O, EXPLOSION, copete=False, brillo=False),
+    "saludo":      cabeza(OJOS_NORMAL, BOCA_CERRADA, CEJAS_FIRMES + MANO_SALUDO, copete=True),
 }
 
 

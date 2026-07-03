@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -30 532 542" width="512" height="512"
-     role="img" aria-label="Emoji Dr. Cuack: sorprendido">
+     role="img" aria-label="Emoji Dr. Cuack: explotado">
   <g id="cara">
-    <path d="M 212 88 C 204 46 220 14 250 0 C 252 24 266 32 282 26 C 278 44 288 54 306 50 C 300 72 280 86 254 88 Z" fill="#FBD213" stroke="#0B1838" stroke-width="12" stroke-linejoin="round"/>
+    
     <ellipse cx="256" cy="272" rx="214" ry="202" fill="#FBD213" stroke="#0B1838" stroke-width="13"/>
-    <ellipse cx="250" cy="86" rx="26" ry="10" fill="#FBD213"/>
-    <path d="M 116 148 C 158 84 240 56 314 66" fill="none" stroke="#FBE993" stroke-width="15" stroke-linecap="round" opacity=".9"/>
+    
+    
     <g>
       <circle cx="170" cy="246" r="46" fill="#FFF" stroke="#0B1838" stroke-width="11"/>
       <circle cx="342" cy="246" r="46" fill="#FFF" stroke="#0B1838" stroke-width="11"/>
@@ -16,8 +16,16 @@
             fill="#FB7A12" stroke="#0B1838" stroke-width="13"/>
       <ellipse cx="256" cy="386" rx="34" ry="42" fill="#D8502E" stroke="#0B1838" stroke-width="12"/>
     </g>
-    <g stroke="#0B1838" stroke-width="14" stroke-linecap="round" fill="none">
-      <path d="M 134 168 C 148 152 190 148 206 160"/>
-      <path d="M 306 160 C 322 148 364 152 378 168"/>
+    <g>
+      <path fill="#FB7A12" stroke="#0B1838" stroke-width="11" stroke-linejoin="round"
+            d="M 256 -24 L 288 32 L 352 6 L 340 68 L 408 78 L 356 116 L 396 160 L 330 158
+               L 336 216 L 276 178 L 256 236 L 236 178 L 176 216 L 182 158 L 116 160
+               L 156 116 L 104 78 L 172 68 L 160 6 L 224 32 Z"/>
+      <path fill="#FFD54F" d="M 256 22 L 276 58 L 318 44 L 310 84 L 352 92 L 318 114 L 342 142
+               L 300 140 L 302 176 L 266 152 L 256 188 L 246 152 L 210 176 L 212 140
+               L 170 142 L 194 114 L 160 92 L 202 84 L 194 44 L 236 58 Z"/>
+      <circle cx="96" cy="60" r="11" fill="#FB7A12"/>
+      <circle cx="422" cy="48" r="9" fill="#FB7A12"/>
+      <circle cx="448" cy="120" r="7" fill="#FFD54F"/>
     </g>  </g>
 </svg>

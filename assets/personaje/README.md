@@ -48,13 +48,16 @@ python3 componer.py --png
 
 Genera:
 
-- `svg/` y `png/`: las 8 variantes (base, científico, matemático, profesor,
-  ingeniero, médico, programador y gánster). Las gafas siempre son **de nerd**
-  (marco grueso) salvo el gánster, que lleva gafas oscuras.
+- `svg/` y `png/`: las 9 variantes (base, científico, matemático, profesor,
+  ingeniero, médico, programador, gánster y **millos**: camiseta azul futbolera
+  con estrella, número 10, balón, barba suave y bigote — sin escudo oficial,
+  que tiene derechos). Las gafas siempre son **de nerd** (marco grueso) salvo
+  el gánster, que lleva gafas oscuras.
 - `stickers/`: los 9 stickers meme con borde troquelado y texto.
-- `emoji/`: 12 emojis con la cara del pato — feliz, risa, amor, cool, nerd,
-  triste, llorando, enojado, sorprendido, guiño, dormido y fiesta (512×512,
-  fondo transparente, listos para WhatsApp/Telegram/Slack).
+- `emoji/`: 15 emojis con la cara del pato — feliz, risa, amor, cool, nerd,
+  triste, llorando, enojado, sorprendido, guiño, dormido, fiesta, pensando,
+  mente explotada y saludo (512×512, fondo transparente, listos para
+  WhatsApp/Telegram/Slack).
 - `demo.html`: galería con todo.
 
 ## Variantes y paleta
