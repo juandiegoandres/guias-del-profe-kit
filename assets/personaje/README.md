@@ -58,8 +58,15 @@ Genera:
   **Stonks** (traje + flecha verde).
 - `emoji/`: 15 emojis con la cara del pato — feliz, risa, amor, cool, nerd,
   triste, llorando, enojado, sorprendido, guiño, dormido, fiesta, pensando,
-  mente explotada y saludo (512×512, fondo transparente, listos para
-  WhatsApp/Telegram/Slack).
+  saludo y **cuentas** (512×512, fondo transparente, listos para
+  WhatsApp/Telegram/Slack). Todos parten de un **recorte real de
+  `dr-cuack-base.svg`** (`real_head()` en `componer.py`), no de una cara
+  redibujada — así la mascota se ve idéntica en el personaje, los stickers y
+  los emojis. Cuando una expresión necesita ojos/boca distintos, se tapa el
+  ojo/pico real con un parche del mismo amarillo (`TAPA_OJOS`/`TAPA_BOCA`) y
+  se dibuja la expresión encima; si no, se conserva la mirada real tal cual
+  (p. ej. `feliz`, `cool`, `nerd`, `pensando`). `explotado` y `cuentas` están
+  **animados** (ver abajo).
 - `memes/`: formatos de meme famosos recompuestos con Dr. Cuack (dibujo propio,
   no las fotos originales con derechos):
   - **drake-guias** — formato Drake (2 paneles: rechaza / aprueba).
@@ -67,6 +74,23 @@ Genera:
     brillo creciente + el pato cada vez con más accesorios).
   - **cambiame-de-opinion** — formato *change my mind* (mesa + cartel).
 - `demo.html`: galería con todo.
+
+## Animaciones (SVG, CSS embebido)
+
+Algunas piezas llevan animación embebida (visible solo en SVG, no en el PNG
+estático); todas respetan `prefers-reduced-motion`:
+
+- **`emoji-explotado`** — el estallido pulsa (escala + rotación) y las chispas
+  vuelan hacia afuera desvaneciéndose, en bucle.
+- **`emoji-cuentas`** — referencia a la escena de *Resacón en Las Vegas* donde
+  a Alan se le superponen cuentas mientras piensa: operaciones matemáticas
+  (`10+9-8+7`, `=13`, `÷2`...) aparecen y se desvanecen flotando frente a la
+  cara, cada una con su propio retraso, sobre una mirada cansada de tanto
+  calcular.
+- **`dr-cuack-cientifico`** (variante) y **`sticker-eureka`** — las burbujas
+  del matraz suben y se desvanecen en bucle, escalonadas.
+- Todas las variantes/stickers derivados de `dr-cuack-*.svg` heredan además la
+  respiración (`bob`) del calco base.
 
 ## Variantes y paleta
 

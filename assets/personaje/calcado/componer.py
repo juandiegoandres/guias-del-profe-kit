@@ -8,11 +8,37 @@ superpone accesorios vectoriales dibujados en el mismo estilo plano
 
 Uso:  python3 componer.py          # regenera svg/ (variantes), stickers/, emoji/ y demo.html
 """
-import os, sys
+import os, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, ".."))
 from export_png import render  # noqa: E402
+
+
+def leer_duck_static(variant):
+    """Contenido de <g id="duck"> del calco, sin ids (para reutilizar varias veces
+    en un mismo SVG sin colisiones)."""
+    src = open(os.path.join(HERE, "svg", f"dr-cuack-{variant}.svg")).read()
+    i = src.index('<g id="duck">')
+    return re.sub(r'\sid="[^"]*"', "", src[i:src.rindex("</svg>")])
+
+
+# Transform que lleva la cabeza REAL del calco (ojos en ~388.5/634.5,362.5 del
+# viewBox 1024) a coincidir con las posiciones de ojo usadas por los overlays
+# de emoji (170/342, 246 en el lienzo ~512).
+REAL_HEAD_SCALE = 0.6992
+REAL_HEAD_TX = -101.6
+REAL_HEAD_TY = -7.5
+
+
+def real_head():
+    """Recorte de la cabeza real (calcada) del pato, encuadrada como una cara
+    de emoji. Se usa como base de todos los emojis en vez de redibujarla."""
+    duck = leer_duck_static("base")
+    return (f'<clipPath id="emojiFaceClip"><ellipse cx="256" cy="222" rx="232" ry="178"/></clipPath>'
+            f'<g clip-path="url(#emojiFaceClip)">'
+            f'<g transform="translate({REAL_HEAD_TX} {REAL_HEAD_TY}) scale({REAL_HEAD_SCALE})">{duck}</g>'
+            f'</g>')
 
 NAVY   = "#0B1838"
 YELLOW = "#FBD213"
@@ -91,6 +117,15 @@ BOLSILLO = f"""
     <rect x="376" y="716" width="16" height="36" rx="6" fill="{CSOC}" stroke="{NAVY}" stroke-width="7"/>"""
 
 MATRAZ = f"""
+  <style>
+    .bubble {{ transform-box: fill-box; transform-origin: 50% 50%;
+      animation: bubbleRise 2.4s ease-in infinite; }}
+    .bubble.b2 {{ animation-delay: .8s; }}
+    .bubble.b3 {{ animation-delay: 1.6s; }}
+    @keyframes bubbleRise {{ 0% {{ transform: translateY(0) scale(1); opacity: 0; }}
+      20% {{ opacity: .95; }} 100% {{ transform: translateY(-46px) scale(.7); opacity: 0; }} }}
+    @media (prefers-reduced-motion: reduce) {{ .bubble {{ animation: none; opacity: .8; }} }}
+  </style>
   <g id="matraz">
     <path d="M 802 556 L 802 612 L 756 696 Q 746 714 766 714 L 890 714 Q 910 714 900 696
              L 854 612 L 854 556 Z" fill="#C9E8F4" fill-opacity="0.55" stroke="{NAVY}" stroke-width="{SW}"
@@ -98,9 +133,9 @@ MATRAZ = f"""
     <path d="M 774 664 L 756 696 Q 746 714 766 714 L 890 714 Q 910 714 900 696 L 882 664 Z"
           fill="{CNAT}" stroke="{NAVY}" stroke-width="{SW}" stroke-linejoin="round"/>
     <rect x="790" y="540" width="76" height="24" rx="12" fill="#9DBAD0" stroke="{NAVY}" stroke-width="{SW}"/>
-    <circle cx="800" cy="690" r="9" fill="#BFF3DE"/>
-    <circle cx="836" cy="698" r="7" fill="#BFF3DE"/>
-    <circle cx="862" cy="688" r="8" fill="#BFF3DE"/>
+    <circle class="bubble b1" cx="800" cy="690" r="9" fill="#BFF3DE"/>
+    <circle class="bubble b2" cx="836" cy="698" r="7" fill="#BFF3DE"/>
+    <circle class="bubble b3" cx="862" cy="688" r="8" fill="#BFF3DE"/>
   </g>
 """
 
@@ -466,54 +501,49 @@ def build_sticker(name):
 
 # ------------------------------------------------------------------ emojis
 
-def cabeza(ojos, boca, extras="", rubor=False, brillo=True, copete=True):
+def cabeza(ojos, boca, extras="", rubor=False):
     blush = (f'<ellipse cx="118" cy="300" rx="26" ry="16" fill="#FFAFA3"/>'
              f'<ellipse cx="394" cy="300" rx="26" ry="16" fill="#FFAFA3"/>') if rubor else ""
-    shine = (f'<path d="M 116 148 C 158 84 240 56 314 66" fill="none" stroke="{CREMA}" '
-             f'stroke-width="15" stroke-linecap="round" opacity=".9"/>') if brillo else ""
-    tuft = (f'<path d="M 212 88 C 204 46 220 14 250 0 C 252 24 266 32 282 26 '
-            f'C 278 44 288 54 306 50 C 300 72 280 86 254 88 Z" '
-            f'fill="{YELLOW}" stroke="{NAVY}" stroke-width="12" stroke-linejoin="round"/>') if copete else ""
-    patch = f'<ellipse cx="250" cy="86" rx="26" ry="10" fill="{YELLOW}"/>' if copete else ""
     return f"""  <g id="cara">
-    {tuft}
-    <ellipse cx="256" cy="272" rx="214" ry="202" fill="{YELLOW}" stroke="{NAVY}" stroke-width="13"/>
-    {patch}
-    {shine}{blush}
+    {real_head()}
+    {blush}
 {ojos}
 {boca}
 {extras}  </g>"""
 
-OJOS_NORMAL = f"""    <g>
-      <ellipse cx="170" cy="246" rx="35" ry="45" fill="{NAVY}"/>
-      <ellipse cx="342" cy="246" rx="35" ry="45" fill="{NAVY}"/>
-      <circle cx="158" cy="228" r="12" fill="#FFF"/><circle cx="330" cy="228" r="12" fill="#FFF"/>
-      <circle cx="180" cy="258" r="6" fill="#FFF"/><circle cx="352" cy="258" r="6" fill="#FFF"/>
-    </g>"""
+# Parches del color de la cabeza para tapar el ojo/pico real del calco cuando
+# la expresion necesita una forma distinta (si se deja vacio, se conserva la
+# cara real tal cual).
+TAPA_OJOS = f'<ellipse cx="170" cy="246" rx="34" ry="42" fill="{YELLOW}"/><ellipse cx="342" cy="246" rx="34" ry="42" fill="{YELLOW}"/>'
+TAPA_OJO_IZQ = f'<ellipse cx="170" cy="246" rx="34" ry="42" fill="{YELLOW}"/>'
+TAPA_OJO_DER = f'<ellipse cx="342" cy="246" rx="34" ry="42" fill="{YELLOW}"/>'
+TAPA_BOCA = f'<ellipse cx="256" cy="322" rx="94" ry="68" fill="{YELLOW}"/>'
 
-OJOS_FELICES = f"""    <g fill="none" stroke="{NAVY}" stroke-width="18" stroke-linecap="round">
+OJOS_NORMAL = ""  # se conserva la mirada real del calco
+
+OJOS_FELICES = TAPA_OJOS + f"""    <g fill="none" stroke="{NAVY}" stroke-width="18" stroke-linecap="round">
       <path d="M 136 250 C 148 226 192 226 204 250"/>
       <path d="M 308 250 C 320 226 364 226 376 250"/>
     </g>"""
 
-OJOS_TRISTES = f"""    <g fill="none" stroke="{NAVY}" stroke-width="18" stroke-linecap="round">
+OJOS_TRISTES = TAPA_OJOS + f"""    <g fill="none" stroke="{NAVY}" stroke-width="18" stroke-linecap="round">
       <path d="M 136 240 C 148 262 192 262 204 240"/>
       <path d="M 308 240 C 320 262 364 262 376 240"/>
     </g>"""
 
 def ojos_corazon():
     hz = f'M 0 14 C -34 -18 -14 -44 0 -26 C 14 -44 34 -18 0 14 Z'
-    return (f'<g fill="#E8536F" stroke="{NAVY}" stroke-width="11" stroke-linejoin="round">'
+    return (TAPA_OJOS + f'<g fill="#E8536F" stroke="{NAVY}" stroke-width="11" stroke-linejoin="round">'
             f'<path transform="translate(170 246) scale(1.9)" d="{hz}"/>'
             f'<path transform="translate(342 246) scale(1.9)" d="{hz}"/></g>')
 
-OJOS_SORPRESA = f"""    <g>
+OJOS_SORPRESA = TAPA_OJOS + f"""    <g>
       <circle cx="170" cy="246" r="46" fill="#FFF" stroke="{NAVY}" stroke-width="11"/>
       <circle cx="342" cy="246" r="46" fill="#FFF" stroke="{NAVY}" stroke-width="11"/>
       <circle cx="170" cy="252" r="16" fill="{NAVY}"/><circle cx="342" cy="252" r="16" fill="{NAVY}"/>
     </g>"""
 
-BOCA_SONRISA = f"""    <g>
+BOCA_SONRISA = TAPA_BOCA + f"""    <g>
       <path d="M 176 322 C 178 302 212 290 256 290 C 300 290 334 302 336 322
                C 338 346 310 360 256 360 C 202 360 174 346 176 322 Z"
             fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
@@ -522,7 +552,7 @@ BOCA_SONRISA = f"""    <g>
                C 234 404 214 388 210 354 Z" fill="{BOCA}" stroke="{NAVY}" stroke-width="12" stroke-linejoin="round"/>
     </g>"""
 
-BOCA_RISA = f"""    <g>
+BOCA_RISA = TAPA_BOCA + f"""    <g>
       <path d="M 176 318 C 178 298 212 286 256 286 C 300 286 334 298 336 318
                C 338 340 310 352 256 352 C 202 352 174 340 176 318 Z"
             fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
@@ -531,7 +561,7 @@ BOCA_RISA = f"""    <g>
       <path d="M 222 404 C 244 418 268 418 290 404 C 280 424 232 424 222 404 Z" fill="#F07B62"/>
     </g>"""
 
-BOCA_CERRADA = f"""    <g>
+BOCA_CERRADA = TAPA_BOCA + f"""    <g>
       <path d="M 176 322 C 178 302 212 290 256 290 C 300 290 334 302 336 322
                C 338 346 310 360 256 360 C 202 360 174 346 176 322 Z"
             fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
@@ -541,7 +571,7 @@ BOCA_CERRADA = f"""    <g>
 BOCA_FRUNCIDA = BOCA_CERRADA + f"""    <path d="M 216 388 C 236 372 276 372 296 388" fill="none"
           stroke="{NAVY}" stroke-width="13" stroke-linecap="round"/>"""
 
-BOCA_O = f"""    <g>
+BOCA_O = TAPA_BOCA + f"""    <g>
       <path d="M 186 316 C 190 298 218 288 256 288 C 294 288 322 298 326 316
                C 328 334 306 344 256 344 C 206 344 184 334 186 316 Z"
             fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
@@ -602,12 +632,8 @@ CONFETI = f"""    <g>
       <rect x="66" y="240" width="14" height="14" rx="3" fill="#FFD54F" transform="rotate(40 73 247)"/>
     </g>"""
 
-GUINO = f"""    <g>
-      <ellipse cx="170" cy="246" rx="35" ry="45" fill="{NAVY}"/>
-      <circle cx="158" cy="228" r="12" fill="#FFF"/><circle cx="180" cy="258" r="6" fill="#FFF"/>
-      <path d="M 308 246 C 320 228 364 228 376 246" fill="none" stroke="{NAVY}"
-            stroke-width="18" stroke-linecap="round"/>
-    </g>"""
+GUINO = TAPA_OJO_DER + f"""    <path d="M 308 246 C 320 228 364 228 376 246" fill="none" stroke="{NAVY}"
+          stroke-width="18" stroke-linecap="round"/>"""
 
 MANO_BARBILLA = f"""    <ellipse cx="300" cy="452" rx="58" ry="34" fill="{YELLOW}" stroke="{NAVY}"
           stroke-width="12" transform="rotate(-14 300 452)"/>
@@ -619,17 +645,39 @@ CEJA_PENSANDO = f"""    <g stroke="{NAVY}" stroke-width="14" stroke-linecap="rou
       <path d="M 302 162 C 318 148 358 150 374 164"/>
     </g>"""
 
-EXPLOSION = f"""    <g>
-      <path fill="{ORANGE}" stroke="{NAVY}" stroke-width="11" stroke-linejoin="round"
+EXPLOSION = f"""    <style>
+      .burst-outer {{ transform-box: fill-box; transform-origin: 50% 50%;
+        animation: burstPulse 0.9s ease-in-out infinite; }}
+      .burst-inner {{ transform-box: fill-box; transform-origin: 50% 50%;
+        animation: burstPulse 0.9s ease-in-out infinite reverse; }}
+      @keyframes burstPulse {{ 0%,100% {{ transform: scale(1) rotate(0deg); }}
+        50% {{ transform: scale(1.14) rotate(7deg); }} }}
+      .spark1 {{ transform-box: fill-box; transform-origin: 50% 50%;
+        animation: spark1fly 1.3s ease-out infinite; }}
+      .spark2 {{ transform-box: fill-box; transform-origin: 50% 50%;
+        animation: spark2fly 1.3s ease-out .35s infinite; }}
+      .spark3 {{ transform-box: fill-box; transform-origin: 50% 50%;
+        animation: spark3fly 1.3s ease-out .7s infinite; }}
+      @keyframes spark1fly {{ 0% {{ transform: translate(0,0) scale(1); opacity: 1; }}
+        100% {{ transform: translate(-20px,-14px) scale(.3); opacity: 0; }} }}
+      @keyframes spark2fly {{ 0% {{ transform: translate(0,0) scale(1); opacity: 1; }}
+        100% {{ transform: translate(22px,-8px) scale(.3); opacity: 0; }} }}
+      @keyframes spark3fly {{ 0% {{ transform: translate(0,0) scale(1); opacity: 1; }}
+        100% {{ transform: translate(18px,16px) scale(.3); opacity: 0; }} }}
+      @media (prefers-reduced-motion: reduce) {{
+        .burst-outer, .burst-inner, .spark1, .spark2, .spark3 {{ animation: none; }} }}
+    </style>
+    <g>
+      <path class="burst-outer" fill="{ORANGE}" stroke="{NAVY}" stroke-width="11" stroke-linejoin="round"
             d="M 256 -24 L 288 32 L 352 6 L 340 68 L 408 78 L 356 116 L 396 160 L 330 158
                L 336 216 L 276 178 L 256 236 L 236 178 L 176 216 L 182 158 L 116 160
                L 156 116 L 104 78 L 172 68 L 160 6 L 224 32 Z"/>
-      <path fill="#FFD54F" d="M 256 22 L 276 58 L 318 44 L 310 84 L 352 92 L 318 114 L 342 142
+      <path class="burst-inner" fill="#FFD54F" d="M 256 22 L 276 58 L 318 44 L 310 84 L 352 92 L 318 114 L 342 142
                L 300 140 L 302 176 L 266 152 L 256 188 L 246 152 L 210 176 L 212 140
                L 170 142 L 194 114 L 160 92 L 202 84 L 194 44 L 236 58 Z"/>
-      <circle cx="96" cy="60" r="11" fill="{ORANGE}"/>
-      <circle cx="422" cy="48" r="9" fill="{ORANGE}"/>
-      <circle cx="448" cy="120" r="7" fill="#FFD54F"/>
+      <circle class="spark1" cx="96" cy="60" r="11" fill="{ORANGE}"/>
+      <circle class="spark2" cx="422" cy="48" r="9" fill="{ORANGE}"/>
+      <circle class="spark3" cx="448" cy="120" r="7" fill="#FFD54F"/>
     </g>"""
 
 MANO_SALUDO = f"""    <g transform="rotate(-28 350 170)">
@@ -641,6 +689,62 @@ MANO_SALUDO = f"""    <g transform="rotate(-28 350 170)">
 CEJAS_FIRMES = f"""    <g stroke="{NAVY}" stroke-width="15" stroke-linecap="round" fill="none">
       <path d="M 136 182 L 204 190"/><path d="M 308 190 L 376 182"/>
     </g>"""
+
+OJOS_CANSADOS = TAPA_OJOS + f"""    <g>
+      <ellipse cx="170" cy="254" rx="34" ry="38" fill="{NAVY}"/>
+      <ellipse cx="342" cy="254" rx="34" ry="38" fill="{NAVY}"/>
+      <circle cx="160" cy="244" r="9" fill="#FFFFFF"/>
+      <circle cx="332" cy="244" r="9" fill="#FFFFFF"/>
+      <path d="M 132 226 C 146 214 194 214 208 226 C 194 220 146 220 132 226 Z"
+            fill="{YELLOW}"/>
+      <path d="M 304 226 C 318 214 366 214 380 226 C 366 220 318 220 304 226 Z"
+            fill="{YELLOW}"/>
+      <path d="M 130 300 C 146 312 194 312 210 300" fill="none" stroke="{NAVY}"
+            stroke-width="6" opacity=".3" stroke-linecap="round"/>
+      <path d="M 302 300 C 318 312 366 312 382 300" fill="none" stroke="{NAVY}"
+            stroke-width="6" opacity=".3" stroke-linecap="round"/>
+    </g>"""
+
+BOCA_SERIA = TAPA_BOCA + f"""    <g>
+      <path d="M 176 322 C 178 302 212 290 256 290 C 300 290 334 302 336 322
+               C 338 346 310 360 256 360 C 202 360 174 346 176 322 Z"
+            fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
+      <path d="M 216 334 L 296 334" stroke="{NAVY}" stroke-width="7" stroke-linecap="round"/>
+    </g>"""
+
+# Referencia: la escena de "Resacón en Las Vegas" donde a Alan se le superponen
+# operaciones matemáticas flotando frente a la cara mientras cuenta cartas.
+_CUENTAS = [
+    (66, 78, "10+9-8+7", 26, -9, 0.0),
+    (368, 64, "=13", 30, 7, 0.5),
+    (430, 168, "-8", 30, 11, 1.1),
+    (44, 190, "7×3", 27, -7, 1.7),
+    (398, 268, "÷2", 26, -9, 0.3),
+    (70, 320, "then...", 22, 4, 2.2),
+    (150, 46, "∑", 32, -3, 1.4),
+    (386, 372, "=21", 26, 8, 2.6),
+]
+
+def _cuentas_css():
+    rules = ["""    <style>
+      .eqf { opacity: 0; animation: eqFade 3.6s ease-in-out infinite; }"""]
+    for i in range(len(_CUENTAS)):
+        rules.append(f"      .eqf.e{i} {{ animation-delay: {(_CUENTAS[i][5]):.2f}s; }}")
+    rules.append("""      @keyframes eqFade { 0%, 100% { opacity: 0; transform: translateY(6px); }
+        45%, 55% { opacity: .8; transform: translateY(-4px); } }
+      @media (prefers-reduced-motion: reduce) { .eqf { animation: none; opacity: .55; } }
+    </style>""")
+    return "\n".join(rules)
+
+def _cuentas_texts():
+    out = []
+    for i, (x, y, txt, size, rot, _delay) in enumerate(_CUENTAS):
+        out.append(f'<text class="eqf e{i}" x="{x}" y="{y}" transform="rotate({rot} {x} {y})" '
+                    f'font-family="Georgia,\'DejaVu Serif\',serif" font-weight="bold" '
+                    f'font-size="{size}" fill="{MAT}" text-anchor="middle">{txt}</text>')
+    return "\n      ".join(out)
+
+CUENTAS_OVERLAY = _cuentas_css() + '\n    <g>\n      ' + _cuentas_texts() + "\n    </g>"
 
 EMOJIS = {
     "feliz":       cabeza(OJOS_NORMAL, BOCA_SONRISA, rubor=True),
@@ -656,8 +760,9 @@ EMOJIS = {
     "dormido":     cabeza(OJOS_TRISTES, BOCA_CERRADA, ZZZ),
     "fiesta":      cabeza(OJOS_FELICES, BOCA_RISA, GORRO_FIESTA + CONFETI, rubor=True),
     "pensando":    cabeza(OJOS_NORMAL, BOCA_CERRADA, CEJA_PENSANDO + MANO_BARBILLA),
-    "explotado":   cabeza(OJOS_SORPRESA, BOCA_O, EXPLOSION, copete=False, brillo=False),
-    "saludo":      cabeza(OJOS_NORMAL, BOCA_CERRADA, CEJAS_FIRMES + MANO_SALUDO, copete=True),
+    "explotado":   cabeza(OJOS_SORPRESA, BOCA_O, EXPLOSION),
+    "saludo":      cabeza(OJOS_NORMAL, BOCA_CERRADA, CEJAS_FIRMES + MANO_SALUDO),
+    "cuentas":     cabeza(OJOS_CANSADOS, BOCA_SERIA, CUENTAS_OVERLAY),
 }
 
 
@@ -677,13 +782,6 @@ def build_emoji(name):
 
 
 # ------------------------------------------------------------------ memes (formatos famosos)
-
-import re  # noqa: E402
-
-
-def leer_duck_static(variant):
-    """Como leer_duck pero sin ids (seguro para repetir varias veces en un mismo SVG)."""
-    return re.sub(r'\sid="[^"]*"', "", leer_duck(variant))
 
 
 MEME_SIZE = {}  # nombre -> (w, h) real, para exportar PNG sin deformar
