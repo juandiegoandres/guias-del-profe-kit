@@ -46,8 +46,8 @@ TEMPLATE = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
       <stop offset="100%" stop-color="#F2B02C"/>
     </radialGradient>
     <linearGradient id="gBeak" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#F9DFA6"/>
-      <stop offset="100%" stop-color="#E9BC72"/>
+      <stop offset="0%" stop-color="#FFBE55"/>
+      <stop offset="100%" stop-color="#EE8E1E"/>
     </linearGradient>
     <linearGradient id="gFoot" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#F5AC42"/>
@@ -123,13 +123,13 @@ TEMPLATE = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
 {clothing}
     <!-- cabeza -->
     <g id="head">
-      <path d="M 256 52 C 176 52 128 112 128 182 C 128 252 184 296 256 296
-               C 328 296 384 252 384 182 C 384 112 336 52 256 52 Z" fill="url(#gHead)"/>
-      <ellipse cx="208" cy="106" rx="58" ry="38" fill="#FFFFFF" opacity="0.16"/>
+      <path d="M 256 56 C 184 56 150 114 150 184 C 150 250 194 294 256 294
+               C 318 294 362 250 362 184 C 362 114 328 56 256 56 Z" fill="url(#gHead)"/>
+      <ellipse cx="212" cy="108" rx="48" ry="34" fill="#FFFFFF" opacity="0.16"/>
 {hair}
       <!-- mejillas -->
-      <ellipse cx="158" cy="188" rx="15" ry="10" fill="#FFAC55" opacity="0.5"/>
-      <ellipse cx="354" cy="188" rx="15" ry="10" fill="#FFAC55" opacity="0.5"/>
+      <ellipse cx="172" cy="176" rx="13" ry="9" fill="#FFAC55" opacity="0.5"/>
+      <ellipse cx="340" cy="176" rx="13" ry="9" fill="#FFAC55" opacity="0.5"/>
 
       <!-- ojos -->
       <g id="eye-left">
@@ -156,30 +156,60 @@ TEMPLATE = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
       </g>
 
       <!-- pico -->
-      <g id="beak">
-        <path id="bill-lower" d="M 192 246 C 214 262 298 262 320 246 C 310 260 280 268 256 268
-                 C 232 268 202 260 192 246 Z" fill="#D89C55"/>
-        <path d="M 158 212 C 162 192 200 184 256 184 C 312 184 350 192 354 212
-                 C 358 232 328 250 256 250 C 184 250 154 232 158 212 Z" fill="url(#gBeak)"/>
-        <path d="M 172 230 C 210 250 302 250 340 230" fill="none" stroke="#B9834A" stroke-width="3.5" stroke-linecap="round"/>
-        <path d="M 190 206 C 196 196 224 190 252 190" fill="none" stroke="#FFF3D0" stroke-width="7" stroke-linecap="round" opacity="0.55"/>
-        <ellipse cx="238" cy="206" rx="4.5" ry="2.8" fill="#C89052"/>
-        <ellipse cx="274" cy="206" rx="4.5" ry="2.8" fill="#C89052"/>
+      <g id="beak" transform="translate(0 7)">
+        <!-- mandíbula inferior: profunda, con sombra en el borde -->
+        <path id="bill-lower" d="M 156 244 C 192 258 320 258 356 244
+                 C 352 262 330 275 300 280 C 272 284 240 284 212 280
+                 C 182 275 160 262 156 244 Z" fill="#DD831A"/>
+        <path d="M 172 264 C 196 276 316 276 340 264 C 322 277 288 283 256 283
+                 C 224 283 190 277 172 264 Z" fill="#C06E0C" opacity=".8"/>
+        <!-- pico superior -->
+        <path d="M 124 210 C 128 192 176 184 256 184 C 336 184 384 192 388 210
+                 C 391 224 380 238 356 246 C 322 255 190 255 156 246
+                 C 132 238 121 224 124 210 Z" fill="url(#gBeak)"/>
+        <!-- boca: curva en S con comisuras hacia arriba -->
+        <g fill="none" stroke="#A96409" stroke-width="4" stroke-linecap="round">
+          <path d="M 140 220 C 150 234 176 243 212 247 C 241 250 271 250 300 247
+                   C 336 243 362 234 372 220"/>
+          <path d="M 141 221 Q 132 216 134 206"/>
+          <path d="M 371 221 Q 380 216 378 206"/>
+        </g>
+        <!-- orificios nasales sobre el pico -->
+        <g id="nostrils">
+          <ellipse cx="233" cy="204" rx="6.5" ry="3.6" fill="#9E5605" transform="rotate(-16 233 204)"/>
+          <ellipse cx="279" cy="204" rx="6.5" ry="3.6" fill="#9E5605" transform="rotate(16 279 204)"/>
+          <path d="M 227 208 Q 233 211 240 207" fill="none" stroke="#FFD98F" stroke-width="2" opacity=".7"/>
+          <path d="M 272 207 Q 279 211 285 208" fill="none" stroke="#FFD98F" stroke-width="2" opacity=".7"/>
+        </g>
+        <path d="M 152 203 C 170 194 208 189 250 188" fill="none" stroke="#FFE1A6" stroke-width="7" stroke-linecap="round" opacity="0.6"/>
       </g>
 
-      <!-- gafas -->
+{glasses}{head_gear}    </g>
+{props}{front}  </g>
+</svg>
+"""
+
+GLASSES = """      <!-- gafas -->
       <g id="glasses" fill="none" stroke="#23303E" stroke-width="5">
         <circle cx="210" cy="150" r="34" fill="#AAD7FF" fill-opacity="0.14"/>
         <circle cx="302" cy="150" r="34" fill="#AAD7FF" fill-opacity="0.14"/>
         <path d="M 244 146 C 250 140 262 140 268 146"/>
-        <path d="M 176 146 L 134 152"/>
-        <path d="M 336 146 L 378 152"/>
+        <path d="M 176 146 L 156 152"/>
+        <path d="M 336 146 L 356 152"/>
         <path d="M 190 132 A 26 26 0 0 1 206 122" stroke="#FFFFFF" stroke-width="3" opacity=".65"/>
         <path d="M 282 132 A 26 26 0 0 1 298 122" stroke="#FFFFFF" stroke-width="3" opacity=".65"/>
       </g>
-{head_gear}    </g>
-{props}{front}  </g>
-</svg>
+"""
+
+SHADES = """      <!-- gafas oscuras -->
+      <g id="shades">
+        <rect x="177" y="127" width="64" height="46" rx="17" fill="#1B2430"/>
+        <rect x="271" y="127" width="64" height="46" rx="17" fill="#1B2430"/>
+        <path d="M 240 140 C 248 133 264 133 272 140" fill="none" stroke="#1B2430" stroke-width="6"/>
+        <path d="M 178 144 L 158 150 M 334 144 L 354 150" stroke="#1B2430" stroke-width="6"/>
+        <path d="M 190 140 L 206 134 M 284 140 L 300 134" stroke="#5C6B7E" stroke-width="4"
+              stroke-linecap="round" opacity=".8"/>
+      </g>
 """
 
 HAIR = """      <!-- mechones -->
@@ -241,13 +271,13 @@ ESTETOSCOPIO = """    <g id="estetoscopio" fill="none" stroke="#37474F" stroke-w
     </g>
 """
 
-def vest(color, dark, stripes=""):
+def vest(color, dark, stripes="", vfill="url(#gBody)"):
     return f"""    <!-- chaleco -->
     <g id="vest">
       <path d="M 256 260 C 198 262 170 308 166 358 C 162 408 202 442 256 442
                C 310 442 350 408 346 358 C 342 308 314 262 256 260 Z" fill="{color}"/>
 {stripes}      <path d="M 256 262 L 224 264 C 238 296 250 318 256 334 C 262 318 274 296 288 264 Z"
-            fill="url(#gBody)"/>
+            fill="{vfill}"/>
       <path d="M 224 264 C 238 296 250 318 256 334 C 262 318 274 296 288 264"
             fill="none" stroke="{dark}" stroke-width="5"/>
       <path d="M 176 384 C 190 424 222 440 256 440 C 290 440 322 424 336 384
@@ -295,7 +325,7 @@ HOOD_BEHIND = f"""    <!-- capucha detrás de la cabeza -->
 # ------------------------------------------------------------ props / gear
 
 GOGGLES = """      <g id="goggles">
-        <path d="M 146 106 C 190 78 322 78 366 106" fill="none" stroke="#37474F" stroke-width="9"/>
+        <path d="M 158 104 C 198 80 314 80 354 104" fill="none" stroke="#37474F" stroke-width="9"/>
         <rect x="196" y="66" width="120" height="42" rx="21" fill="#AEE3F7" fill-opacity=".85"
               stroke="#37474F" stroke-width="6"/>
         <path d="M 214 80 C 230 74 250 72 268 74" stroke="#FFFFFF" stroke-width="5"
@@ -412,6 +442,29 @@ PLANO = f"""    <g id="plano" transform="rotate(-28 150 352)">
     </g>
 """
 
+FEDORA = f"""      <g id="fedora">
+        <path d="M 138 106 C 148 90 196 82 256 82 C 316 82 364 90 374 106
+                 C 382 117 370 126 354 121 C 302 108 210 108 158 121
+                 C 142 126 130 117 138 106 Z" fill="#23303E"/>
+        <path d="M 180 100 C 180 56 206 40 256 40 C 306 40 332 56 332 100
+                 C 304 90 208 90 180 100 Z" fill="#2B3949"/>
+        <path d="M 256 42 C 246 56 246 76 254 88" fill="none" stroke="#1B2430" stroke-width="4" opacity=".55"/>
+        <path d="M 180 100 C 208 89 304 89 332 100 L 332 116 C 304 104 208 104 180 116 Z" fill="{CSOC}"/>
+      </g>
+"""
+
+PALILLO = """      <path d="M 348 240 L 376 228" stroke="#F1E3C0" stroke-width="4.5" stroke-linecap="round"/>
+"""
+
+def pinstripes(color="#8A94A6"):
+    return f"""      <g fill="none" stroke="{color}" stroke-width="2" opacity=".45">
+        <path d="M 208 272 C 202 322 202 380 208 434"/>
+        <path d="M 232 264 C 227 322 227 384 232 440"/>
+        <path d="M 280 264 C 285 322 285 384 280 440"/>
+        <path d="M 304 272 C 310 322 310 380 304 434"/>
+      </g>
+"""
+
 AUDIFONOS = """      <g id="audifonos">
         <path d="M 162 128 C 170 60 342 60 350 128" fill="none" stroke="#263238" stroke-width="11"/>
         <rect x="140" y="122" width="30" height="52" rx="14" fill="#263238"/>
@@ -505,6 +558,18 @@ V["programador"] = dict(
     front=LAPTOP,
 )
 
+V["ganster"] = dict(
+    title="gánster",
+    desc="Dr. Cuack gánster: fedora, traje de rayas, gafas oscuras y palillo.",
+    wing_fill="#2B3440",
+    wing_left_extra=HAND_L,
+    wing_right_extra=HAND_R,
+    hair="",
+    clothing=vest("#2B3440", "#222B38", pinstripes(), vfill="#F4F7FA") + CORBATA,
+    glasses=SHADES,
+    head_gear=FEDORA + PALILLO,
+)
+
 # ---------------------------------------------------------------- build
 
 def build(name):
@@ -526,9 +591,117 @@ def build(name):
         props=v.get("props", ""),
         front=v.get("front", ""),
         css_extra=v.get("css_extra", ""),
+        glasses=v.get("glasses", GLASSES),
         lid=LID,
     )
     out = os.path.join(OUT, f"dr-cuack-{name}.svg")
+    with open(out, "w") as f:
+        f.write(svg)
+    return out
+
+# ---------------------------------------------------------------- stickers
+
+FLAMES = """    <g id="llamas">
+      <path d="M 96 434 C 62 400 68 348 98 318 C 92 352 110 356 106 330
+               C 126 350 128 392 112 416 C 118 410 126 402 128 392
+               C 136 416 122 442 96 434 Z" fill="#F57C00"/>
+      <path d="M 98 424 C 82 406 84 376 98 358 C 96 376 108 380 106 364
+               C 116 378 116 402 106 416 Z" fill="#FFC107"/>
+      <path d="M 416 434 C 450 400 444 348 414 318 C 420 352 402 356 406 330
+               C 386 350 384 392 400 416 C 394 410 386 402 384 392
+               C 376 416 390 442 416 434 Z" fill="#F57C00"/>
+      <path d="M 414 424 C 430 406 428 376 414 358 C 416 376 404 380 406 364
+               C 396 378 396 402 406 416 Z" fill="#FFC107"/>
+    </g>
+"""
+
+SWEAT = """    <path d="M 366 88 C 376 106 384 120 384 132 A 16 16 0 1 1 352 132
+             C 352 120 358 106 366 88 Z" fill="#7EC8F7" opacity=".95"/>
+"""
+
+def sparkle(x, y, s=1.0, fill="#FFD54F"):
+    return (f'<path transform="translate({x} {y}) scale({s})" fill="{fill}" '
+            f'd="M 0 -14 L 3.5 -3.5 L 14 0 L 3.5 3.5 L 0 14 L -3.5 3.5 L -14 0 L -3.5 -3.5 Z"/>')
+
+SPARKLES = ("    <g id='chispas'>"
+            + sparkle(92, 112) + sparkle(128, 66, .7) + sparkle(414, 96, 1.1)
+            + sparkle(438, 152, .6) + sparkle(74, 190, .6) + "</g>\n")
+
+STICKER_FILTERS = """    <filter id="diecut" x="-12%" y="-12%" width="124%" height="124%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="11" result="grow"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grow" operator="in" result="border"/>
+      <feMerge><feMergeNode in="border"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="stickershadow" x="-16%" y="-16%" width="132%" height="132%">
+      <feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#1B2430" flood-opacity="0.35"/>
+    </filter>
+"""
+
+STICKER_CSS = """    .meme { font-family: 'Archivo Black','Arial Black','DejaVu Sans',sans-serif;
+      font-weight: 900; fill: #FFFFFF; stroke: #1B2430; stroke-width: 9px;
+      paint-order: stroke; stroke-linejoin: round; letter-spacing: .5px;
+      text-anchor: middle; }
+"""
+
+# name → (variante, líneas arriba, líneas abajo, extras detrás, extras delante)
+ST = {
+    "esto-esta-bien":  ("base",        [], ["ESTO ESTÁ BIEN"], FLAMES, ""),
+    "confia-en-mi":    ("ingeniero",   ["CONFÍA EN MÍ,"], ["SOY INGENIERO"], "", ""),
+    "en-mi-maquina":   ("programador", [], ["FUNCIONA EN", "MI MÁQUINA"], "", SWEAT),
+    "aqui-mando-yo":   ("ganster",     [], ["AQUÍ MANDO YO"], "", ""),
+    "presiona-f":      ("profesor",    [], ["PRESIONA F"], "", ""),
+    "matemagicas":     ("matematico",  [], ["MATEMÁGICAS"], SPARKLES, ""),
+    "que-miras-bobo":  ("ganster",     [], ["¿QUÉ MIRAS,", "BOBO?"], "", ""),
+    "receta-repasar":  ("medico",      [], ["RECETA:", "REPASAR"], "", ""),
+    "eureka":          ("cientifico",  [], ["¡EUREKA!"], SPARKLES, ""),
+}
+
+def _fontsize(text, maxw=470, cap=48):
+    est = 0.68  # ancho medio por carácter (em) en DejaVu Sans Bold mayúsculas
+    return max(24, min(cap, int(maxw / (est * max(1, len(text))))))
+
+def build_sticker(name):
+    variant, top, bottom, behind, front = ST[name]
+    src = open(os.path.join(OUT, f"dr-cuack-{variant}.svg")).read()
+    defs = src[src.index("<defs>")+6 : src.index("</defs>")]
+    style = src[src.index("<style>")+7 : src.index("</style>")]
+    duck = src[src.index('<g id="duck">') : src.rindex("</svg>")]
+
+    # escala y posición del personaje según el texto que lo rodea
+    scale = 0.72 if (top and len(bottom) > 1) else (0.76 if (top or len(bottom) > 1) else 0.8)
+    dy = 46 if top else 8
+    tx = 256 * (1 - scale)
+
+    texts = []
+    y = 56
+    for line in top:
+        fs = _fontsize(line)
+        texts.append(f'<text class="meme" x="256" y="{y}" font-size="{fs}">{line}</text>')
+        y += fs + 8
+    yb = 486 - sum(_fontsize(l) + 10 for l in bottom)
+    for line in bottom:
+        fs = _fontsize(line)
+        yb += fs + 10
+        texts.append(f'<text class="meme" x="256" y="{yb - 8}" font-size="{fs}">{line}</text>')
+
+    body = "\n".join("      " + t for t in texts)
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+     width="512" height="512" role="img" aria-label="Sticker Dr. Cuack: {name}">
+  <defs>{defs}{STICKER_FILTERS}  </defs>
+  <style>{style}{STICKER_CSS}  </style>
+  <g filter="url(#stickershadow)">
+    <g filter="url(#diecut)">
+      <g transform="translate({tx:.0f} {dy}) scale({scale})">
+{behind}{duck}{front}      </g>
+{body}
+    </g>
+  </g>
+</svg>
+"""
+    outdir = os.path.join(os.path.dirname(OUT), "stickers", "svg")
+    os.makedirs(outdir, exist_ok=True)
+    out = os.path.join(outdir, f"sticker-{name}.svg")
     with open(out, "w") as f:
         f.write(svg)
     return out
@@ -560,7 +733,7 @@ DEMO_HEAD = """<!doctype html>
 </style></head><body>
 <header>
   <h1>Dr. Cuack</h1>
-  <p class="sub">Mascota del kit «Guías del Profe» — 7 variantes, SVG animado y autocontenido</p>
+  <p class="sub">Mascota del kit «Guías del Profe» — 8 variantes + stickers, SVG animado y autocontenido</p>
 </header>
 <div class="controls">
   <button id="b-talk">hablar</button>
@@ -591,16 +764,27 @@ def build_demo():
         svg = open(os.path.join(OUT, f"dr-cuack-{name}.svg")).read()
         svg = svg[svg.index("<svg"):]
         cards.append(f'<div class="card">{svg}<h2>{name}</h2></div>\n')
+    stickers = []
+    stdir = os.path.join(os.path.dirname(OUT), "stickers", "svg")
+    for name in ST:
+        svg = open(os.path.join(stdir, f"sticker-{name}.svg")).read()
+        stickers.append(f'<div class="card">{svg}<h2>{name}</h2></div>\n')
+    mid = ('</div>\n<header><h1>Stickers</h1>'
+           '<p class="sub">Listos para WhatsApp/Telegram o para pegar en las guías</p></header>\n'
+           '<div class="grid">\n')
     demo = os.path.join(os.path.dirname(OUT), "demo.html")
     with open(demo, "w") as f:
-        f.write(DEMO_HEAD + "".join(cards) + DEMO_TAIL)
+        f.write(DEMO_HEAD + "".join(cards) + mid + "".join(stickers) + DEMO_TAIL)
     return demo
 
 if __name__ == "__main__":
     if "--list" in sys.argv:
-        print("\n".join(V))
+        print("\n".join(V), "\n--- stickers ---")
+        print("\n".join(ST))
         sys.exit(0)
     os.makedirs(OUT, exist_ok=True)
     for name in V:
         print("→", build(name))
+    for name in ST:
+        print("→", build_sticker(name))
     print("→", build_demo())

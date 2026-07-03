@@ -1,7 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
-     width="512" height="512" role="img" aria-labelledby="t d">
-  <title id="t">Dr. Cuack — matemático</title>
-  <desc id="d">Dr. Cuack con chaleco, pajarita, tiza y pizarra con el teorema de Pitágoras.</desc>
+     width="512" height="512" role="img" aria-label="Sticker Dr. Cuack: matemagicas">
   <defs>
     <radialGradient id="gBody" gradientUnits="userSpaceOnUse" cx="226" cy="316" r="170">
       <stop offset="0%" stop-color="#FFE07A"/>
@@ -27,8 +25,16 @@
     </linearGradient>
     <clipPath id="clipEyeL"><ellipse cx="210" cy="150" rx="27" ry="32"/></clipPath>
     <clipPath id="clipEyeR"><ellipse cx="302" cy="150" rx="27" ry="32"/></clipPath>
+      <filter id="diecut" x="-12%" y="-12%" width="124%" height="124%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="11" result="grow"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grow" operator="in" result="border"/>
+      <feMerge><feMergeNode in="border"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="stickershadow" x="-16%" y="-16%" width="132%" height="132%">
+      <feDropShadow dx="0" dy="7" stdDeviation="9" flood-color="#1B2430" flood-opacity="0.35"/>
+    </filter>
   </defs>
-
   <style>
     #duck { animation: bob 4.2s ease-in-out infinite; }
     #shadow { transform-box: view-box; transform-origin: 256px 480px;
@@ -58,11 +64,16 @@
     @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
 
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+      .meme { font-family: 'Archivo Black','Arial Black','DejaVu Sans',sans-serif;
+      font-weight: 900; fill: #FFFFFF; stroke: #1B2430; stroke-width: 9px;
+      paint-order: stroke; stroke-linejoin: round; letter-spacing: .5px;
+      text-anchor: middle; }
   </style>
-
-  <ellipse id="shadow" cx="256" cy="480" rx="130" ry="15" fill="#1B2430" opacity="0.12"/>
-
-  <g id="duck">
+  <g filter="url(#stickershadow)">
+    <g filter="url(#diecut)">
+      <g transform="translate(51 8) scale(0.8)">
+    <g id='chispas'><path transform="translate(92 112) scale(1.0)" fill="#FFD54F" d="M 0 -14 L 3.5 -3.5 L 14 0 L 3.5 3.5 L 0 14 L -3.5 3.5 L -14 0 L -3.5 -3.5 Z"/><path transform="translate(128 66) scale(0.7)" fill="#FFD54F" d="M 0 -14 L 3.5 -3.5 L 14 0 L 3.5 3.5 L 0 14 L -3.5 3.5 L -14 0 L -3.5 -3.5 Z"/><path transform="translate(414 96) scale(1.1)" fill="#FFD54F" d="M 0 -14 L 3.5 -3.5 L 14 0 L 3.5 3.5 L 0 14 L -3.5 3.5 L -14 0 L -3.5 -3.5 Z"/><path transform="translate(438 152) scale(0.6)" fill="#FFD54F" d="M 0 -14 L 3.5 -3.5 L 14 0 L 3.5 3.5 L 0 14 L -3.5 3.5 L -14 0 L -3.5 -3.5 Z"/><path transform="translate(74 190) scale(0.6)" fill="#FFD54F" d="M 0 -14 L 3.5 -3.5 L 14 0 L 3.5 3.5 L 0 14 L -3.5 3.5 L -14 0 L -3.5 -3.5 Z"/></g>
+<g id="duck">
 
     <!-- patas -->
     <g id="feet">
@@ -209,6 +220,10 @@
       <text class="float" x="108" y="86" font-size="34" opacity=".75">π</text>
       <text class="float f2" x="396" y="118" font-size="28" opacity=".65">∑</text>
       <text class="float f3" x="386" y="58" font-size="26" opacity=".6">∞</text>
+    </g>
+  </g>
+      </g>
+      <text class="meme" x="256" y="478" font-size="48">MATEMÁGICAS</text>
     </g>
   </g>
 </svg>

@@ -14,8 +14,8 @@
       <stop offset="100%" stop-color="#F2B02C"/>
     </radialGradient>
     <linearGradient id="gBeak" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#F9DFA6"/>
-      <stop offset="100%" stop-color="#E9BC72"/>
+      <stop offset="0%" stop-color="#FFBE55"/>
+      <stop offset="100%" stop-color="#EE8E1E"/>
     </linearGradient>
     <linearGradient id="gFoot" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#F5AC42"/>
@@ -105,13 +105,13 @@
 
     <!-- cabeza -->
     <g id="head">
-      <path d="M 256 52 C 176 52 128 112 128 182 C 128 252 184 296 256 296
-               C 328 296 384 252 384 182 C 384 112 336 52 256 52 Z" fill="url(#gHead)"/>
-      <ellipse cx="208" cy="106" rx="58" ry="38" fill="#FFFFFF" opacity="0.16"/>
+      <path d="M 256 56 C 184 56 150 114 150 184 C 150 250 194 294 256 294
+               C 318 294 362 250 362 184 C 362 114 328 56 256 56 Z" fill="url(#gHead)"/>
+      <ellipse cx="212" cy="108" rx="48" ry="34" fill="#FFFFFF" opacity="0.16"/>
 
       <!-- mejillas -->
-      <ellipse cx="158" cy="188" rx="15" ry="10" fill="#FFAC55" opacity="0.5"/>
-      <ellipse cx="354" cy="188" rx="15" ry="10" fill="#FFAC55" opacity="0.5"/>
+      <ellipse cx="172" cy="176" rx="13" ry="9" fill="#FFAC55" opacity="0.5"/>
+      <ellipse cx="340" cy="176" rx="13" ry="9" fill="#FFAC55" opacity="0.5"/>
 
       <!-- ojos -->
       <g id="eye-left">
@@ -138,15 +138,32 @@
       </g>
 
       <!-- pico -->
-      <g id="beak">
-        <path id="bill-lower" d="M 192 246 C 214 262 298 262 320 246 C 310 260 280 268 256 268
-                 C 232 268 202 260 192 246 Z" fill="#D89C55"/>
-        <path d="M 158 212 C 162 192 200 184 256 184 C 312 184 350 192 354 212
-                 C 358 232 328 250 256 250 C 184 250 154 232 158 212 Z" fill="url(#gBeak)"/>
-        <path d="M 172 230 C 210 250 302 250 340 230" fill="none" stroke="#B9834A" stroke-width="3.5" stroke-linecap="round"/>
-        <path d="M 190 206 C 196 196 224 190 252 190" fill="none" stroke="#FFF3D0" stroke-width="7" stroke-linecap="round" opacity="0.55"/>
-        <ellipse cx="238" cy="206" rx="4.5" ry="2.8" fill="#C89052"/>
-        <ellipse cx="274" cy="206" rx="4.5" ry="2.8" fill="#C89052"/>
+      <g id="beak" transform="translate(0 7)">
+        <!-- mandíbula inferior: profunda, con sombra en el borde -->
+        <path id="bill-lower" d="M 156 244 C 192 258 320 258 356 244
+                 C 352 262 330 275 300 280 C 272 284 240 284 212 280
+                 C 182 275 160 262 156 244 Z" fill="#DD831A"/>
+        <path d="M 172 264 C 196 276 316 276 340 264 C 322 277 288 283 256 283
+                 C 224 283 190 277 172 264 Z" fill="#C06E0C" opacity=".8"/>
+        <!-- pico superior -->
+        <path d="M 124 210 C 128 192 176 184 256 184 C 336 184 384 192 388 210
+                 C 391 224 380 238 356 246 C 322 255 190 255 156 246
+                 C 132 238 121 224 124 210 Z" fill="url(#gBeak)"/>
+        <!-- boca: curva en S con comisuras hacia arriba -->
+        <g fill="none" stroke="#A96409" stroke-width="4" stroke-linecap="round">
+          <path d="M 140 220 C 150 234 176 243 212 247 C 241 250 271 250 300 247
+                   C 336 243 362 234 372 220"/>
+          <path d="M 141 221 Q 132 216 134 206"/>
+          <path d="M 371 221 Q 380 216 378 206"/>
+        </g>
+        <!-- orificios nasales sobre el pico -->
+        <g id="nostrils">
+          <ellipse cx="233" cy="204" rx="6.5" ry="3.6" fill="#9E5605" transform="rotate(-16 233 204)"/>
+          <ellipse cx="279" cy="204" rx="6.5" ry="3.6" fill="#9E5605" transform="rotate(16 279 204)"/>
+          <path d="M 227 208 Q 233 211 240 207" fill="none" stroke="#FFD98F" stroke-width="2" opacity=".7"/>
+          <path d="M 272 207 Q 279 211 285 208" fill="none" stroke="#FFD98F" stroke-width="2" opacity=".7"/>
+        </g>
+        <path d="M 152 203 C 170 194 208 189 250 188" fill="none" stroke="#FFE1A6" stroke-width="7" stroke-linecap="round" opacity="0.6"/>
       </g>
 
       <!-- gafas -->
@@ -154,8 +171,8 @@
         <circle cx="210" cy="150" r="34" fill="#AAD7FF" fill-opacity="0.14"/>
         <circle cx="302" cy="150" r="34" fill="#AAD7FF" fill-opacity="0.14"/>
         <path d="M 244 146 C 250 140 262 140 268 146"/>
-        <path d="M 176 146 L 134 152"/>
-        <path d="M 336 146 L 378 152"/>
+        <path d="M 176 146 L 156 152"/>
+        <path d="M 336 146 L 356 152"/>
         <path d="M 190 132 A 26 26 0 0 1 206 122" stroke="#FFFFFF" stroke-width="3" opacity=".65"/>
         <path d="M 282 132 A 26 26 0 0 1 298 122" stroke="#FFFFFF" stroke-width="3" opacity=".65"/>
       </g>

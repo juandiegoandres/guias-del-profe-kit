@@ -76,12 +76,15 @@ def render(svg, out, size):
 
 if __name__ == "__main__":
     size = int(sys.argv[1]) if len(sys.argv) > 1 else 1024
-    svgdir = os.path.join(HERE, "svg")
-    outdir = os.path.join(HERE, "png")
-    os.makedirs(outdir, exist_ok=True)
-    for f in sorted(os.listdir(svgdir)):
-        if not f.endswith(".svg"):
+    pairs = [(os.path.join(HERE, "svg"), os.path.join(HERE, "png")),
+             (os.path.join(HERE, "stickers", "svg"), os.path.join(HERE, "stickers", "png"))]
+    for svgdir, outdir in pairs:
+        if not os.path.isdir(svgdir):
             continue
-        out = os.path.join(outdir, f.replace(".svg", ".png"))
-        render(os.path.join(svgdir, f), out, size)
-        print("→", out)
+        os.makedirs(outdir, exist_ok=True)
+        for f in sorted(os.listdir(svgdir)):
+            if not f.endswith(".svg"):
+                continue
+            out = os.path.join(outdir, f.replace(".svg", ".png"))
+            render(os.path.join(svgdir, f), out, size)
+            print("→", out)

@@ -14,7 +14,8 @@ y proporciones editoriales — no figuras geométricas planas.
 |---|---|
 | `svg/dr-cuack-*.svg` | Personaje por variante. **Autocontenido y animado** (CSS embebido). |
 | `png/dr-cuack-*.png` | Export estático 1024×1024, fondo transparente (para LaTeX/impresión). |
-| `demo.html` | Galería con las 7 variantes y botones *hablar / saludar / fondo oscuro*. Abrir en el navegador. |
+| `stickers/svg/` y `stickers/png/` | Stickers tipo meme con borde troquelado y texto (WhatsApp/Telegram/guías). |
+| `demo.html` | Galería con las 8 variantes + stickers y botones *hablar / saludar / fondo oscuro*. Abrir en el navegador. |
 | `build.py` | Generador: compone base + capas de profesión y regenera `svg/` y `demo.html`. |
 | `export_png.py` | Regenera los PNG con Chromium headless (`python3 export_png.py 1024`). |
 
@@ -31,6 +32,17 @@ Los acentos salen del design system del kit (`design/preamble.tex`):
 | `ingeniero` | casco, chaleco reflectivo, plano enrollado | ámbar |
 | `medico` | bata, estetoscopio, carné con cruz | — |
 | `programador` | hoodie con capucha, audífonos, laptop `</>` | índigo `#463782` |
+| `ganster` | fedora con banda terracota, traje de rayas, gafas oscuras, palillo | gris `#2B3440` |
+
+## Stickers
+
+9 stickers tipo meme en `stickers/` (`build.py` los genera): *ESTO ESTÁ BIEN*
+(con llamas), *CONFÍA EN MÍ, SOY INGENIERO*, *FUNCIONA EN MI MÁQUINA*,
+*AQUÍ MANDO YO*, *¿QUÉ MIRAS, BOBO?*, *PRESIONA F*, *MATEMÁGICAS*,
+*RECETA: REPASAR* y *¡EUREKA!*. Llevan borde troquelado blanco (filtro
+`feMorphology`), sombra suave y texto auto-ajustado. Para añadir uno:
+entrada nueva en el dict `ST` de `build.py` (variante + líneas de texto +
+extras como llamas/chispas/gota de sudor) y regenerar.
 
 ## Animación
 
