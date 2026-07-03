@@ -6,12 +6,7 @@
 </g></g>
     
 
-<ellipse cx="256" cy="322" rx="94" ry="68" fill="#FBD213"/>    <g>
-      <path d="M 176 322 C 178 302 212 290 256 290 C 300 290 334 302 336 322
-               C 338 346 310 360 256 360 C 202 360 174 346 176 322 Z"
-            fill="#FB7A12" stroke="#0B1838" stroke-width="13"/>
-      <ellipse cx="256" cy="336" rx="52" ry="12" fill="#E9860D"/>
-    </g>
+
     <g stroke="#0B1838" stroke-width="14" stroke-linecap="round" fill="none">
       <path d="M 138 186 C 154 176 188 178 202 188"/>
       <path d="M 302 162 C 318 148 358 150 374 164"/>

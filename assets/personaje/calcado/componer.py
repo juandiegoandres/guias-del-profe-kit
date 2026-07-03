@@ -543,40 +543,15 @@ OJOS_SORPRESA = TAPA_OJOS + f"""    <g>
       <circle cx="170" cy="252" r="16" fill="{NAVY}"/><circle cx="342" cy="252" r="16" fill="{NAVY}"/>
     </g>"""
 
-BOCA_SONRISA = TAPA_BOCA + f"""    <g>
-      <path d="M 176 322 C 178 302 212 290 256 290 C 300 290 334 302 336 322
-               C 338 346 310 360 256 360 C 202 360 174 346 176 322 Z"
-            fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
-      <ellipse cx="256" cy="336" rx="52" ry="12" fill="{ORANGED}"/>
-      <path d="M 210 354 C 226 384 286 384 302 354 C 298 388 278 404 256 404
-               C 234 404 214 388 210 354 Z" fill="{BOCA}" stroke="{NAVY}" stroke-width="12" stroke-linejoin="round"/>
-    </g>"""
+BOCA_SONRISA = ""  # se conserva el pico real del calco, sin reemplazo
 
-BOCA_RISA = TAPA_BOCA + f"""    <g>
-      <path d="M 176 318 C 178 298 212 286 256 286 C 300 286 334 298 336 318
-               C 338 340 310 352 256 352 C 202 352 174 340 176 318 Z"
-            fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
-      <path d="M 196 348 C 212 398 300 398 316 348 C 314 408 286 434 256 434
-               C 226 434 198 408 196 348 Z" fill="{BOCA}" stroke="{NAVY}" stroke-width="12" stroke-linejoin="round"/>
-      <path d="M 222 404 C 244 418 268 418 290 404 C 280 424 232 424 222 404 Z" fill="#F07B62"/>
-    </g>"""
+BOCA_RISA = ""  # se conserva el pico real del calco, sin reemplazo
 
-BOCA_CERRADA = TAPA_BOCA + f"""    <g>
-      <path d="M 176 322 C 178 302 212 290 256 290 C 300 290 334 302 336 322
-               C 338 346 310 360 256 360 C 202 360 174 346 176 322 Z"
-            fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
-      <ellipse cx="256" cy="336" rx="52" ry="12" fill="{ORANGED}"/>
-    </g>"""
+BOCA_CERRADA = ""  # se conserva el pico real del calco, sin reemplazo
 
-BOCA_FRUNCIDA = BOCA_CERRADA + f"""    <path d="M 216 388 C 236 372 276 372 296 388" fill="none"
-          stroke="{NAVY}" stroke-width="13" stroke-linecap="round"/>"""
+BOCA_FRUNCIDA = ""  # se conserva el pico real del calco, sin reemplazo
 
-BOCA_O = TAPA_BOCA + f"""    <g>
-      <path d="M 186 316 C 190 298 218 288 256 288 C 294 288 322 298 326 316
-               C 328 334 306 344 256 344 C 206 344 184 334 186 316 Z"
-            fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
-      <ellipse cx="256" cy="386" rx="34" ry="42" fill="{BOCA}" stroke="{NAVY}" stroke-width="12"/>
-    </g>"""
+BOCA_O = ""  # se conserva el pico real del calco, sin reemplazo
 
 GAFAS_NERD_E = f"""    <g transform="translate(-108 -12) scale(0.711)">{GAFAS_NERD}</g>"""
 GAFAS_SOL_E = f"""    <g transform="translate(-108 -12) scale(0.711)">{GAFAS_SOL}</g>"""
@@ -705,12 +680,7 @@ OJOS_CANSADOS = TAPA_OJOS + f"""    <g>
             stroke-width="6" opacity=".3" stroke-linecap="round"/>
     </g>"""
 
-BOCA_SERIA = TAPA_BOCA + f"""    <g>
-      <path d="M 176 322 C 178 302 212 290 256 290 C 300 290 334 302 336 322
-               C 338 346 310 360 256 360 C 202 360 174 346 176 322 Z"
-            fill="{ORANGE}" stroke="{NAVY}" stroke-width="13"/>
-      <path d="M 216 334 L 296 334" stroke="{NAVY}" stroke-width="7" stroke-linecap="round"/>
-    </g>"""
+BOCA_SERIA = ""  # se conserva el pico real del calco, sin reemplazo
 
 # Referencia: la escena de "Resacón en Las Vegas" donde a Alan se le superponen
 # operaciones matemáticas flotando frente a la cara mientras cuenta cartas.

@@ -62,11 +62,12 @@ Genera:
   WhatsApp/Telegram/Slack). Todos parten de un **recorte real de
   `dr-cuack-base.svg`** (`real_head()` en `componer.py`), no de una cara
   redibujada — así la mascota se ve idéntica en el personaje, los stickers y
-  los emojis. Cuando una expresión necesita ojos/boca distintos, se tapa el
-  ojo/pico real con un parche del mismo amarillo (`TAPA_OJOS`/`TAPA_BOCA`) y
-  se dibuja la expresión encima; si no, se conserva la mirada real tal cual
-  (p. ej. `feliz`, `cool`, `nerd`, `pensando`). `explotado` y `cuentas` están
-  **animados** (ver abajo).
+  los emojis. **El pico nunca se reemplaza**: siempre es el pico real
+  calcado, tal cual, en las 15 expresiones. Solo se tapa el ojo (parche
+  `TAPA_OJOS`, mismo amarillo) cuando la expresión necesita una mirada
+  distinta (llorando, enojado, sorprendido...); si no, se conserva la mirada
+  real tal cual (feliz, cool, nerd, pensando...). `explotado` y `cuentas`
+  están **animados** (ver abajo).
 - `memes/`: formatos de meme famosos recompuestos con Dr. Cuack (dibujo propio,
   no las fotos originales con derechos):
   - **drake-guias** — formato Drake (2 paneles: rechaza / aprueba).

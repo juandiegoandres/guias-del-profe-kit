@@ -9,14 +9,7 @@
       <path d="M 136 250 C 148 226 192 226 204 250"/>
       <path d="M 308 250 C 320 226 364 226 376 250"/>
     </g>
-<ellipse cx="256" cy="322" rx="94" ry="68" fill="#FBD213"/>    <g>
-      <path d="M 176 318 C 178 298 212 286 256 286 C 300 286 334 298 336 318
-               C 338 340 310 352 256 352 C 202 352 174 340 176 318 Z"
-            fill="#FB7A12" stroke="#0B1838" stroke-width="13"/>
-      <path d="M 196 348 C 212 398 300 398 316 348 C 314 408 286 434 256 434
-               C 226 434 198 408 196 348 Z" fill="#D8502E" stroke="#0B1838" stroke-width="12" stroke-linejoin="round"/>
-      <path d="M 222 404 C 244 418 268 418 290 404 C 280 424 232 424 222 404 Z" fill="#F07B62"/>
-    </g>
+
     <g transform="rotate(14 256 60)">
       <path d="M 256 -12 L 322 116 C 280 138 232 138 190 116 Z" fill="#463782" stroke="#0B1838"
             stroke-width="12" stroke-linejoin="round"/>

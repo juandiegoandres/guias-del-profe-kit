@@ -10,12 +10,7 @@
       <circle cx="342" cy="246" r="46" fill="#FFF" stroke="#0B1838" stroke-width="11"/>
       <circle cx="170" cy="252" r="16" fill="#0B1838"/><circle cx="342" cy="252" r="16" fill="#0B1838"/>
     </g>
-<ellipse cx="256" cy="322" rx="94" ry="68" fill="#FBD213"/>    <g>
-      <path d="M 186 316 C 190 298 218 288 256 288 C 294 288 322 298 326 316
-               C 328 334 306 344 256 344 C 206 344 184 334 186 316 Z"
-            fill="#FB7A12" stroke="#0B1838" stroke-width="13"/>
-      <ellipse cx="256" cy="386" rx="34" ry="42" fill="#D8502E" stroke="#0B1838" stroke-width="12"/>
-    </g>
+
     <style>
       .burst-outer { transform-box: fill-box; transform-origin: 50% 50%;
         animation: burstPulse 0.9s ease-in-out infinite; }
