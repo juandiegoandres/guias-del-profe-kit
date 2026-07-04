@@ -1,24 +1,27 @@
 #!/usr/bin/env python3
 """
-Calca una imagen PNG (generada p. ej. con Nanobanana) a SVG vectorial limpio.
+Calca una imagen PNG (generada p. ej. con Nanobanana/Whisk) a SVG vectorial limpio.
 
 Flujo:  PNG con fondo blanco → quitar fondo (flood fill desde los bordes +
-dilatación anti-halo) → vectorizar con imagetracerjs (paleta automática de
-colores planos) → eliminar el fondo del SVG → envolver con animación de
-respiración → exportar PNG transparente.
+dilatación anti-halo, marcado con centinela magenta) → vectorizar con vtracer
+(curvas spline, sin ruido) → eliminar el fondo del SVG → envolver con animación
+de respiración → optimizar con svgo → exportar PNG transparente.
+
+vtracer (motor de vectorizer.ai) da curvas suaves y sin motas, muy superior al
+imagetracerjs anterior; svgo recorta ~50-60 % del peso sin tocar el dibujo.
 
 Uso:
     python3 calcar.py entrada.png nombre-variante
     # produce: fuente/nombre.png  svg/nombre.svg  png/nombre.png (1024)
 
-Requisitos: node + imagetracerjs (se instala solo la primera vez), Chromium
-headless para el PNG (ver export_png.py).
+Requisitos: node + @neplex/vectorizer + svgo (se instalan solos la 1ª vez),
+Chromium headless para el PNG (ver export_png.py).
 
 Consejos para la imagen fuente: fondo blanco sólido, colores planos sin
 degradados, contornos definidos, 1024×1024 o más.
 """
 import json, os, shutil, struct, subprocess, sys, zlib
-from collections import Counter, deque
+from collections import deque
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, ".."))
@@ -110,57 +113,59 @@ def quitar_fondo(src, dst, tol=40, dilatar=5):
     return w, h
 
 
-def paleta_auto(prep, maxcolors=14, mindist=42):
-    """Colores planos dominantes del arte, siempre con el centinela y blanco."""
-    w, h, ct, rows = read_png(prep)
-    bpp = {0: 1, 2: 3, 4: 2, 6: 4}[ct]
-    c = Counter()
-    for y in range(0, h, 2):
-        r = rows[y]
-        for x in range(0, w, 2):
-            i = x * bpp
-            c[(r[i], r[i + 1], r[i + 2])] += 1
-    pal = [SENTINEL, (255, 255, 255)]
-
-    def lejos(col):
-        return all(sum((a - b) ** 2 for a, b in zip(col, p)) > mindist ** 2 for p in pal)
-
-    for col, _ in c.most_common(4000):
-        if len(pal) >= maxcolors:
-            break
-        if lejos(col):
-            pal.append(col)
-    return pal
+def _asegurar_deps():
+    for mod in ("@neplex/vectorizer", "svgo"):
+        pkg = mod.split("/")[-1] if "/" in mod else mod
+        marca = os.path.join(HERE, "node_modules", *mod.split("/"))
+        if not os.path.isdir(marca):
+            subprocess.run(["npm", "install", mod, "--no-audit", "--no-fund"],
+                           cwd=HERE, check=True, capture_output=True)
 
 
-def trazar(prep, out_svg, pal):
+def trazar(prep, out_svg):
+    """Vectoriza con vtracer (spline) y borra el fondo centinela; deja viewBox 1024."""
     js = f"""
-const ImageTracer = require('imagetracerjs');
-const Jimp = require('jimp');
-(async () => {{
-  const img = await Jimp.read({json.dumps(prep)});
-  const imgdata = {{ width: img.bitmap.width, height: img.bitmap.height, data: img.bitmap.data }};
-  const pal = {json.dumps([dict(r=r, g=g, b=b, a=255) for r, g, b in pal])};
-  let svg = ImageTracer.imagedataToSVG(imgdata, {{
-    pal, colorsampling: 0, numberofcolors: pal.length, colorquantcycles: 1,
-    ltres: 1, qtres: 1, pathomit: 16, strokewidth: 0, blurradius: 0,
-    roundcoords: 1, viewbox: true, rightangleenhance: false, linefilter: true
-  }});
-  svg = svg.replace(/<path fill="rgb\\(255,0,255\\)"[^/]*\\/>/g, '');
-  require('fs').writeFileSync({json.dumps(out_svg)}, svg);
-}})().catch(e => {{ console.error(e); process.exit(1); }});
+import {{ vectorize, ColorMode, Hierarchical, PathSimplifyMode }} from '@neplex/vectorizer';
+import {{ readFile, writeFile }} from 'node:fs/promises';
+const png = await readFile({json.dumps(prep)});
+let svg = await vectorize(png, {{
+  colorMode: ColorMode.Color,
+  hierarchical: Hierarchical.Stacked,
+  mode: PathSimplifyMode.Spline,
+  filterSpeckle: 4,      // elimina motas (la mancha gris de imagetracerjs)
+  colorPrecision: 6,
+  layerDifference: 16,
+  cornerThreshold: 60,
+  lengthThreshold: 4,
+  spliceThreshold: 45,
+  maxIterations: 10,
+  pathPrecision: 2,
+}});
+// borrar el fondo: cualquier path magenta (centinela, tolerante a la cuantización).
+// vtracer emite `d` antes de `fill`, así que se busca fill en cualquier parte del tag.
+svg = svg.replace(/<path\\b[^>]*?fill="#([0-9A-Fa-f]{{6}})"[^>]*?\\/>/g, (m, hex) => {{
+  const r = parseInt(hex.slice(0,2),16), gg = parseInt(hex.slice(2,4),16), b = parseInt(hex.slice(4,6),16);
+  return (r > 200 && gg < 70 && b > 200) ? '' : m;
+}});
+// darle viewBox para que componer.py y el escalado funcionen (vtracer no lo pone)
+svg = svg.replace(/<svg ([^>]*?)>/, (m, a) => `<svg ${{a}} viewBox="0 0 1024 1024">`);
+await writeFile({json.dumps(out_svg)}, svg);
 """
-    if not os.path.isdir(os.path.join(HERE, "node_modules", "imagetracerjs")):
-        subprocess.run(["npm", "install", "imagetracerjs", "jimp@0.22.12",
-                        "--no-audit", "--no-fund"], cwd=HERE, check=True,
-                       capture_output=True)
-    tmp = os.path.join(HERE, "_trace_tmp.js")
+    _asegurar_deps()
+    tmp = os.path.join(HERE, "_trace_tmp.mjs")
     with open(tmp, "w") as f:
         f.write(js)
     try:
         subprocess.run(["node", tmp], cwd=HERE, check=True, capture_output=True)
     finally:
         os.unlink(tmp)
+
+
+def optimizar(svg):
+    """svgo con la config segura para animación (../svgo.config.mjs). Idempotente."""
+    cfg = os.path.join(HERE, "..", "svgo.config.mjs")
+    subprocess.run(["npx", "svgo", "--config", cfg, svg, "-o", svg],
+                   cwd=HERE, check=True, capture_output=True)
 
 
 def envolver(out_svg, nombre):
@@ -183,13 +188,12 @@ if __name__ == "__main__":
         shutil.copy(src, fuente)
     prep = os.path.join(HERE, "_prep.png")
     quitar_fondo(fuente, prep)
-    pal = paleta_auto(prep)
-    print("paleta:", ["#%02X%02X%02X" % c for c in pal[1:]])
     svg = os.path.join(HERE, "svg", f"{nombre}.svg")
-    trazar(prep, svg, pal)
+    trazar(prep, svg)
     envolver(svg, nombre)
+    optimizar(svg)
     os.unlink(prep)
     png = os.path.join(HERE, "png", f"{nombre}.png")
     render(svg, png, 1024)
-    print("→", svg)
+    print("→", svg, f"({os.path.getsize(svg)//1024} KiB)")
     print("→", png)
