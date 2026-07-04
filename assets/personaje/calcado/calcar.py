@@ -122,8 +122,12 @@ def _asegurar_deps():
                            cwd=HERE, check=True, capture_output=True)
 
 
-def trazar(prep, out_svg):
-    """Vectoriza con vtracer (spline) y borra el fondo centinela; deja viewBox 1024."""
+def trazar(prep, out_svg, canvas=1024):
+    """Vectoriza con vtracer (spline), borra el fondo centinela y NORMALIZA a un
+    lienzo canónico (1024×1024 por defecto) escalando el contenido, sea cual sea el
+    tamaño de la fuente de Flow (1024, 1766, …). Así todas las mascotas comparten el
+    mismo sistema de coordenadas y componer.py alinea bien."""
+    w, h, _ct, _rows = read_png(prep)
     js = f"""
 import {{ vectorize, ColorMode, Hierarchical, PathSimplifyMode }} from '@neplex/vectorizer';
 import {{ readFile, writeFile }} from 'node:fs/promises';
@@ -147,8 +151,13 @@ svg = svg.replace(/<path\\b[^>]*?fill="#([0-9A-Fa-f]{{6}})"[^>]*?\\/>/g, (m, hex
   const r = parseInt(hex.slice(0,2),16), gg = parseInt(hex.slice(2,4),16), b = parseInt(hex.slice(4,6),16);
   return (r > 200 && gg < 70 && b > 200) ? '' : m;
 }});
-// darle viewBox para que componer.py y el escalado funcionen (vtracer no lo pone)
-svg = svg.replace(/<svg ([^>]*?)>/, (m, a) => `<svg ${{a}} viewBox="0 0 1024 1024">`);
+// NORMALIZAR a lienzo canónico {canvas}: escalar el contenido de la fuente ({w}x{h})
+// y fijar viewBox, para que TODAS las mascotas compartan el mismo sistema de coords.
+const kx = {canvas} / {w}, ky = {canvas} / {h};
+const _open = svg.indexOf('>', svg.indexOf('<svg')) + 1;
+const _inner = svg.slice(_open, svg.lastIndexOf('</svg>'));
+svg = `<svg xmlns="http://www.w3.org/2000/svg" width="{canvas}" height="{canvas}" viewBox="0 0 {canvas} {canvas}">\\n`
+    + `<g transform="scale(${{kx}} ${{ky}})">` + _inner + `</g>\\n</svg>`;
 await writeFile({json.dumps(out_svg)}, svg);
 """
     _asegurar_deps()
