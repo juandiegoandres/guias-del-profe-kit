@@ -82,3 +82,46 @@ títere **encima** del fondo. Máxima reutilización, cero problema de alineaci�
 - **Verificá en imagen** siempre (`rsvg-convert` si no hay Chromium).
 - Cross-personaje: **no** se comparte ropa de cuerpo (siluetas distintas); sí se
   comparten fondos, props sostenibles y efectos.
+
+## 8. Iconos / props de escena: de dónde SÍ (y de dónde NO)
+
+**NO usar Icons8 (iconos8.es).** Su fricción **no es técnica, es de licencia**: el
+tier gratis exige **atribución** (link-back a icons8.com en *cada* uso) —
+impráctico para video **monetizado**— y quitarla requiere plan **pago**. Scrapearlo
+con Playwright rodearía su paywall/atribución = contra sus ToS + riesgo legal en
+contenido monetizado. **No es el camino.**
+
+**SÍ: fuentes abiertas, sin atribución, comercialmente seguras y AUTOMATIZABLES.**
+La mejor es la **API de Iconify** (sin login, sin API key, verificada):
+
+```
+https://api.iconify.design/{set}/{nombre}.svg
+https://api.iconify.design/lucide/trending-up.svg?color=%23106E50&width=120
+```
+
+- 200k+ iconos de sets **abiertos** (MIT/Apache/CC): `tabler`, `lucide`, `ph`
+  (phosphor), `mdi`, `material-symbols`, `game-icons`, `twemoji`, `noto`, `fluent`.
+- Se le pasa **color** (acento del design system) y **tamaño** por query param.
+- Para ilustraciones grandes: **SVG Repo** (filtrar CC0/Public Domain),
+  **Openclipart** (CC0), **unDraw** (ilustraciones libres).
+- Verifica la licencia del **set** puntual (Iconify la muestra) y arrastra créditos
+  si el set los pide. Descarga por `curl`/`requests`, no por Playwright.
+
+## 9. Formato video "presentador" (decisiones)
+
+- **Resolución del personaje: ALTA.** El grid 3×3 dejó celdas de solo ~589 px →
+  al escalar el busto (~1.7×) se ve **pixelado/tosco/sin suavizar**. Para video
+  (sobre todo busto), generar las expresiones **grandes**: **una por imagen a
+  resolución completa** (1024–1766 px) o **máx 4 por hoja** (celdas ≥880 px). Para
+  el presentador conviene una **hoja de BUSTO** (cabeza+hombros) generada grande,
+  para que la cara salga con detalle. Calcar desde fuentes grandes = trazo nítido
+  a cualquier tamaño.
+- **Voz: HIGH natural, SIN pitch de caricatura.** Por defecto `PITCH = 1.0`
+  (voz Piper high tal cual, p. ej. `es_AR-daniela-high`). El pitch-shift queda como
+  opción, **apagado por defecto**.
+- **El personaje es NARRADOR, no está siempre en pantalla.** Aparece en momentos
+  (intro, puntos clave, cierre) y se **retira** para dejar el contenido/diagrama
+  a cuadro completo. `LayoutPresentador` debe soportar **entrada/salida** de Capi;
+  las escenas alternan "Capi narrando" con "solo contenido".
+- **Tamaño del busto: ajustable** (perilla `CAPI_ALTURA`/posición) — revisar el
+  balance personaje vs. contenido por escena.
