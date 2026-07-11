@@ -1,0 +1,161 @@
+% ============================================================================
+% trajes.tex  —  DISFRACES/accesorios intercambiables del capibara (obra propia, CC0)
+% ----------------------------------------------------------------------------
+% Overlays PLANOS y RECOLOREABLES dibujados en LAS MISMAS COORDENADAS que
+% capibara_kawaii.tex (y-arriba). Se ponen SOBRE el capibara sin taparle la cara
+% (zona segura de la cara: ojos en (+-0.54,0.50) tope y~0.85; nariz (0,0); boca
+% (0,-0.30); cachetes (+-1.00,-0.02)).
+%
+% Requiere: \input{assets/svg-src/interes/_estilo_interes.tex}
+%
+% Uso:  \trajevueltiao  \trajebanquero  \trajecomerciante  \trajeacademico
+%       \trajeahorrador
+% Recolorear: \colorlet{vueltiaobase}{...} etc. (ver _estilo_interes.tex).
+%
+% NOTAS DE POSICION/ESCALA (relativas al capibara base):
+%   - Todos se dibujan ya colocados; en Manim carga capibara y traje con
+%     SVGMobject(..., should_center=False) y quedan alineados (mismo \capiframe).
+%   - Alternativa manual: cada traje trae su ancla en el comentario de su macro.
+% ============================================================================
+
+% ---------------------------------------------------------------------------
+% 1) SOMBRERO VUELTIAO  (para "explicar en general" / toque colombiano)
+%    Ala ancha + copa baja; cana flecha crema con bandas "pintao" oscuras.
+%    Descansa sobre la cabeza, por ENCIMA de los ojos. Centro-x = capibara.
+%    Ancla: centro del ala en (0,1.30); copa sube a y~2.02.
+% ---------------------------------------------------------------------------
+\newcommand{\trajevueltiao}{%
+  \begin{scope}
+    % ala (elipse ancha)
+    \path[capilinea, fill=vueltiaobase] (0,1.30) ellipse[x radius=1.78, y radius=0.34];
+    \path[fill=vueltiaosom] (0,1.16) ellipse[x radius=1.66, y radius=0.20];
+    % copa (cupula redondeada)
+    \path[capilinea, fill=vueltiaobase, rounded corners=0.42cm]
+        (-0.84,1.28) rectangle (0.84,2.00);
+    % bandas "pintao" (dos franjas oscuras en la copa)
+    \path[fill=vueltiaopin, rounded corners=0.10cm] (-0.80,1.44) rectangle (0.80,1.60);
+    \path[fill=vueltiaopin, rounded corners=0.10cm] (-0.72,1.74) rectangle (0.72,1.86);
+    % franja del ala (acento)
+    \path[fill=vueltiaopin] (0,1.30) ellipse[x radius=1.70, y radius=0.075];
+    \path[fill=vueltiaobase] (0,1.335) ellipse[x radius=1.70, y radius=0.05];
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 2) BANQUERO  (para "el banco"): corbatin vino + monoculo dorado con cadenita.
+%    Corbatin a la altura del cuello (0,-0.90). Monoculo rodea el ojo DERECHO.
+% ---------------------------------------------------------------------------
+\newcommand{\trajebanquero}{%
+  \begin{scope}
+    % --- corbatin (bow tie) ---
+    \path[capilineaf, fill=banqcorbata]
+        (-0.05,-0.90) -- (-0.52,-0.66) -- (-0.52,-1.14) -- cycle;
+    \path[capilineaf, fill=banqcorbata]
+        ( 0.05,-0.90) -- ( 0.52,-0.66) -- ( 0.52,-1.14) -- cycle;
+    \path[fill=banqcorbdark] (-0.44,-0.90) ellipse[x radius=0.05, y radius=0.16];
+    \path[fill=banqcorbdark] ( 0.44,-0.90) ellipse[x radius=0.05, y radius=0.16];
+    \path[capilineaf, fill=banqcorbdark, rounded corners=0.05cm]
+        (-0.11,-1.02) rectangle (0.11,-0.78);
+    % --- monoculo sobre el ojo derecho ---
+    \draw[capilinea, line width=2.4pt, draw=oro] (0.54,0.50) circle[radius=0.48];
+    \draw[capilineaf, draw=oro] (0.90,0.14) .. controls (1.02,-0.20) .. (0.86,-0.52);
+    \path[fill=orodark] (0.86,-0.52) circle[radius=0.06];
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 3) COMERCIANTE  (para "el mercado"): delantal azul + gorra roja con visera.
+%    Delantal sobre la barriga (no tapa la cara). Gorra sobre la cabeza.
+% ---------------------------------------------------------------------------
+\newcommand{\trajecomerciante}{%
+  \begin{scope}
+    % --- delantal ---
+    % tirantes al cuello
+    \draw[capilineaf, draw=comerdeldark] (-0.30,-0.60) -- (-0.14,-0.30);
+    \draw[capilineaf, draw=comerdeldark] ( 0.30,-0.60) -- ( 0.14,-0.30);
+    % peto (bib)
+    \path[capilineaf, fill=comerdelan, rounded corners=0.12cm]
+        (-0.56,-1.16) rectangle (0.56,-0.60);
+    % falda del delantal
+    \path[capilineaf, fill=comerdelan, rounded corners=0.20cm]
+        (-1.06,-1.98) rectangle (1.06,-1.10);
+    % bolsillo
+    \path[capilineaf, fill=comerdeldark, rounded corners=0.06cm]
+        (-0.42,-1.70) rectangle (0.42,-1.34);
+    \draw[capilineaf, draw=comerdelan] (0,-1.34) -- (0,-1.70);
+    % --- gorra roja con visera ---
+    \path[capilinea, fill=comergorra] (0,1.46) ellipse[x radius=0.98, y radius=0.60];
+    \path[fill=comergordark] (0,1.10) ellipse[x radius=0.94, y radius=0.22];
+    % visera (mira al frente-abajo)
+    \path[capilinea, fill=comergorra] (0,1.02) ellipse[x radius=0.70, y radius=0.20];
+    % botoncito
+    \path[fill=comergordark] (0,2.02) circle[radius=0.08];
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 4) ACADEMICO  (para "explicar"): birrete (mortarboard) + gafas redondas.
+%    Birrete sobre la cabeza; gafas rodean AMBOS ojos.
+% ---------------------------------------------------------------------------
+\newcommand{\trajeacademico}{%
+  \begin{scope}
+    % --- birrete ---
+    % banda que apoya en la cabeza
+    \path[capilinea, fill=acadboard, rounded corners=0.10cm]
+        (-0.66,1.30) rectangle (0.66,1.66);
+    % tabla (rombo aplanado, vista frontal)
+    \path[capilinea, fill=acadboard]
+        (0,2.04) -- (1.22,1.66) -- (0,1.28) -- (-1.22,1.66) -- cycle;
+    \path[fill=acadbdark] (0,1.66) circle[radius=0.07]; % boton central
+    % borla (tassel)
+    \draw[capilineaf, draw=oro] (1.22,1.66) .. controls (1.28,1.30) .. (1.16,0.98);
+    \path[fill=oro] (1.16,0.98) ellipse[x radius=0.10, y radius=0.18];
+    \path[fill=orodark] (1.16,1.06) ellipse[x radius=0.10, y radius=0.05];
+    % --- gafas redondas ---
+    \draw[capilinea, line width=2.2pt, draw=acadgafas] (-0.54,0.50) circle[radius=0.46];
+    \draw[capilinea, line width=2.2pt, draw=acadgafas] ( 0.54,0.50) circle[radius=0.46];
+    \draw[capilinea, line width=2.2pt, draw=acadgafas] (-0.08,0.52) -- (0.08,0.52);
+    \draw[capilineaf, draw=acadgafas] (-1.00,0.54) -- (-1.26,0.66);
+    \draw[capilineaf, draw=acadgafas] ( 1.00,0.54) -- ( 1.26,0.66);
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 5) AHORRADOR  (para "ahorrar"): gorrito mostaza + alcancia-cerdito AL LADO
+%    (con una naranja-moneda entrando por la ranura). El cerdito va a la derecha
+%    sobre el piso; el gorrito es opcional (usalo o el cerdito, o ambos).
+% ---------------------------------------------------------------------------
+\newcommand{\trajeahorrador}{%
+  \begin{scope}
+    % --- gorrito tejido (dome + vuelta + pompon) ---
+    \path[capilinea, fill=ahorrogorro] (0,1.50) ellipse[x radius=0.96, y radius=0.62];
+    \path[capilinea, fill=ahorrogorro, rounded corners=0.12cm]
+        (-0.98,0.98) rectangle (0.98,1.22);
+    \path[capilinea, fill=ahorrogorro] (0,2.14) circle[radius=0.18]; % pompon
+    % rayitas del tejido
+    \draw[capilineaf, draw=orodark] (-0.30,1.10) -- (-0.30,1.90);
+    \draw[capilineaf, draw=orodark] ( 0.30,1.10) -- ( 0.30,1.90);
+    % --- alcancia cerdito (al lado derecho, sobre el piso) ---
+    \begin{scope}
+      % patitas
+      \path[fill=ahorrodark] (1.62,-1.72) rectangle (1.80,-1.52);
+      \path[fill=ahorrodark] (2.14,-1.72) rectangle (2.32,-1.52);
+      % cuerpo
+      \path[capilinea, fill=ahorrosa] (1.98,-1.14) ellipse[x radius=0.64, y radius=0.50];
+      % hocico
+      \path[capilinea, fill=ahorrodark] (2.56,-1.16) ellipse[x radius=0.20, y radius=0.24];
+      \path[fill=vueltiaopin] (2.56,-1.10) circle[radius=0.045];
+      \path[fill=vueltiaopin] (2.56,-1.24) circle[radius=0.045];
+      % orejita
+      \path[capilinea, fill=ahorrosa] (2.30,-0.66) -- (2.52,-0.78) -- (2.30,-0.90) -- cycle;
+      % ojo
+      \path[fill=capicontorno] (2.28,-1.02) circle[radius=0.055];
+      % ranura + naranja-moneda entrando
+      \path[fill=vueltiaopin, rounded corners=0.03cm] (1.80,-0.70) rectangle (2.16,-0.62);
+      \path[capilineaf, fill=naranjafill] (1.98,-0.34) circle[radius=0.20];
+      \path[fill=hojaverde] (2.06,-0.16) ellipse[x radius=0.08, y radius=0.04];
+      % colita
+      \draw[capilineaf, draw=ahorrodark] (1.34,-1.10) .. controls (1.18,-1.02) and (1.22,-1.28) .. (1.10,-1.20);
+    \end{scope}
+  \end{scope}
+}

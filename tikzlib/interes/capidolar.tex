@@ -1,0 +1,207 @@
+% ============================================================================
+% capidolar.tex  —  CAPIDOLARES: la moneda propia de la serie (obra propia, CC0)
+% ----------------------------------------------------------------------------
+% El DINERO que crece con el interes. Las naranjas pasan a ser los BIENES que
+% se compran (naranjas.tex); estos CAPIDOLARES son el capital/ahorro.
+% Estilo: plano, tierno, dorado/mostaza, a juego con el capibara kawaii.
+% Reutiliza la CARITA del capibara (orejitas + hocico + nariz) via \capicara.
+%
+% IMPORTANTE (SVGMobject): el simbolo de moneda "C con barra" y los numeros
+% ("1", "10") se DIBUJAN COMO TRAZOS TikZ (paths), NUNCA como texto/fuente ->
+% tras pdftocairo -svg quedan como <path> (0 <text>, 0 <image>, 0 gradiente).
+%
+% Requiere (ya los cargan _estilo_interes.tex y capibara_kawaii.tex):
+%   colores: oro, orodark, capicuerpo, capioscuro, capihocico, capinariz,
+%            capiojo, capibrillo, capirubor ; estilos: capilinea, capilineaf.
+%
+% USO (turn-key para Manim / previews):
+%   \capidolarmoneda     % MONEDA redonda (carita capibara + "C1")   -> centrada
+%   \capidolarbillete    % BILLETE rect. (retrato capibara + "10")
+%   \capidolarpila       % PILA/torre de 6 monedas (crecimiento 1->muchas)
+%   \capidolarsaco       % SACO de monedas con la "C" (montos grandes)
+%   \naranjaprecio       % naranja (BIEN) con cartelito de PRECIO (inflacion)
+% Bloques reutilizables:
+%   \capicara            % carita del capibara (cabeza), radio ~0.52, en (0,0)
+%   \dgcur{x}{y}{s}      % simbolo capidolar "C-barra"  (path)
+%   \dgone{x}{y}{s}      % digito 1  (path)     \dgzero{x}{y}{s}  % digito 0
+%   \capipuck{cx}{cy}    % una moneda vista de lado (para armar pilas a gusto)
+% Recolorear: \colorlet{oro}{...}\colorlet{capidorofill}{...} antes de llamar.
+% ============================================================================
+
+% --- paleta propia de los capidolares (dorado/mostaza + billete crema) ---
+\providecolor{oro}         {HTML}{D2A63C}  % (idempotente con _estilo_interes)
+\providecolor{orodark}     {HTML}{B4862A}
+\providecolor{capidorofill}{HTML}{EFCB63}  % cara de la moneda (mostaza claro)
+\providecolor{capidorohi}  {HTML}{F7E29C}  % brillo/relieve
+\providecolor{capinotefill}{HTML}{F6E7BE}  % papel del billete (crema calido)
+\providecolor{capinoteoval}{HTML}{FBF3DA}  % ovalo del retrato
+\providecolor{sacotela}    {HTML}{EAD7AE}  % lona del saco
+\providecolor{sacoteladark}{HTML}{D8BE8A}  % pliegue del cuello
+\providecolor{tagfill}     {HTML}{FBF1DC}  % cartelito de precio
+
+\tikzset{
+  capioroline/.style ={draw=orodark, line width=2.0pt, line cap=round, line join=round},
+  capiorolinef/.style={draw=orodark, line width=1.4pt, line cap=round, line join=round},
+  capidigit/.style   ={draw=orodark, line width=2.4pt, line cap=round, line join=round},
+}
+
+% ---------------------------------------------------------------------------
+% NUMEROS Y SIMBOLO COMO PATHS (nunca <text>)
+% ---------------------------------------------------------------------------
+% Simbolo capidolar: una "C" abierta a la derecha + barra vertical que la cruza.
+\newcommand{\dgcur}[3]{\begin{scope}[shift={(#1,#2)}, scale=#3]
+  \draw[capidigit] (40:0.30) arc[start angle=40, delta angle=280, radius=0.30];
+  \draw[capidigit] (0,0.46) -- (0,-0.46);
+\end{scope}}
+% Digito 1 (banderilla + asta + base)
+\newcommand{\dgone}[3]{\begin{scope}[shift={(#1,#2)}, scale=#3]
+  \draw[capidigit] (-0.15,0.24) -- (0.03,0.45) -- (0.03,-0.45);
+  \draw[capidigit] (-0.20,-0.45) -- (0.26,-0.45);
+\end{scope}}
+% Digito 0 (anillo)
+\newcommand{\dgzero}[3]{\begin{scope}[shift={(#1,#2)}, scale=#3]
+  \draw[capidigit] (0,0) ellipse[x radius=0.26, y radius=0.45];
+\end{scope}}
+
+% ---------------------------------------------------------------------------
+% CARITA DEL CAPIBARA (cabeza) — reusa el estilo kawaii, compacta en (0,0)
+% cabeza radio ~0.52 ; zona util dentro de un circulo/ovalo pequeno
+% ---------------------------------------------------------------------------
+\newcommand{\capicara}{%
+  \begin{scope}
+    % orejitas (detras)
+    \path[capilinea, fill=capicuerpo] (-0.45,0.42) circle[radius=0.15];
+    \path[capilinea, fill=capicuerpo] ( 0.45,0.42) circle[radius=0.15];
+    \path[fill=capioscuro] (-0.45,0.425) circle[radius=0.075];
+    \path[fill=capioscuro] ( 0.45,0.425) circle[radius=0.075];
+    % cabeza redonda
+    \path[capilinea, fill=capicuerpo] (0,0) circle[radius=0.52];
+    % cachetes rosa
+    \path[fill=capirubor] (-0.37,-0.12) ellipse[x radius=0.12, y radius=0.075];
+    \path[fill=capirubor] ( 0.37,-0.12) ellipse[x radius=0.12, y radius=0.075];
+    % ojos grandes con brillo
+    \path[fill=capiojo] (-0.21,0.13) circle[radius=0.125];
+    \path[fill=capibrillo] (-0.16,0.19) circle[radius=0.052];
+    \path[fill=capiojo] ( 0.21,0.13) circle[radius=0.125];
+    \path[fill=capibrillo] ( 0.26,0.19) circle[radius=0.052];
+    % hocico (parche crema) + nariz grande
+    \path[fill=capihocico, rounded corners=0.16cm] (-0.23,-0.34) rectangle (0.23,-0.02);
+    \path[capilinea, line width=1.4pt, fill=capinariz, rounded corners=0.07cm]
+        (-0.13,-0.16) rectangle (0.13,-0.03);
+    % sonrisa
+    \draw[capilinea, line width=1.4pt]
+        (0,-0.16) -- (0,-0.22)
+        (-0.12,-0.22) .. controls (-0.05,-0.35) and (0.05,-0.35) .. (0.12,-0.22);
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 1) MONEDA redonda — borde dorado, cara con la carita + valor "C1"
+% ---------------------------------------------------------------------------
+\newcommand{\capidolarmoneda}{%
+  \begin{scope}
+    % serracion del canto (reeding)
+    \foreach \a in {0,12,...,348}{ \draw[capiorolinef] (\a:0.99) -- (\a:1.09); }
+    % disco exterior + anillo (rim)
+    \path[capioroline, fill=oro] (0,0) circle[radius=1.02];
+    \path[fill=orodark] (0,0) circle[radius=0.90];
+    % cara interior
+    \path[capiorolinef, fill=capidorofill] (0,0) circle[radius=0.84];
+    % brillo (arco superior izquierdo)
+    \draw[capiorolinef, draw=capidorohi, line width=2.2pt]
+        (150:0.80) arc[start angle=150, delta angle=95, radius=0.80];
+    % carita del capibara (arriba-centro)
+    \begin{scope}[shift={(0,0.20)}] \capicara \end{scope}
+    % valor "C 1" abajo (paths)
+    \dgcur{-0.20}{-0.58}{0.44}
+    \dgone{ 0.19}{-0.58}{0.44}
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 2) BILLETE rectangular — marco, retrato de la carita en ovalo, valor "10"
+% ---------------------------------------------------------------------------
+\newcommand{\capidolarbillete}{%
+  \begin{scope}
+    % papel + doble marco (guilloche simple)
+    \path[capioroline, fill=capinotefill, rounded corners=0.16cm]
+        (-2.30,-1.25) rectangle (2.30,1.25);
+    \draw[capiorolinef] (-2.08,-1.05) rectangle (2.08,1.05);
+    \draw[capiorolinef, draw=capidorohi] (-1.98,-0.95) rectangle (1.98,0.95);
+    % retrato: ovalo + carita del capibara
+    \path[capioroline, fill=capinoteoval] (-1.32,0) ellipse[x radius=0.72, y radius=0.88];
+    \begin{scope}[shift={(-1.32,0.02)}] \capicara \end{scope}
+    % valor grande "10" (derecha) + simbolo pequeno arriba
+    \dgcur { 1.24}{0.66}{0.52}
+    \dgone { 0.95}{-0.04}{1.02}
+    \dgzero{ 1.55}{-0.04}{1.02}
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 3) PILA / TORRE de monedas — crecimiento 1 -> muchas
+% ---------------------------------------------------------------------------
+% Una moneda vista de lado (cilindro), cara superior en (cx,cy).
+\newcommand{\capipuck}[2]{%
+  % pared lateral (oscura)
+  \path[fill=orodark]
+     (#1-0.78,#2) -- (#1-0.78,#2-0.22)
+     arc[start angle=180, end angle=360, x radius=0.78, y radius=0.14]
+     -- (#1+0.78,#2) -- cycle;
+  \draw[capiorolinef]
+     (#1-0.78,#2) -- (#1-0.78,#2-0.22)
+     arc[start angle=180, end angle=360, x radius=0.78, y radius=0.14]
+     -- (#1+0.78,#2);
+  % cara superior (clara) + brillo
+  \path[capioroline, fill=oro] (#1,#2) ellipse[x radius=0.78, y radius=0.20];
+  \path[fill=capidorohi] (#1,#2) ellipse[x radius=0.58, y radius=0.12];
+}
+% Torre de 6 monedas (de abajo hacia arriba) + "C" en la cima.
+\newcommand{\capidolarpila}{%
+  \begin{scope}
+    \foreach \i in {0,1,2,3,4,5}{ \capipuck{0}{\i*0.34} }
+    \dgcur{0}{5*0.34}{0.40}
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 4) SACO de monedas — para montos grandes, con la "C" al frente
+% ---------------------------------------------------------------------------
+\newcommand{\capidolarsaco}{%
+  \begin{scope}
+    % cuerpo
+    \path[capilinea, fill=sacotela]
+        (-1.02,-1.15) .. controls (-1.55,-0.35) and (-1.30,0.55) .. (-0.70,0.78)
+        -- (0.70,0.78)
+        .. controls (1.30,0.55) and (1.55,-0.35) .. (1.02,-1.15)
+        .. controls (0.55,-1.46) and (-0.55,-1.46) .. (-1.02,-1.15) -- cycle;
+    % pliegue del cuello
+    \path[capilinea, fill=sacoteladark]
+        (-0.70,0.78) .. controls (-0.62,1.02) and (-0.56,1.10) .. (-0.44,1.22)
+        .. controls (-0.20,1.06) and (0.20,1.06) .. (0.44,1.22)
+        .. controls (0.56,1.10) and (0.62,1.02) .. (0.70,0.78) -- cycle;
+    % cinta / amarre
+    \path[capilinea, fill=orodark] (-0.72,0.64) rectangle (0.72,0.82);
+    % simbolo capidolar en el cuerpo
+    \dgcur{0}{-0.22}{1.55}
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% 5) NARANJA (= BIEN) con CARTELITO DE PRECIO — escenas de inflacion
+%    El cartel muestra el simbolo "C" (precio en capidolares), sin texto.
+% ---------------------------------------------------------------------------
+\newcommand{\naranjaprecio}{%
+  \begin{scope}
+    \naranjaen{0}{0}{1}
+    % cordelito
+    \draw[capilineaf, draw=orodark] (0.28,0.30) -- (0.58,0.62);
+    % cartelito (pentagono con ojal), inclinado
+    \begin{scope}[shift={(0.78,0.80)}, rotate=-28]
+      \path[capiorolinef, fill=tagfill]
+          (-0.44,-0.26) -- (0.30,-0.26) -- (0.48,0) -- (0.30,0.26) -- (-0.44,0.26) -- cycle;
+      \path[fill=orodark] (0.30,0) circle[radius=0.05];
+      \dgcur{-0.08}{0}{0.40}
+    \end{scope}
+  \end{scope}
+}

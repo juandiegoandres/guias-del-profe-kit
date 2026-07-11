@@ -1,0 +1,92 @@
+% =====================================================================
+%  TEMA · MODO TABLERO — "clave del profe" a TODO EL ANCHO
+%  Rompe a propósito el layout de libro (twoside angosto): página ancha
+%  de una sola columna, banner moderno, imágenes libres al lado con el
+%  texto rodeándolas (\figinline), gráficos flat TikZ/SVG y TODO RESUELTO.
+%
+%  Pensado para material que el PROFE resuelve en el tablero (taller/quiz
+%  con solución). NO es el estilo Santillana del kit: es intencionalmente
+%  más "revista/póster", más aire, más ancho.
+%
+%  INVOCACIÓN (tras \input{design/preamble.tex}; opcional tema de asignatura):
+%     \input{design/preamble.tex}
+%     \input{design/tema-cnat.tex}     % si es ciencias (verde); mate va en azul
+%     \input{design/tema-tablero.tex}
+% =====================================================================
+
+% --- Geometría a TODO EL ANCHO (simétrica, una cara) -------------------
+\geometry{hmargin=1.5cm, top=1.4cm, bottom=1.6cm,
+  marginparwidth=0pt, marginparsep=0pt, headsep=12pt, footskip=20pt}
+
+% --- Encabezado / pie limpios (iguales en ambas caras) -----------------
+\fancyhf{}
+\fancyhead[L]{\footnotesize\sffamily\color{black!50}\hdrinstituto}
+\fancyhead[R]{\footnotesize\sffamily\bfseries\color{subjectcolor}\hdrcapitulo}
+\renewcommand{\headrule}{\vspace{2pt}{\color{black!15}\hrule height 0.4pt}}
+\fancyfoot[R]{\pagenumbox}
+\fancyfoot[L]{\footnotesize\sffamily\color{black!45}%
+  {\color{subjectcolor}\faCheckCircle}\ \textbf{Clave del profe}\ %
+  \textcolor{black!22}{·}\ Prof.\ Juan Diego A.\ Prada R.}
+
+% =====================================================================
+%  BANNER de título full-width (barra de color + badge "CLAVE DEL PROFE")
+%    \tablerobanner{eyebrow}{Título grande}
+% =====================================================================
+\newcommand{\tablerobanner}[2]{%
+\noindent\begin{tcolorbox}[enhanced, sharp corners, arc=2mm, boxrule=0pt,
+   frame hidden, colback=subjectcolor, coltext=white, width=\textwidth,
+   left=6mm, right=6mm, top=5mm, bottom=5.5mm,
+   overlay={%
+     \node[anchor=north east, font=\sffamily\bfseries\footnotesize, text=subjectcolor,
+       fill=white, rounded corners=2pt, inner xsep=7pt, inner ysep=3.5pt]
+       at ([shift={(-5mm,-4.2mm)}]frame.north east)
+       {\faChalkboardTeacher\ \ CLAVE DEL PROFE};}]
+  {\sffamily\bfseries\footnotesize\color{white}\MakeUppercase{#1}}\\[3pt]
+  {\InterDisplaySB\fontsize{22}{25}\selectfont\color{white} #2}
+\end{tcolorbox}\par\vspace{0.4em}}
+
+% =====================================================================
+%  ENCABEZADO DE BLOQUE full-width (cuadro de color + título + filete)
+%    \bloque{Título del bloque}
+% =====================================================================
+\newcommand{\bloque}[1]{\par\addvspace{1.15em}\noindent
+  {\color{subjectcolor}\rule[-0.02em]{0.85em}{0.85em}}\hspace{0.55em}%
+  {\InterDisplaySB\large\color{black!85}#1}\par\vspace{0.25em}%
+  {\color{subjectcolor!30}\hrule height 1.1pt}\par\vspace{0.55em}}
+
+% =====================================================================
+%  SOLUCIONES (todo resuelto)
+% =====================================================================
+% Chip de RESULTADO resaltado:  \sol{$(x+3)(x-3)$}
+\newtcbox{\sol}{on line, nobeforeafter, boxsep=1pt,
+  left=3.5pt, right=3.5pt, top=1.5pt, bottom=1.5pt, arc=3pt,
+  colback=subjectcolor!12, colframe=subjectcolor!55,
+  coltext=subjectcolor!95!black, fontupper=\sffamily\bfseries}
+
+% Renglón "ejercicio resuelto":  \resuelto{cuerpo math}{caso en gris}
+\newcommand{\resuelto}[2]{\par\smallskip\noindent
+  {\color{subjectcolor}\faCheckCircle}~ $#1$%
+  \ {\footnotesize\sffamily\color{black!45}(#2)}\par}
+
+% Caja de solución paso a paso (filete verde/azul + etiqueta)
+\newtcolorbox{solucion}[1][]{
+  enhanced, breakable, sharp corners, boxrule=0pt, frame hidden,
+  colback=subjectcolor!6!white,
+  borderline west={2.4pt}{0pt}{subjectcolor},
+  left=5mm, right=4mm, top=3mm, bottom=3mm,
+  before skip=\bloqueskip, after skip=\bloqueskip,
+  before upper={\blocklabel{subjectcolor}{Solución}{#1}}
+}
+
+% Pista / tip corto al margen del razonamiento
+\newcommand{\pista}[1]{{\sffamily\footnotesize\itshape\color{black!52}#1}}
+
+% Encabezado de un ejercicio RESUELTO paso a paso:
+%   \ejerc{expresión math}{caso/etiqueta}   (luego van los \opg de cada paso)
+\newcommand{\ejerc}[2]{\par\addvspace{0.6em}\noindent
+  {\color{subjectcolor}\faCheckCircle}\ \ $\displaystyle #1$%
+  \ {\footnotesize\sffamily\color{black!45}[#2]}\par\vspace{0.1em}}
+% Variante con encabezado de TEXTO (no math): \ejercT{texto}{etiqueta}
+\newcommand{\ejercT}[2]{\par\addvspace{0.6em}\noindent
+  {\color{subjectcolor}\faCheckCircle}\ \ {\sffamily\bfseries #1}%
+  \ {\footnotesize\sffamily\color{black!45}[#2]}\par\vspace{0.1em}}

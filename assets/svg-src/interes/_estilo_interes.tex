@@ -1,0 +1,78 @@
+% ============================================================================
+% _estilo_interes.tex  —  Estilo compartido del "mundo del capibara" (CC0)
+% ----------------------------------------------------------------------------
+% Paleta plana + estilo de linea + FRAME canonico para trajes/accesorios que se
+% dibujan EN LAS MISMAS COORDENADAS que el capibara base
+% (tikzlib/interes/capibara_kawaii.tex). Todo obra propia, CC0.
+%
+% Requiere: \usepackage{tikz}. NO usa texto/fuentes -> apto SVGMobject de Manim.
+%
+% FRAME CANONICO DE REGISTRO (\capiframe):
+%   Todos los trajes/accesorios y el propio capibara se exportan con ESTE mismo
+%   \useasboundingbox. Asi los SVG comparten viewBox y en Manim se pueden cargar
+%   con  SVGMobject(..., should_center=False)  y quedan PERFECTAMENTE alineados
+%   sobre el capibara sin tocar nada (registro automatico).
+%   Con should_center=True (por defecto) el frame se ignora (Manim recorta al
+%   contenido visible), asi que NO rompe usos existentes del capibara.
+% ============================================================================
+
+% --- linework del capibara (idempotente con capibara_kawaii.tex) ---
+\providecolor{capicontorno}{HTML}{6E4E34}  % linea (marron calido suave)
+\tikzset{
+  capilinea/.style   ={draw=capicontorno, line width=2.1pt,
+                       line cap=round, line join=round},
+  capilineaf/.style  ={draw=capicontorno, line width=1.6pt,
+                       line cap=round, line join=round}, % linea fina
+}
+
+% --- paleta de trajes/accesorios (plana, tierna) ---
+\providecolor{vueltiaobase}{HTML}{F2E6C6}  % cana flecha (crema claro)
+\providecolor{vueltiaosom} {HTML}{E4D2A6}  % sombra del ala
+\providecolor{vueltiaopin} {HTML}{3B332B}  % "pintao" (bandas oscuras)
+
+\providecolor{banqcorbata} {HTML}{9C3B4C}  % corbatin vino
+\providecolor{banqcorbdark}{HTML}{7E2E3D}  % corbatin sombra
+\providecolor{oro}         {HTML}{D2A63C}  % oro (monoculo/detalles)
+\providecolor{orodark}     {HTML}{B4862A}
+
+\providecolor{comerdelan}  {HTML}{5E86A6}  % delantal azul mercado
+\providecolor{comerdeldark}{HTML}{4B6E8C}
+\providecolor{comergorra}  {HTML}{CF5B45}  % gorra roja
+\providecolor{comergordark}{HTML}{B24734}
+
+\providecolor{acadboard}   {HTML}{343747}  % birrete azul-noche
+\providecolor{acadbdark}   {HTML}{262838}
+\providecolor{acadgafas}   {HTML}{3B332B}  % marco de gafas
+
+\providecolor{ahorrosa}    {HTML}{F2A6BC}  % cerdito rosado
+\providecolor{ahorrodark}  {HTML}{E086A0}
+\providecolor{ahorrogorro} {HTML}{D9A441}  % gorro mostaza
+
+\providecolor{naranjafill} {HTML}{F59E2E}  % naranja
+\providecolor{naranjadark} {HTML}{E07C1A}  % naranja sombra
+\providecolor{naranjacont} {HTML}{9A5A1E}  % contorno naranja
+\providecolor{hojaverde}   {HTML}{6BA83C}  % hoja
+\providecolor{hojadark}    {HTML}{4E8A2E}
+\providecolor{canastamimb} {HTML}{C8925A}  % mimbre canasta
+\providecolor{canastadark} {HTML}{A9743F}
+
+% --- fondo/escena ---
+\providecolor{escpared}    {HTML}{FCF4E2}  % pared crema (combina con el video)
+\providecolor{escpiso}     {HTML}{EFE1C4}  % piso
+\providecolor{esczocalo}   {HTML}{E4D2A6}
+\providecolor{banqcol}     {HTML}{D9E3EC}  % columnas banco
+\providecolor{banqcoldark} {HTML}{BFCEDC}
+\providecolor{banqarco}    {HTML}{C7D6E4}
+\providecolor{merctoldoA}  {HTML}{D9694E}  % toldo rojo
+\providecolor{merctoldoB}  {HTML}{FBF1DC}  % toldo crema
+\providecolor{mercmadera}  {HTML}{C8925A}  % madera del puesto
+\providecolor{mercmaddark} {HTML}{A9743F}
+\providecolor{fincacielo}  {HTML}{CDE7F0}  % cielo
+\providecolor{fincapasto}  {HTML}{9FCB6B}  % pasto
+\providecolor{fincapastod} {HTML}{7FB050}
+\providecolor{fincasol}    {HTML}{F6C64B}  % sol
+\providecolor{fincamata}   {HTML}{6BA83C}
+
+% FRAME CANONICO (capibara + trajes) — simetrico en x; contiene sombreros altos
+% (hasta y~2.05) y la alcancia lateral (hasta x~2.65).
+\newcommand{\capiframe}{\useasboundingbox (-2.75,-2.10) rectangle (2.75,2.25);}

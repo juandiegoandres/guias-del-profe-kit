@@ -1,0 +1,144 @@
+% =====================================================================
+%  TEMA · ECONOMÍA — variante del design system (BEAMER 16:9)
+%  Identidad propia para la serie del capibara "Capi":
+%    · color base ÍNDIGO (\setsubject{eco})
+%    · acento DORADO capidólar (solo ornamento) + íconos de monedas/gráfica
+%    · chips de dinero/valor
+%    · FIX del bug de preflight §5/§6: las láminas a sangre del design
+%      system (\portada \seccion \idea \pregunta \accion) usan
+%      remember picture + current page y salen corridas con
+%      compile_quiet.sh. Aquí se redefinen con background canvas +
+%      coordenadas absolutas (técnica probada del tema cnat).
+%    · footline SIN sigla institucional (material genérico): profe · tema · nº
+%
+%  INVOCACIÓN (tras \input{design/beamer.tex}):
+%     \input{design/tema-eco-beamer.tex}
+% =====================================================================
+
+\usepackage{fontawesome5}         % \faCoins \faChartLine \faBalanceScale ...
+% --- FIX bug de "opciones/colores impresos como texto" (preflight §3/§4) -----
+%  beamer carga xcolor SIN [table] → colortbl ausente → \rowcolor{eco!12} sale
+%  literal ("eco!12Variable"). Y beamer NO trae enumitem → itemize[opciones]
+%  imprime el "[leftmargin=...]" como texto. Se cargan aquí (ambos ya viven en
+%  design/preamble.tex para las guías; el design system Beamer no los tenía).
+\usepackage{lmodern}              % math Latin Modern ESCALABLE (design system dice
+                                  %   "math en Latin Modern"): sin lmodern, el math
+                                  %   CM solo existe en tamaños fijos → avisos
+                                  %   "Font shape ... not available in size <NN>" al
+                                  %   usar math a tamaños Display. Con lmodern: 0 avisos.
+\usepackage{colortbl}             % habilita \rowcolor/\columncolor con tintes !NN
+\usepackage{enumitem}             % habilita itemize/enumerate[clave=valor]
+\setlist{leftmargin=1.4em, itemsep=3pt, topsep=2pt}  % listas más aireadas por defecto
+
+% \DisplaySB (Inter Display SemiBold) no trae miembro BOLD y fontspec no lo
+% autodetecta para un nombre de peso específico → \textbf dentro de \idea/\chipf
+% avisa "TU/InterDisplaySemiBold/b/n undefined". Le damos un BoldFont explícito
+% (la misma SemiBold: el énfasis ya es grande, sin cambio visual) → 0 avisos.
+\renewfontfamily\DisplaySB{Inter Display SemiBold}[Ligatures=TeX,
+  BoldFont={Inter Display SemiBold}]
+
+\setsubject{eco}                  % índigo RGB(70,55,130)
+\definecolor{ecooro}{RGB}{210,166,60}     % dorado capidólar (solo ornamento)
+
+% --- Chips para notación de dinero/valor (no usan \MakeUppercase) ------
+\newcommand{\chip}[1]{\tikz[baseline=(c.base)]{\node[fill=subjectcolor!15,
+  rounded corners=2.5pt, inner xsep=5pt, inner ysep=2pt,
+  font=\DisplaySB](c){#1};}}
+\newcommand{\chipf}[1]{\tikz[baseline=(c.base)]{\node[fill=subjectcolor,
+  text=white, rounded corners=2.5pt, inner xsep=5pt, inner ysep=2pt,
+  font=\DisplaySB](c){#1};}}
+
+% Titulares grandes NO deben partir palabras (queda feo en video/proyección).
+% OJO (preflight): dentro de nodos TikZ con `text width`, subir \hyphenpenalty
+% NO evita la hipernación. Lo que SÍ funciona es anular el guion del font ACTIVO
+% con \hyphenchar\font=-1 DESPUÉS del \selectfont del tamaño usado → \nh.
+\newcommand{\nohyf}{\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}
+\newcommand{\nh}{\hyphenchar\font=-1\relax}
+
+% --- FOOTLINE sin institución (solo profe · tema · número) -------------
+\setbeamertemplate{footline}{%
+  \hbox{}\vspace{2pt}\hspace{0.6em}%
+  {\footnotesize\color{ink!45}\bmrprofe}%
+  \hfill{\footnotesize\color{ink!45}\bmrtema}\hspace{0.6em}%
+  \tikz[baseline=-3pt]{\node[fill=subjectcolor, text=white, inner xsep=6pt,
+     inner ysep=2.5pt, font=\DisplaySB\scriptsize]{\insertframenumber};}%
+  \hspace{0.6em}\vspace{4pt}}
+
+% =====================================================================
+%  LÁMINAS A SANGRE — redefinidas con background canvas (fix + economía)
+% =====================================================================
+
+% --- PORTADA: monedas tenues arriba-derecha como marca económica ------
+\renewcommand{\portada}[3]{% {kicker}{TÍTULO}{subtítulo}
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[paper] (0,0) rectangle (\paperwidth,\paperheight);
+    \node[text=ecooro!30, anchor=north east]
+      at (\paperwidth-0.15,\paperheight+0.15)
+      {\fontsize{140}{140}\selectfont\faCoins};
+    \node[text=ink, align=left, text width=0.80\paperwidth]
+      at (\paperwidth*0.5,\paperheight*0.5) {\nohyf%
+        {\DisplaySB\Large\nh\color{subjectcolor}\faPiggyBank\enspace #1}\\[0.5em]
+        {\DisplayBlk\fontsize{36}{40}\selectfont\nh #2}\\[0.7em]
+        {\color{subjectcolor}\rule{3.2cm}{0.16cm}}\\[0.6em]
+        {\Display\nh\color{ink!60} #3}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- SECCIÓN (divisor): moneda tenue en la esquina inferior -----------
+\renewcommand{\seccion}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,0) rectangle (\paperwidth,\paperheight);
+    \node[text=white!22, anchor=south west]
+      at (0.35,0.25) {\fontsize{100}{100}\selectfont\faCoins};
+    \node[text=white, font=\DisplaySB, align=center, text width=0.85\paperwidth]
+      at (\paperwidth*0.5,\paperheight*0.5) {\nohyf\fontsize{28}{34}\selectfont\nh #1};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- IDEA: afirmación gigante con filete índigo superior --------------
+\renewcommand{\idea}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[paper] (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,\paperheight-0.32) rectangle (\paperwidth,\paperheight);
+    \node[text=ink, font=\DisplaySB, align=center, text width=0.82\paperwidth]
+      at (\paperwidth*0.5,\paperheight*0.5) {\nohyf\fontsize{28}{44}\selectfont\nh #1};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- PREGUNTA VIVA: barra índigo lateral + signos de interrogación -----
+\renewcommand{\pregunta}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor!7] (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,0) rectangle (0.42,\paperheight);
+    \node[anchor=west, text=ink, align=left, text width=0.74\paperwidth]
+      at (1.5,\paperheight*0.5) {\nohyf%
+        {\color{subjectcolor}\DisplayBlk\fontsize{40}{40}\selectfont ¿}\\[0.1em]
+        {\Display\fontsize{22}{34}\selectfont\nh #1}\\[0.15em]
+        {\color{subjectcolor}\DisplayBlk\fontsize{30}{30}\selectfont ?}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- ACCIÓN / cierre --------------------------------------------------
+\renewcommand{\accion}[2][EN CORTO]{%
+{\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor!10] (0,0) rectangle (\paperwidth,\paperheight);
+    \node[anchor=west, align=left, text width=0.82\paperwidth]
+      at (1,\paperheight*0.5) {\nohyf%
+        {\DisplaySB\large\nh\color{subjectcolor}\faCoins\enspace #1}\\[0.7em]
+        {\nohyf\Display\fontsize{19}{26}\selectfont\nh\color{ink} #2}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}

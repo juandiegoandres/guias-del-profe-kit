@@ -1,0 +1,16 @@
+% Driver standalone — tendencia: ENERGÍA DE IONIZACIÓN.
+%   ./compile_quiet.sh assets/svg-src/tabla-periodica/tendencia_ei_std.tex tendencia_ei assets/imgs/tabla-periodica
+%   dvisvgm --pdf --no-fonts -o assets/svg-src/tabla-periodica/tendencia_ei.svg assets/imgs/tabla-periodica/tendencia_ei.pdf
+\documentclass[border=6pt]{standalone}
+\usepackage{fontspec}
+\setsansfont{Inter}[UprightFont=Inter-Regular, BoldFont=Inter-SemiBold,
+  ItalicFont=Inter-Italic]
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc, arrows.meta, positioning}
+\usepackage{etoolbox}
+\usepackage{amsmath}
+\input{tikzlib/ciencias/tabla_periodica.tex}
+\begin{document}
+\pttendencia{ei}
+\end{document}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round">
+  <!-- cilindro (paredes, abierto arriba) -->
+  <path d="M16 8 V54 H48 V8" />
+  <!-- vastago del piston (sube fuera del cilindro) -->
+  <rect x="29" y="4" width="6" height="26" fill="currentColor" stroke="none" />
+  <!-- cabeza del piston -->
+  <rect x="18" y="28" width="28" height="8" rx="1.5" fill="currentColor" stroke="none" />
+  <!-- camara de gas caliente (debajo del piston) -->
+  <path d="M18 40 H46 M18 46 H46" stroke-width="2" opacity="0.6" />
+</svg>

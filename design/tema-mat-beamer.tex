@@ -1,0 +1,118 @@
+% =====================================================================
+%  TEMA · MATEMÁTICAS — variante del design system (BEAMER 16:9)
+%  Identidad para decks de matemáticas (azul \setsubject{mat}):
+%    · FIX del bug de preflight §5/§6: las láminas a sangre del design
+%      system (\portada \seccion \idea \pregunta \accion) usan
+%      remember picture + current page y salen CORRIDAS hacia arriba con
+%      compile_quiet.sh. Aquí se redefinen con `background canvas` +
+%      coordenadas absolutas (misma técnica probada del tema eco/cnat).
+%    · carga lmodern/colortbl/enumitem (que design/beamer.tex no trae) para
+%      math escalable en titulares, \rowcolor en tablas y itemize[clave=valor].
+%    · \DisplaySB con BoldFont explícito → \textbf dentro de \idea no avisa.
+%    · portada con el personaje "Dr. Cuack" matemático (opcional; se dibuja
+%      solo si existe el PNG).
+%
+%  INVOCACIÓN (tras \input{design/beamer.tex}):
+%     \input{design/beamer.tex}
+%     \input{design/tema-mat-beamer.tex}
+% =====================================================================
+
+\usepackage{fontawesome5}         % \faLightbulb \faCheckCircle ...
+\usepackage{lmodern}              % math Latin Modern ESCALABLE (titulares con math)
+\usepackage{colortbl}             % \rowcolor con tintes !NN (beamer no trae colortbl)
+\usepackage{enumitem}             % itemize/enumerate[clave=valor]
+\setlist{leftmargin=1.4em, itemsep=3pt, topsep=2pt}
+
+% \DisplaySB (peso, no familia) no autodetecta BOLD → \textbf avisa. BoldFont explícito.
+\renewfontfamily\DisplaySB{Inter Display SemiBold}[Ligatures=TeX,
+  BoldFont={Inter Display SemiBold}]
+
+\setsubject{mat}                  % azul RGB(30,64,120)
+
+% Titulares grandes NO deben partir palabras. Dentro de nodos TikZ con `text
+% width`, subir \hyphenpenalty NO basta: se anula el guion del font ACTIVO con
+% \hyphenchar\font=-1 DESPUÉS del \selectfont del tamaño usado → \nh.
+\newcommand{\nohyf}{\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}
+\newcommand{\nh}{\hyphenchar\font=-1\relax}
+
+% Ruta al personaje (se puede sobreescribir por deck con \renewcommand)
+\newcommand{\drcuack}{assets/personaje/calcado/png/dr-cuack-matematico.png}
+
+% =====================================================================
+%  LÁMINAS A SANGRE — redefinidas con background canvas (fix §5/§6)
+% =====================================================================
+
+% --- PORTADA: texto a la izquierda + Dr. Cuack a la derecha -----------
+\renewcommand{\portada}[3]{% {kicker}{TÍTULO}{subtítulo}
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[paper] (0,0) rectangle (\paperwidth,\paperheight);
+    \IfFileExists{\drcuack}{%
+      \node[anchor=east] at (\paperwidth-0.7,\paperheight*0.46)
+        {\includegraphics[height=0.62\paperheight]{\drcuack}};}{}%
+    \node[anchor=west, text=ink, align=left, text width=0.56\paperwidth]
+      at (1.15,\paperheight*0.5) {\nohyf%
+        {\DisplaySB\Large\nh\color{subjectcolor} #1}\\[0.5em]
+        {\DisplayBlk\fontsize{36}{40}\selectfont\nh #2}\\[0.7em]
+        {\color{subjectcolor}\rule{3.2cm}{0.16cm}}\\[0.6em]
+        {\Display\nh\color{ink!60} #3}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- SECCIÓN (divisor): frase blanca centrada sobre azul ---------------
+\renewcommand{\seccion}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,0) rectangle (\paperwidth,\paperheight);
+    \node[text=white!20, anchor=south west]
+      at (0.4,0.3) {\fontsize{110}{110}\selectfont\(\times\)};
+    \node[text=white, font=\DisplaySB, align=center, text width=0.85\paperwidth]
+      at (\paperwidth*0.5,\paperheight*0.5) {\nohyf\fontsize{28}{36}\selectfont\nh #1};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- IDEA: afirmación gigante con filete azul superior ----------------
+\renewcommand{\idea}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[paper] (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,\paperheight-0.32) rectangle (\paperwidth,\paperheight);
+    \node[text=ink, font=\DisplaySB, align=center, text width=0.82\paperwidth]
+      at (\paperwidth*0.5,\paperheight*0.5) {\nohyf\fontsize{28}{44}\selectfont\nh #1};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- PREGUNTA VIVA: barra azul lateral + signos de interrogación -------
+\renewcommand{\pregunta}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor!7] (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,0) rectangle (0.42,\paperheight);
+    \node[anchor=west, text=ink, align=left, text width=0.74\paperwidth]
+      at (1.5,\paperheight*0.5) {\nohyf%
+        {\color{subjectcolor}\DisplayBlk\fontsize{40}{40}\selectfont ¿}\\[0.1em]
+        {\Display\fontsize{22}{34}\selectfont\nh #1}\\[0.15em]
+        {\color{subjectcolor}\DisplayBlk\fontsize{30}{30}\selectfont ?}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- ACCIÓN / cierre --------------------------------------------------
+\renewcommand{\accion}[2][EN CORTO]{%
+{\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor!10] (0,0) rectangle (\paperwidth,\paperheight);
+    \node[anchor=west, align=left, text width=0.82\paperwidth]
+      at (1,\paperheight*0.5) {\nohyf%
+        {\DisplaySB\large\nh\color{subjectcolor}\faCheckCircle\enspace #1}\\[0.7em]
+        {\nohyf\Display\fontsize{19}{26}\selectfont\nh\color{ink} #2}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}

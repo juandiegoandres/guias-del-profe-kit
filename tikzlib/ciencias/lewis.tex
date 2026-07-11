@@ -1,0 +1,117 @@
+% =====================================================================
+%  tikzlib · ciencias/lewis — puntos de Lewis, enlaces y esquemas de enlace
+%  Autor: lote videos 6-7 (química 9º). Recurso ORIGINAL (sin dependencias
+%  externas) → apto para exportar a SVG (pdftocairo) y animar en Manim.
+%  Requiere: \usepackage{tikz} + \usetikzlibrary{calc}
+%
+%  PRIMITIVAS
+%    \lewisdot{x}{y}                 un electrón (punto lleno) en (x,y)
+%    \lewissym{S}{n}                 símbolo de Lewis: S con n e- de valencia
+%                                    (1..8), reparte 1 por lado y luego aparea
+%
+%  MOLÉCULAS (dentro de una tikzpicture con nodos ya colocados)
+%    \lonepair{ang}{nodo}           par libre: 2 puntos a distancia, en 'ang°'
+%    \lwsingle{A}{B}                enlace simple  A—B
+%    \lwdouble{A}{B}                enlace doble   A=B   (bonos horizontales)
+%    \lwtriple{A}{B}                enlace triple  A≡B   (bonos horizontales)
+%    \shpair{A}{B}                  par compartido: 2 puntos en el punto medio
+%
+%  ESQUEMAS DE ENLACE (auto-contenidos: dibújalos en su tikzpicture)
+%    \marelectrones                 "mar de electrones" (metálico): rejilla de
+%                                   cationes + e- libres dispersos
+%    \redionica                     red iónica NaCl (cationes/aniones alternos)
+%
+%  Preview: se exportan versiones SVG en assets/svg-src/quimica/
+% =====================================================================
+
+% --- un electrón ------------------------------------------------------
+\newcommand{\lewisdot}[2]{\fill[ink] (#1,#2) circle (1.7pt);}
+
+% distancia del punto al centro del símbolo y media-separación del par
+\def\lwR{0.44}
+\def\lwP{0.15}
+
+% --- símbolo de Lewis: S con n electrones de valencia (1..8) ----------
+\newcommand{\lewissym}[2]{%
+\begin{tikzpicture}[baseline=(sym.base)]
+  \node[font=\sffamily\large\bfseries, inner sep=1pt, text=ink] (sym) at (0,0) {#1};
+  \pgfmathtruncatemacro{\lwn}{#2}%
+  % derecha (electrones 1 y 5)
+  \ifnum\lwn>4 \lewisdot{\lwR}{\lwP}\lewisdot{\lwR}{-\lwP}%
+  \else\ifnum\lwn>0 \lewisdot{\lwR}{0}\fi\fi
+  % arriba (2 y 6)
+  \ifnum\lwn>5 \lewisdot{\lwP}{\lwR}\lewisdot{-\lwP}{\lwR}%
+  \else\ifnum\lwn>1 \lewisdot{0}{\lwR}\fi\fi
+  % izquierda (3 y 7)
+  \ifnum\lwn>6 \lewisdot{-\lwR}{\lwP}\lewisdot{-\lwR}{-\lwP}%
+  \else\ifnum\lwn>2 \lewisdot{-\lwR}{0}\fi\fi
+  % abajo (4 y 8)
+  \ifnum\lwn>7 \lewisdot{\lwP}{-\lwR}\lewisdot{-\lwP}{-\lwR}%
+  \else\ifnum\lwn>3 \lewisdot{0}{-\lwR}\fi\fi
+\end{tikzpicture}}
+
+% --- par libre sobre un nodo, a distancia, en dirección 'ang' grados --
+% Dos puntos que flanquean la línea radial (perpendicular al radio).
+\newcommand{\lonepair}[2]{%
+  \coordinate (lpc) at ($(#2)+(#1:0.46)$);
+  \fill[ink] ($(lpc)+(#1+90:0.10)$) circle (1.6pt);
+  \fill[ink] ($(lpc)+(#1-90:0.10)$) circle (1.6pt);}
+
+% --- enlaces (bonos horizontales para dobles/triples) -----------------
+% transform canvas conserva el recorte en el borde del nodo (el enlace queda
+% en el HUECO entre las letras) y separa las líneas paralelas del doble/triple.
+\newcommand{\lwsingle}[2]{\draw[line width=1.1pt, ink] (#1)--(#2);}
+\newcommand{\lwdouble}[2]{%
+  \draw[line width=1.1pt, ink, transform canvas={yshift=3pt}] (#1)--(#2);
+  \draw[line width=1.1pt, ink, transform canvas={yshift=-3pt}] (#1)--(#2);}
+\newcommand{\lwtriple}[2]{%
+  \draw[line width=1.1pt, ink, transform canvas={yshift=5pt}] (#1)--(#2);
+  \draw[line width=1.1pt, ink] (#1)--(#2);
+  \draw[line width=1.1pt, ink, transform canvas={yshift=-5pt}] (#1)--(#2);}
+
+% --- par de electrones compartido (2 puntos en el punto medio A-B) ----
+\newcommand{\shpair}[2]{%
+  \coordinate (shm) at ($(#1)!0.5!(#2)$);
+  \fill[ink] ($(shm)+(0,0.08)$) circle (1.6pt);
+  \fill[ink] ($(shm)+(0,-0.08)$) circle (1.6pt);}
+
+% =====================================================================
+%  ESQUEMA · MAR DE ELECTRONES (enlace metálico)
+%  Rejilla de cationes (+) fijos + electrones deslocalizados dispersos.
+% =====================================================================
+% Rellenos PLANOS (sin gradientes) → aptos para exportar a SVG/SVGMobject.
+\newcommand{\marelectrones}{%
+\begin{tikzpicture}[scale=1]
+  % cationes en rejilla 4x3
+  \foreach \x in {0,1,2,3}{
+    \foreach \y in {0,1,2}{
+      \fill[subjectcolor!70] (\x*1.15,\y*1.15) circle (0.30);
+      \draw[subjectcolor!85, line width=0.6pt] (\x*1.15,\y*1.15) circle (0.30);
+      \node[font=\sffamily\bfseries\small, text=white] at (\x*1.15,\y*1.15) {+};
+    }}
+  % electrones deslocalizados (entre los cationes)
+  \foreach \p in {(0.55,0.55),(1.75,0.4),(2.9,0.7),(0.4,1.75),(1.65,1.6),
+                  (2.75,1.8),(3.4,1.2),(1.1,1.15),(2.25,1.15),(0.55,-0.05),
+                  (2.3,0.05),(3.5,2.3)}{
+    \fill[cnatlima] \p circle (0.085);}
+\end{tikzpicture}}
+
+% =====================================================================
+%  ESQUEMA · RED IÓNICA (tipo NaCl)  cationes (+) y aniones (-) alternos
+% =====================================================================
+\newcommand{\redionica}{%
+\begin{tikzpicture}[scale=1]
+  \foreach \x in {0,1,2,3}{
+    \foreach \y in {0,1,2,3}{
+      \pgfmathtruncatemacro{\sum}{\x+\y}%
+      \ifodd\sum
+        \fill[cnatlima!80] (\x*1.05,\y*1.05) circle (0.34)
+          node[font=\sffamily\bfseries\scriptsize, text=ink]{Cl$^-$};
+      \else
+        \fill[subjectcolor!75] (\x*1.05,\y*1.05) circle (0.24)
+          node[font=\sffamily\bfseries\tiny, text=white]{Na$^+$};
+      \fi
+    }}
+  % líneas de red tenues
+  \draw[subjectcolor!25, line width=0.5pt] (0,0) grid[step=1.05] (3*1.05,3*1.05);
+\end{tikzpicture}}

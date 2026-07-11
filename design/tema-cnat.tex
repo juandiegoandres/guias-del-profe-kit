@@ -1,0 +1,46 @@
+% =====================================================================
+%  TEMA · CIENCIAS NATURALES — variante del design system (GUÍAS)
+%  Identidad visual propia, distinta de Matemáticas (azul/pizarra):
+%    · color base ESMERALDA (\setsubject{cnat})
+%    · acento LIMA orgánico solo para ornamentos (no rompe la regla de
+%      "un solo color de asignatura")
+%    · iconografía de ciencias (hoja · ADN · matraz · átomo)
+%    · reutiliza las cajas de ciencia que ya trae el preamble:
+%      \begin{laboratorio}, \begin{sabias}, \begin{cienciasociedad}
+%
+%  Sirve a futuro para BIOLOGÍA, QUÍMICA y FÍSICA EXPERIMENTAL.
+%
+%  INVOCACIÓN (una sola línea, tras \input{design/preamble.tex}):
+%     \input{design/tema-cnat.tex}
+%  El doc puede seguir personalizando \hdrcapitulo, \seccionkicker, etc.
+% =====================================================================
+
+% --- Color base de la asignatura --------------------------------------
+\setsubject{cnat}                 % esmeralda RGB(16,110,80)
+
+% Acento LIMA orgánico — SOLO ornamentos (hoja, filete). Nunca contenido:
+% la regla "un solo color de asignatura" se mantiene intacta.
+\definecolor{cnatlima}{RGB}{124,169,60}
+
+% --- Iconografía semántica de ciencias (fontawesome5, ya cargado) -----
+\newcommand{\icobio}{{\color{subjectcolor}\faLeaf}}     % biología
+\newcommand{\icoquim}{{\color{subjectcolor}\faFlask}}   % química
+\newcommand{\icofis}{{\color{subjectcolor}\faAtom}}     % física
+\newcommand{\icogen}{{\color{subjectcolor}\faDna}}      % genética
+
+% --- Kicker temático por defecto (el documento puede renovarlo) -------
+\renewcommand{\seccionkicker}{\faLeaf\enspace Ciencias Naturales}
+
+% --- Nombre científico: género + especie en itálica + nombre común ----
+%   \especie{Pisum}{sativum}{arveja}  ->  *Pisum sativum* (arveja)
+\newcommand{\especie}[3]{\textit{#1 #2}\ (#3)}
+
+% --- Genotipo en línea: preserva mayúsculas/minúsculas de los alelos ---
+%   \genotipo{Aa}  (NUNCA aplicar \MakeUppercase: borraría dominante/recesivo)
+\newcommand{\genotipo}[1]{{\sffamily\bfseries\color{subjectcolor}#1}}
+
+% --- Filete orgánico con hoja: cierre decorativo opcional de bloque ----
+\newcommand{\filetehoja}{%
+  \par\vspace{0.4em}\noindent
+  {\color{cnatlima}\faLeaf}\hspace{0.3em}%
+  {\color{subjectcolor!35}\rule[0.35ex]{0.86\linewidth}{0.7pt}}\par}

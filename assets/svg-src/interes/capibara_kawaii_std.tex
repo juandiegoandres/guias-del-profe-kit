@@ -1,0 +1,15 @@
+% Driver standalone — Capibara kawaii ORIGINAL (obra propia, CC0).
+% Compilar desde la raiz del kit:
+%   ./compile_quiet.sh assets/svg-src/interes/capibara_kawaii_std.tex capibara_kawaii assets/imgs/interes
+% Export SVG (paths, sin fuentes -> apto SVGMobject de Manim):
+%   pdftocairo -svg assets/imgs/interes/capibara_kawaii.pdf assets/svg-src/interes/capibara_kawaii.svg
+\documentclass[border=8pt]{standalone}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\input{tikzlib/interes/capibara_kawaii.tex}
+\begin{document}
+\begin{tikzpicture}
+  \capibarakawaii
+\end{tikzpicture}
+\end{document}

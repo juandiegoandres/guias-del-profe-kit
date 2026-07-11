@@ -1,0 +1,77 @@
+% ============================================================================
+% naranjas.tex  —  NARANJAS = dinero (obra propia, CC0)
+% ----------------------------------------------------------------------------
+% La "moneda que crece" de la serie. Plano, tierno, recoloreable, apto SVGMobject.
+% Requiere: \input{assets/svg-src/interes/_estilo_interes.tex}
+%
+% Uso:
+%   \naranjaunit           % una naranja (unidad monetaria), centrada en (0,0), r~0.5
+%   \naranjaunit[esc]      % --- ver macro \naranjaen para colocar/escalar ---
+%   \naranjaen{x}{y}{s}    % una naranja en (x,y) escalada s (para armar pilas)
+%   \naranjapila           % PILA/monton (piramide de 10) -> "muchas"
+%   \naranjacanasta        % canasta/saco lleno de naranjas
+%
+% NARANJA UNIDAD: circulo naranja + brillo + ombligo (estrellita) + hoja.
+% Diametro ~1.0 (radio 0.5). Recolorear: \colorlet{naranjafill}{...}.
+% ============================================================================
+
+% --- una naranja centrada en (cx,cy), escala s (1 = radio 0.5) ---
+\newcommand{\naranjaen}[3]{%
+  \begin{scope}[shift={(#1,#2)}, scale=#3]
+    \path[capilineaf, fill=naranjafill] (0,0) circle[radius=0.50];
+    % gajo/sombra inferior
+    \path[fill=naranjadark] (0,-0.06) circle[radius=0.44];
+    \path[fill=naranjafill] (0,0.02) circle[radius=0.44];
+    % ombligo (estrellita) arriba, hacia la hoja
+    \path[fill=naranjadark] (0.00,0.34) circle[radius=0.05];
+    % brillo
+    \path[fill=vueltiaobase] (-0.20,0.18) ellipse[x radius=0.12, y radius=0.16];
+    % hoja
+    \path[capilineaf, fill=hojaverde]
+        (0.06,0.44) .. controls (0.30,0.70) and (0.02,0.72) .. (-0.06,0.50)
+        .. controls (-0.02,0.58) and (0.10,0.56) .. (0.06,0.44) -- cycle;
+    \draw[capilineaf, draw=hojadark] (0.02,0.48) -- (0.14,0.62);
+  \end{scope}
+}
+
+% --- una naranja unidad centrada (comodin) ---
+\newcommand{\naranjaunit}{\naranjaen{0}{0}{1}}
+
+% --- PILA / MONTON: piramide de 10 naranjas (4-3-2-1) = "muchas" ---
+%   Base ancha, crece hacia arriba: ideal para "1 -> varias -> muchas".
+%   Centrada en x=0; base en y~-0.55. Dibuja de atras hacia adelante.
+\newcommand{\naranjapila}{%
+  \begin{scope}
+    % fila 4 (base)
+    \naranjaen{-1.35}{-0.55}{0.9}\naranjaen{-0.45}{-0.55}{0.9}%
+    \naranjaen{ 0.45}{-0.55}{0.9}\naranjaen{ 1.35}{-0.55}{0.9}%
+    % fila 3
+    \naranjaen{-0.90}{ 0.20}{0.9}\naranjaen{ 0.00}{ 0.20}{0.9}%
+    \naranjaen{ 0.90}{ 0.20}{0.9}%
+    % fila 2
+    \naranjaen{-0.45}{ 0.95}{0.9}\naranjaen{ 0.45}{ 0.95}{0.9}%
+    % fila 1 (cima)
+    \naranjaen{ 0.00}{ 1.70}{0.9}%
+  \end{scope}
+}
+
+% --- CANASTA / SACO de naranjas (montoncito rebosante en canasta de mimbre) ---
+\newcommand{\naranjacanasta}{%
+  \begin{scope}
+    % naranjas asomando por atras del borde
+    \naranjaen{-0.62}{0.30}{0.85}\naranjaen{0.00}{0.52}{0.9}%
+    \naranjaen{ 0.66}{0.30}{0.85}\naranjaen{-0.20}{0.66}{0.6}%
+    \naranjaen{ 0.30}{0.66}{0.6}%
+    % cuerpo de la canasta (trapecio redondeado)
+    \path[capilinea, fill=canastamimb]
+        (-1.15,0.30) -- (1.15,0.30) -- (0.92,-1.02) -- (-0.92,-1.02) -- cycle;
+    % borde superior
+    \path[capilinea, fill=canastadark] (0,0.30) ellipse[x radius=1.15, y radius=0.22];
+    \path[fill=canastamimb] (0,0.34) ellipse[x radius=1.02, y radius=0.15];
+    % tejido (lineas de mimbre)
+    \draw[capilineaf, draw=canastadark] (-0.98,-0.10) -- (0.98,-0.10);
+    \draw[capilineaf, draw=canastadark] (-0.90,-0.52) -- (0.90,-0.52);
+    \foreach \x in {-0.7,-0.35,0,0.35,0.7}
+      \draw[capilineaf, draw=canastadark] (\x,0.28) -- (\x,-1.00);
+  \end{scope}
+}

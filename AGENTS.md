@@ -140,14 +140,65 @@ Reglas del paquete:
   lee `knowledge/zapialab-estilo.md` — fija tono hacker, regla del semáforo
   🔴🟡🟢, caja Tech English y evaluación por diseño lógico.
 
+### Temas de asignatura (variantes visuales)
+
+Un tema le da a un área una **identidad propia** (color + iconografía + cajas),
+más allá de solo cambiar `\setsubject`. Se activan con **una línea** tras cargar
+el design base:
+
+- **Ciencias Naturales** (esmeralda + hoja/ADN/matraz, distinto del azul de Mat):
+  - Guías:  `\input{design/preamble.tex}` → `\input{design/tema-cnat.tex}`
+  - Beamer: `\input{design/beamer.tex}`   → `\input{design/tema-cnat-beamer.tex}`
+  - Sirve para biología, química y física experimental. Reutiliza las cajas de
+    ciencia del preamble (`laboratorio`, `sabias`, `cienciasociedad`) y añade
+    `\especie{Género}{especie}{común}`, `\genotipo{Aa}`, iconos `\icobio/\icoquim/
+    \icofis/\icogen` y (en Beamer) chips `\chip{}`/`\chipf{}` para genotipos.
+  - El tema Beamer además **corrige el bug de láminas a sangre** (preflight §5/§6)
+    redefiniendo `\portada/\seccion/\idea/\pregunta/\accion` con background canvas.
+  - Muestra: `examples/ejemplo_cnat.tex`. Paquete de ejemplo: genética mendeliana
+    en `material/8/ciencias/genetica-mendeliana/`.
+  - Al crear un tema nuevo (p. ej. Sociales), clónalo como `design/tema-<asig>.tex`
+    y regístralo aquí.
+
+- **Matemáticas** (azul `\setsubject{mat}`) — solo variante **Beamer**:
+  - Beamer: `\input{design/beamer.tex}` → `\input{design/tema-mat-beamer.tex}`.
+    Aplica el **fix de láminas a sangre** (preflight §5/§6) redefiniendo
+    `\portada/\seccion/\idea/\pregunta/\accion` con `background canvas` + coords
+    absolutas, y carga `lmodern/colortbl/enumitem` (que `design/beamer.tex` no trae)
+    para **math escalable en titulares**, `\rowcolor` en tablas e `itemize[clave=valor]`.
+    La `\portada` incluye al personaje **Dr. Cuack** matemático
+    (`assets/personaje/calcado/png/dr-cuack-matematico.png`; se dibuja solo si existe).
+  - Paquete de ejemplo (9.º, factorización · guía del profe + taller + Beamer):
+    `material/9/matematicas/factorizacion/`.
+
+- **Economía / serie «Capi»** (índigo + acento dorado capidólar, íconos de
+  monedas, personaje capibara):
+  - Beamer: `\input{design/beamer.tex}` → `\input{design/tema-eco-beamer.tex}`.
+    Aplica el **fix de láminas a sangre** (preflight §5/§6) con `background canvas`,
+    un **footline SIN sigla institucional** (material genérico) y el helper `\nh`
+    (`\hyphenchar\font=-1`) que evita que los titulares partan palabras.
+  - Assets del mundo Capi en `assets/{svg-src,imgs}/interes/` (capibara en varios
+    looks, capidólares = dinero, naranjas = bienes). Se enrutan por **un solo
+    punto** (`\artdir`) en `material/10-11/economia/_serie_capi.tex` para poder
+    intercambiar el personaje (p. ej. memoji) sin tocar los documentos.
+  - Paquete de ejemplo (10°-11°, 5 bloques × Beamer + guía del estudiante):
+    `material/10-11/economia/` (interes · simple-compuesto · inflacion ·
+    macro-civica · oferta-demanda). El bloque cívico es **neutral/apartidista**.
+
 ---
 
 ## Figuras (tikzlib) y galería
 
 - **Antes de dibujar una figura, busca en `tikzlib/`** (catálogo en
-  `tikzlib/README.md`). Si existe (Punnett, Möller, orbitales, iconos…), **reúsala**
-  en vez de regenerarla: `\input{tikzlib/<cat>/<fig>.tex}` si el documento vive en
-  el kit, o **copia el snippet** si es un `.tex` suelto para compartir.
+  `tikzlib/README.md`). Si existe (Punnett, Möller, orbitales, **tabla periódica**,
+  iconos…), **reúsala** en vez de regenerarla: `\input{tikzlib/<cat>/<fig>.tex}` si
+  el documento vive en el kit, o **copia el snippet** si es un `.tex` suelto para
+  compartir.
+- **Tabla periódica** (`tikzlib/ciencias/tabla_periodica.tex`): 118 elementos por
+  familia + leyenda, parametrizable (`\tablaperiodica[resaltar={..},atenuar]`) y con
+  tendencias (`\pttendencia{radio|ei|en}`). Exportada a **SVG apto `SVGMobject`**
+  (paths, sin fuentes) en `assets/svg-src/tabla-periodica/` — la reusa
+  ciencias-animador en Manim. PDFs vectoriales en `assets/imgs/tabla-periodica/`.
 - Si creas una figura nueva reutilizable, **añádela a `tikzlib/`** (macro + cabecera
   con requisitos + preview) y al catálogo. Así la librería crece.
 - En **`gallery/`** hay diseños de la comunidad por categoría. Puedes ofrecer al

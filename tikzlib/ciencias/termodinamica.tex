@@ -1,0 +1,290 @@
+% =====================================================================
+%  tikzlib/ciencias/termodinamica.tex — Figuras de TERMODINÁMICA (Física 8°)
+%  Reutilizables en guías (design/preamble.tex) y Beamer (design/beamer.tex).
+%
+%  REQUISITOS (ya presentes en ambos preambles):
+%     \usepackage{tikz}
+%     \usetikzlibrary{calc, arrows.meta, positioning}
+%  COLOR: usa \color{subjectcolor} para el acento del área (esmeralda en CNAT)
+%         y define localmente 'calido' (rojo) / 'frio' (azul) / 'tibio'.
+%
+%  Catálogo de macros (todas sin argumentos, listas para \input + usar):
+%     \termometros        — 3 escalas °C · K · °F comparadas (termómetros)
+%     \transfcalor        — conducción · convección · radiación (3 paneles)
+%     \teoriacinetica     — caja de partículas: los choques = presión
+%     \graficaboyle       — P–V (hipérbola, T constante)
+%     \graficacharles     — V–T (recta al cero absoluto, P constante)
+%     \graficagaylussac   — P–T (recta, V constante)
+%     \motorcuatrotiempos — ciclo Otto: admisión·compresión·explosión·escape
+%     \maquinatermica     — foco caliente → máquina (W) → foco frío
+%     \lineatiempotermo   — línea de tiempo de la termodinámica (1593–1876)
+%     \mapatermo          — mapa conceptual de las 3 unidades
+% =====================================================================
+
+% --- Paleta didáctica (coincide con los videos): rojo=caliente, azul=frío
+\definecolor{calido}{RGB}{200,60,40}
+\definecolor{frio}{RGB}{40,90,175}
+\definecolor{tibio}{RGB}{224,150,40}
+\definecolor{humo}{RGB}{130,130,138}
+
+% =====================================================================
+%  \termometros — tres escalas comparadas midiendo la misma agua hirviendo
+% =====================================================================
+% Un termómetro dibujado en (#1 = x central), escala #2, valor-hielo #3,
+% valor-vapor #4. Relleno de mercurio hasta el nivel de ebullición (y=4.3).
+\newcommand{\untermometro}[4]{%
+  % tubo
+  \draw[line width=1pt, rounded corners=3pt, black!55]
+     (#1-0.19,0.95) rectangle (#1+0.19,5.05);
+  % bulbo
+  \fill[calido] (#1,0.62) circle (0.42);
+  \draw[line width=1pt, black!55] (#1,0.62) circle (0.42);
+  % mercurio hasta ebullición
+  \fill[calido] (#1-0.11,0.62) rectangle (#1+0.11,4.30);
+  \fill[calido] (#1-0.19,0.95) rectangle (#1+0.19,1.10); % cuello lleno
+  % nombre de escala
+  \node[above, font=\sffamily\bfseries, text=subjectcolor] at (#1,5.15) {#2};
+  % ticks + valores (ebullición y congelación)
+  \draw[black!55] (#1+0.19,4.30) -- (#1+0.34,4.30);
+  \node[right, font=\sffamily\footnotesize, text=calido] at (#1+0.34,4.30) {#4};
+  \draw[black!55] (#1+0.19,1.55) -- (#1+0.34,1.55);
+  \node[right, font=\sffamily\footnotesize, text=frio] at (#1+0.34,1.55) {#3};
+}
+\newcommand{\termometros}{%
+\begin{tikzpicture}[font=\sffamily\small]
+  % líneas de referencia física
+  \draw[dashed, calido!70] (-1.35,4.30) -- (7.0,4.30);
+  \node[left, font=\sffamily\scriptsize, text=calido, align=right]
+     at (-1.35,4.30) {el agua\\ hierve};
+  \draw[dashed, frio!70] (-1.35,1.55) -- (7.0,1.55);
+  \node[left, font=\sffamily\scriptsize, text=frio, align=right]
+     at (-1.35,1.55) {el agua\\ se congela};
+  \untermometro{0}{$^{\circ}$C}{$0$}{$100$}
+  \untermometro{3}{K}{$273$}{$373$}
+  \untermometro{6}{$^{\circ}$F}{$32$}{$212$}
+\end{tikzpicture}}
+
+% =====================================================================
+%  \transfcalor — conducción · convección · radiación
+% =====================================================================
+\newcommand{\transfcalor}{%
+\begin{tikzpicture}[font=\sffamily\footnotesize, >={Stealth[length=5pt]}]
+  % ---- CONDUCCIÓN (barra caliente->fría) ----
+  \begin{scope}[shift={(0,0)}]
+    \node[font=\sffamily\bfseries, text=subjectcolor] at (1.5,2.55) {Conducción};
+    % barra en degradado por segmentos
+    \foreach \i/\c in {0/calido, 1/calido!65!tibio, 2/tibio, 3/tibio!55!frio, 4/frio}
+      \fill[\c] (0.2+\i*0.56,1.1) rectangle (0.76+\i*0.56,1.6);
+    \draw[black!45, line width=0.7pt] (0.2,1.1) rectangle (3.0,1.6);
+    % llama a la izquierda
+    \fill[calido] (0.16,1.35) ++(-0.12,0) .. controls (-0.35,1.75) and (-0.05,1.9) .. (0.16,1.35);
+    \node[text=calido, font=\scriptsize] at (0.35,0.75) {caliente};
+    \node[text=frio, font=\scriptsize] at (2.7,0.75) {frío};
+    \draw[->, black!60] (0.9,1.9) -- (2.4,1.9) node[midway,above,black!70,font=\scriptsize]{calor};
+    \node[align=center, text=black!60, font=\scriptsize] at (1.5,0.25)
+       {por \textbf{contacto};\\ la materia no viaja};
+  \end{scope}
+  % ---- CONVECCIÓN (olla con corrientes) ----
+  \begin{scope}[shift={(4.6,0)}]
+    \node[font=\sffamily\bfseries, text=subjectcolor] at (1.4,2.55) {Convección};
+    \draw[black!55, line width=0.9pt] (0.35,1.9) -- (0.35,0.55) -- (2.45,0.55) -- (2.45,1.9);
+    \fill[frio!22] (0.36,0.56) rectangle (2.44,1.75);
+    % lazo de corriente
+    \draw[->, calido, line width=1pt] (0.85,0.7) -- (0.85,1.6);
+    \draw[->, calido, line width=1pt] (0.85,1.6) .. controls (1.4,1.9) .. (1.95,1.6);
+    \draw[->, frio, line width=1pt] (1.95,1.6) -- (1.95,0.7);
+    \draw[->, frio, line width=1pt] (1.95,0.7) .. controls (1.4,0.45) .. (0.85,0.7);
+    % llama bajo la olla
+    \foreach \x in {1.0,1.4,1.8}
+      \fill[calido] (\x,0.5) ++(-0.07,0) .. controls (\x-0.16,0.28) and (\x+0.05,0.2) .. (\x,0.5);
+    \node[align=center, text=black!60, font=\scriptsize] at (1.4,0.05)
+       {en \textbf{fluidos}: el\\ caliente sube};
+  \end{scope}
+  % ---- RADIACIÓN (sol -> objeto) ----
+  \begin{scope}[shift={(9.2,0)}]
+    \node[font=\sffamily\bfseries, text=subjectcolor] at (1.4,2.55) {Radiación};
+    \fill[tibio] (0.55,1.4) circle (0.42);
+    \foreach \a in {0,45,...,315}
+      \draw[tibio, line width=0.8pt] ($(0.55,1.4)+(\a:0.5)$) -- ($(0.55,1.4)+(\a:0.72)$);
+    % ondas hacia el objeto
+    \foreach \i in {0,1,2}
+      \draw[calido, line width=0.9pt]
+        (1.35+\i*0.42,1.4) .. controls (1.45+\i*0.42,1.62) and (1.55+\i*0.42,1.18) .. (1.67+\i*0.42,1.4);
+    \draw[->, calido, line width=0.9pt] (2.55,1.4) -- (2.75,1.4);
+    \draw[black!55, line width=0.9pt, fill=frio!12] (2.78,1.05) rectangle (3.15,1.75);
+    \node[align=center, text=black!60, font=\scriptsize] at (1.5,0.25)
+       {como \textbf{ondas};\\ cruza el vacío};
+  \end{scope}
+\end{tikzpicture}}
+
+% =====================================================================
+%  \teoriacinetica — caja de partículas; los choques producen la presión
+% =====================================================================
+\newcommand{\teoriacinetica}{%
+\begin{tikzpicture}[font=\sffamily\footnotesize, >={Stealth[length=5pt]}]
+  % caja
+  \draw[black!60, line width=1.1pt] (0,0) rectangle (5,3);
+  % partículas con vectores de velocidad
+  \foreach \x/\y/\dx/\dy in {
+     0.9/2.3/0.5/-0.2, 1.8/0.7/0.3/0.45, 3.1/2.1/-0.4/-0.3,
+     4.1/1.2/0.2/0.5, 2.4/1.6/0.5/0.15, 3.7/0.6/-0.3/0.4,
+     1.3/1.3/0.45/-0.35, 4.3/2.4/-0.45/-0.1}{
+     \fill[subjectcolor] (\x,\y) circle (0.14);
+     \draw[->, subjectcolor!70, line width=0.8pt] (\x,\y) -- ++(\dx,\dy);
+  }
+  % choques contra la pared derecha
+  \foreach \y in {0.9,1.9,2.6}
+     \draw[->, calido, line width=1pt] (4.65,\y) -- (5.05,\y);
+  \node[right, text=calido, font=\sffamily\bfseries] at (5.15,1.9) {choques};
+  \node[below, align=center, text=black!65, font=\scriptsize] at (2.5,-0.15)
+     {La \textbf{presión} es la suma de todos los choques contra las paredes.
+      \\ Más \textbf{temperatura} $=$ partículas más rápidas $=$ más presión.};
+\end{tikzpicture}}
+
+% =====================================================================
+%  Gráficas de las leyes de los gases
+% =====================================================================
+% --- Boyle: P vs V (hipérbola, T constante) ---
+\newcommand{\graficaboyle}{%
+\begin{tikzpicture}[font=\sffamily\small, >={Stealth[length=6pt]}]
+  \draw[->, black!55] (0,0) -- (5.0,0) node[right, text=black!70]{$V$};
+  \draw[->, black!55] (0,0) -- (0,4.0) node[above, text=black!70]{$P$};
+  \draw[subjectcolor, line width=1.3pt, domain=0.62:4.6, samples=90, smooth]
+       plot (\x,{2.5/\x});
+  \fill[calido] (1.0,2.5) circle (2pt) node[above right=-1pt, text=black!70, font=\scriptsize]{poco $V$, mucho $P$};
+  \fill[frio] (3.6,0.69) circle (2pt) node[above right=-1pt, text=black!70, font=\scriptsize]{mucho $V$, poco $P$};
+  \node[below, text=black!60, font=\scriptsize] at (2.5,-0.55) {$P_1V_1=P_2V_2$ \ ($T$ constante)};
+\end{tikzpicture}}
+
+% --- Charles: V vs T (recta que apunta al cero absoluto) ---
+\newcommand{\graficacharles}{%
+\begin{tikzpicture}[font=\sffamily\small, >={Stealth[length=6pt]}]
+  \draw[->, black!55] (0,0) -- (5.0,0) node[right, text=black!70]{$T$ (K)};
+  \draw[->, black!55] (0,0) -- (0,4.0) node[above, text=black!70]{$V$};
+  % extensión punteada al origen (cero absoluto)
+  \draw[frio, dashed, line width=1pt] (0,0) -- (1.3,0.95);
+  \draw[subjectcolor, line width=1.3pt] (1.3,0.95) -- (4.5,3.3);
+  \fill[frio] (0,0) circle (2pt) node[below right=-1pt, text=frio, font=\scriptsize]{cero absoluto ($0$\,K)};
+  \fill[calido] (4.5,3.3) circle (2pt);
+  \node[below, text=black!60, font=\scriptsize] at (2.5,-0.55) {$\dfrac{V_1}{T_1}=\dfrac{V_2}{T_2}$ \ ($P$ constante)};
+\end{tikzpicture}}
+
+% --- Gay-Lussac: P vs T (recta, V constante) ---
+\newcommand{\graficagaylussac}{%
+\begin{tikzpicture}[font=\sffamily\small, >={Stealth[length=6pt]}]
+  \draw[->, black!55] (0,0) -- (5.0,0) node[right, text=black!70]{$T$ (K)};
+  \draw[->, black!55] (0,0) -- (0,4.0) node[above, text=black!70]{$P$};
+  \draw[frio, dashed, line width=1pt] (0,0) -- (1.3,0.9);
+  \draw[subjectcolor, line width=1.3pt] (1.3,0.9) -- (4.5,3.15);
+  \fill[frio] (1.8,1.25) circle (2pt) node[above left=-2pt, text=black!70, font=\scriptsize]{frío};
+  \fill[calido] (4.0,2.8) circle (2pt) node[above left=-2pt, text=black!70, font=\scriptsize]{caliente};
+  \node[below, text=black!60, font=\scriptsize] at (2.5,-0.55) {$\dfrac{P_1}{T_1}=\dfrac{P_2}{T_2}$ \ ($V$ constante)};
+\end{tikzpicture}}
+
+% =====================================================================
+%  \motorcuatrotiempos — ciclo Otto (4 cilindros)
+% =====================================================================
+% Un cilindro en (#1 x): pistón a altura #2, gas color #3, etiqueta #4, nº #5
+\newcommand{\uncilindro}[5]{%
+  \begin{scope}[shift={(#1,0)}]
+    % cuerpo del cilindro
+    \draw[black!55, line width=1pt] (0,0.15) -- (0,3.0) (1.4,0.15) -- (1.4,3.0);
+    \draw[black!55, line width=1pt] (0,3.0) -- (1.4,3.0);
+    % gas encima del pistón
+    \fill[#3] (0.05,#2+0.42) rectangle (1.35,2.97);
+    % pistón
+    \fill[humo!60] (0.07,#2) rectangle (1.33,#2+0.4);
+    \draw[black!55, line width=0.7pt] (0.07,#2) rectangle (1.33,#2+0.4);
+    % biela
+    \draw[black!55, line width=1.3pt] (0.7,#2) -- (0.7,#2-0.55);
+    \fill[black!45] (0.7,#2-0.6) circle (0.12);
+    % válvulas (admisión izq, escape der)
+    \fill[frio!70] (0.32,2.98) rectangle (0.5,3.12);
+    \fill[calido!70] (0.9,2.98) rectangle (1.08,3.12);
+    % etiqueta
+    \node[below, font=\sffamily\bfseries\footnotesize, text=subjectcolor] at (0.7,-0.35) {#5};
+    \node[below, font=\sffamily\scriptsize, text=black!65] at (0.7,-0.62) {#4};
+  \end{scope}}
+\newcommand{\motorcuatrotiempos}{%
+\begin{tikzpicture}[font=\sffamily\small, >={Stealth[length=5pt]}]
+  \uncilindro{0}{0.55}{frio!30}{entra mezcla}{1. Admisión}
+  \draw[->, frio, line width=1pt] (0.9,3.35) -- (0.35,3.15); % válvula adm abierta
+  \uncilindro{2.5}{1.7}{tibio!40}{el pistón aprieta}{2. Compresión}
+  \uncilindro{5.0}{0.75}{calido!70}{¡empuja! (trabajo)}{3. Explosión}
+  \fill[white] (5.7,3.02) circle (0.09); % bujía chispa
+  \draw[calido, line width=1pt] (5.7,3.05) -- (5.7,3.25);
+  \draw[->, calido, line width=1.1pt] (5.7,1.35) -- (5.7,0.9);
+  \uncilindro{7.5}{1.7}{humo!45}{salen los gases}{4. Escape}
+  \draw[->, calido, line width=1pt] (8.4,3.35) -- (8.95,3.15); % válvula escape abierta
+\end{tikzpicture}}
+
+% =====================================================================
+%  \maquinatermica — foco caliente → máquina (produce W) → foco frío
+% =====================================================================
+\newcommand{\maquinatermica}{%
+\begin{tikzpicture}[font=\sffamily\small, >={Stealth[length=6pt]}]
+  \node[draw=calido, fill=calido!10, minimum width=3.8cm, minimum height=0.95cm,
+        text=calido, font=\sffamily\bfseries](H) at (0,3){Foco caliente \ $T_H$};
+  \node[draw=frio, fill=frio!8, minimum width=3.8cm, minimum height=0.95cm,
+        text=frio, font=\sffamily\bfseries](C) at (0,-1){Foco frío \ $T_C$};
+  \node[draw=subjectcolor, fill=subjectcolor!12, circle, minimum size=2.0cm,
+        font=\sffamily\bfseries, text=subjectcolor](M) at (0,1){Máquina};
+  \draw[->, calido, line width=1.2pt] (H) -- node[right=2pt]{$Q_H$} (M);
+  \draw[->, frio, line width=1.2pt] (M) -- node[right=2pt]{$Q_C$} (C);
+  \draw[->, subjectcolor, line width=1.2pt] (M) -- node[above=1pt]{$W$ (trabajo)} (4.1,1);
+  \node[right, text=black!60, font=\scriptsize, align=left] at (4.2,1)
+     {lo que\\ aprovechas};
+\end{tikzpicture}}
+
+% =====================================================================
+%  \lineatiempotermo — hitos de la termodinámica (1593–1876)
+% =====================================================================
+% Hito arriba (#1 x, #2 año, #3 quién/qué)
+\newcommand{\hitoarr}[3]{%
+  \fill[subjectcolor] (#1,0) circle (2.4pt);
+  \draw[subjectcolor!55] (#1,0) -- (#1,0.55);
+  \node[anchor=south, align=center, font=\sffamily\scriptsize, text width=2.2cm]
+     at (#1,0.55) {{\bfseries\color{subjectcolor}#2}\\ #3};}
+% Hito abajo
+\newcommand{\hitoaba}[3]{%
+  \fill[subjectcolor] (#1,0) circle (2.4pt);
+  \draw[subjectcolor!55] (#1,0) -- (#1,-0.55);
+  \node[anchor=north, align=center, font=\sffamily\scriptsize, text width=2.2cm]
+     at (#1,-0.55) {{\bfseries\color{subjectcolor}#2}\\ #3};}
+\newcommand{\lineatiempotermo}{%
+\begin{tikzpicture}[font=\sffamily]
+  \draw[subjectcolor, line width=1.4pt, {Stealth[length=7pt]}-{Stealth[length=7pt]}]
+     (-0.3,0) -- (14.6,0);
+  \hitoarr{0.6}{1593}{Galileo: termoscopio}
+  \hitoaba{2.7}{1662}{Boyle: presión y volumen}
+  \hitoarr{4.8}{1742}{Celsius: escala 0--100}
+  \hitoaba{6.9}{1787}{Charles: volumen y $T$}
+  \hitoarr{9.0}{1824}{Carnot: eficiencia máxima}
+  \hitoaba{11.1}{1848}{Kelvin: cero absoluto}
+  \hitoarr{13.2}{1876}{Otto: motor 4 tiempos}
+\end{tikzpicture}}
+
+% =====================================================================
+%  \mapatermo — mapa conceptual de las tres unidades
+% =====================================================================
+\newcommand{\ramamapa}[5]{% (#1 nombre-nodo)(#2 x)(#3 título)(#4 idea)(#5 lista)
+  \node[draw=subjectcolor, fill=subjectcolor!10, rounded corners=3pt,
+        text width=3.6cm, align=center, font=\sffamily\bfseries\footnotesize,
+        text=subjectcolor, inner sep=5pt](#1) at (#2,1.4) {#3};
+  \draw[subjectcolor!55, line width=1pt] (root.south) |- (0,2.35) -| (#1.north);
+  \node[below=0.22cm of #1, text width=3.8cm, align=center,
+        font=\sffamily\scriptsize, text=black!70] {#4\\[3pt]\textcolor{black!55}{#5}};}
+\newcommand{\mapatermo}{%
+\begin{tikzpicture}[font=\sffamily]
+  \node[draw=subjectcolor, fill=subjectcolor, text=white, rounded corners=4pt,
+        font=\sffamily\bfseries, inner sep=7pt] (root) at (0,3.3) {TERMODINÁMICA};
+  \ramamapa{ramauno}{-4.7}{Unidad 1\\ Calor y temperatura}
+     {Qué es la temperatura, las escalas, $Q=mc\Delta T$ y cómo viaja el calor.}
+     {termómetro · {\textdegree}C\,·\,K\,·\,{\textdegree}F · conducción · convección · radiación}
+  \ramamapa{ramados}{0}{Unidad 2\\ Máquinas térmicas}
+     {Las dos leyes: el calor se vuelve trabajo (y nunca del todo).}
+     {$\Delta U=Q-W$ · motor · nevera · eficiencia $\eta$}
+  \ramamapa{ramatres}{4.7}{Unidad 3\\ Los gases}
+     {Presión, volumen y temperatura de un gas y sus leyes.}
+     {Boyle · Charles · Gay-Lussac · $PV=nRT$}
+\end{tikzpicture}}

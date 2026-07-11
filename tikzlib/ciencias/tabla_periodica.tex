@@ -1,0 +1,251 @@
+% =====================================================================
+%  tikzlib/ciencias/tabla_periodica.tex
+%  TABLA PERIÓDICA (118 elementos) reutilizable — Química 9º y afines.
+%
+%  REQUISITOS (ya cargados por design/preamble.tex; en standalone añádelos):
+%    \usepackage{tikz}
+%    \usetikzlibrary{calc, arrows.meta, positioning}
+%    \usepackage{etoolbox}   % \forcsvlist para el resaltado
+%    \usepackage{xcolor}
+%  No depende de ningún color del design system (define los suyos, pt*).
+%
+%  USO
+%  ---
+%  \tablaperiodica                       % tabla completa a color + leyenda
+%  \tablaperiodica[resaltar={Na,Cl}]     % resalta esos elementos (borde grueso)
+%  \tablaperiodica[resaltar={F,O},atenuar]% resalta y ATENÚA el resto
+%  \tablaperiodica[leyenda=false]        % sin leyenda
+%
+%  Para SUPERPONER flechas/anotaciones propias, abre tu tikzpicture y usa
+%  \tablaperiodicacontenido (solo las celdas + rótulos de grupo/periodo).
+%  Cada celda es un nodo llamado  pt-<Símbolo>  (p. ej. pt-Na) y la rejilla
+%  va en coordenadas (columna, -periodo): grupo=x (1..18), periodo=-y (1..7);
+%  lantánidos en y=-8.7, actínidos en y=-9.7. Ejemplo de flecha de tendencia:
+%    \begin{tikzpicture}
+%      \tablaperiodicacontenido
+%      \draw[ptflecha] (18.7,-1) -- (18.7,-7) node[midway]{...};
+%    \end{tikzpicture}
+%
+%  Helpers de tendencias (dibujan flechas grandes sobre la tabla):
+%    \pttendencia{radio}  \pttendencia{ei}  \pttendencia{en}
+%  cada uno abre su tikzpicture con la tabla atenuada + flechas + rótulos.
+% =====================================================================
+
+% --- Paleta por familia (dato-viz; suave, texto oscuro legible) --------
+\definecolor{ptalk}{RGB}{244,180,164}   % metales alcalinos
+\definecolor{ptalt}{RGB}{248,214,158}   % alcalinotérreos
+\definecolor{pttra}{RGB}{246,232,168}   % metales de transición
+\definecolor{ptpos}{RGB}{176,222,212}   % otros metales (post-transición)
+\definecolor{ptmtl}{RGB}{190,214,158}   % metaloides
+\definecolor{ptnom}{RGB}{212,230,168}   % no metales
+\definecolor{pthal}{RGB}{166,212,224}   % halógenos
+\definecolor{ptnob}{RGB}{206,196,232}   % gases nobles
+\definecolor{ptlan}{RGB}{238,190,220}   % lantánidos
+\definecolor{ptact}{RGB}{216,182,226}   % actínidos
+\definecolor{ptunk}{RGB}{214,214,214}   % propiedades desconocidas (113–118)
+\definecolor{pttxt}{RGB}{32,32,36}      % tinta de las celdas
+
+% --- Estilos -----------------------------------------------------------
+\tikzset{
+  ptbox/.style={draw=black!30, rounded corners=1.1pt, minimum size=9.4mm,
+    inner sep=0pt, align=center, text=pttxt, font=\sffamily},
+  ptflecha/.style={-{Stealth[length=4.2mm,width=3.4mm]}, line width=1.6mm,
+    line cap=round},
+  ptrot/.style={font=\sffamily\bfseries, text=pttxt},   % rótulo de grupo/periodo
+}
+
+% --- Estado de resaltado (parametrización) -----------------------------
+\newif\ifptfade
+\newif\ifptleyenda
+\newcommand{\ptresaltados}{}
+\newcommand{\ptcursym}{}
+\newcommand{\ptishi}{0}
+% Handler de 1 argumento: compara cada símbolo de la lista con el actual.
+% (\forcsvlist NO expande un macro-lista → patrón \expandafter abajo; y
+%  \ifstrequal NO expande sus args → comparar dos MACROS con \ifdefstrequal.)
+\newcommand{\ptitem}{}
+\newcommand{\ptcheckhi}[1]{\renewcommand{\ptitem}{#1}%
+  \ifdefstrequal{\ptitem}{\ptcursym}{\renewcommand{\ptishi}{1}}{}}
+
+% --- Celda: Z / símbolo / columna / periodo(fila) / categoría ----------
+\newcommand{\ptcell}[5]{%
+  \renewcommand{\ptishi}{0}%
+  \renewcommand{\ptcursym}{#2}%
+  \expandafter\forcsvlist\expandafter{\expandafter\ptcheckhi\expandafter}\expandafter{\ptresaltados}%
+  \ifnum\ptishi=1
+    \tikzset{ptthis/.style={ptbox, fill=pt#5, draw=pttxt, line width=0.9pt}}%
+  \else
+    \ifptfade
+      \tikzset{ptthis/.style={ptbox, fill=black!4, draw=black!14, text=black!35}}%
+    \else
+      \tikzset{ptthis/.style={ptbox, fill=pt#5}}%
+    \fi
+  \fi
+  \node[ptthis] (pt-#2) at (#3,-#4) {%
+    {\fontsize{5.2pt}{5.2pt}\selectfont #1}\\[-1.6pt]%
+    {\fontsize{9.6pt}{9.6pt}\selectfont\bfseries #2}};%
+}
+
+% --- Celda-marcador (La–Lu / Ac–Lr): rango arriba, texto más chico -----
+\newcommand{\ptmarker}[6]{% Ztext / textoSímbolo / col / periodo / cat / nombreNodo
+  \ifptfade
+    \tikzset{ptthis/.style={ptbox, fill=black!4, draw=black!14, text=black!35}}%
+  \else
+    \tikzset{ptthis/.style={ptbox, fill=pt#5}}%
+  \fi
+  \node[ptthis] (pt-#6) at (#3,-#4) {%
+    {\fontsize{4.4pt}{4.4pt}\selectfont #1}\\[-1.6pt]%
+    {\fontsize{6.3pt}{6.3pt}\selectfont\bfseries #2}};%
+}
+
+% --- Rótulos de grupo (1..18) y periodo (1..7) -------------------------
+\newcommand{\ptrotulos}{%
+  \foreach \g in {1,...,18}{ \node[ptrot, font=\sffamily\footnotesize, text=black!55]
+      at (\g,-0.28) {\g};}
+  \foreach \p in {1,...,7}{ \node[ptrot, font=\sffamily\footnotesize, text=black!55]
+      at (0.28,-\p) {\p};}
+}
+
+% =====================================================================
+%  CONTENIDO — todas las celdas (sin \begin{tikzpicture})
+% =====================================================================
+\newcommand{\tablaperiodicacontenido}{%
+  \ptrotulos
+  % --- Periodo 1
+  \ptcell{1}{H}{1}{1}{nom}   \ptcell{2}{He}{18}{1}{nob}
+  % --- Periodo 2
+  \ptcell{3}{Li}{1}{2}{alk}  \ptcell{4}{Be}{2}{2}{alt}
+  \ptcell{5}{B}{13}{2}{mtl}  \ptcell{6}{C}{14}{2}{nom} \ptcell{7}{N}{15}{2}{nom}
+  \ptcell{8}{O}{16}{2}{nom}  \ptcell{9}{F}{17}{2}{hal} \ptcell{10}{Ne}{18}{2}{nob}
+  % --- Periodo 3
+  \ptcell{11}{Na}{1}{3}{alk} \ptcell{12}{Mg}{2}{3}{alt}
+  \ptcell{13}{Al}{13}{3}{pos}\ptcell{14}{Si}{14}{3}{mtl}\ptcell{15}{P}{15}{3}{nom}
+  \ptcell{16}{S}{16}{3}{nom} \ptcell{17}{Cl}{17}{3}{hal}\ptcell{18}{Ar}{18}{3}{nob}
+  % --- Periodo 4
+  \ptcell{19}{K}{1}{4}{alk}  \ptcell{20}{Ca}{2}{4}{alt}
+  \ptcell{21}{Sc}{3}{4}{tra} \ptcell{22}{Ti}{4}{4}{tra} \ptcell{23}{V}{5}{4}{tra}
+  \ptcell{24}{Cr}{6}{4}{tra} \ptcell{25}{Mn}{7}{4}{tra} \ptcell{26}{Fe}{8}{4}{tra}
+  \ptcell{27}{Co}{9}{4}{tra} \ptcell{28}{Ni}{10}{4}{tra}\ptcell{29}{Cu}{11}{4}{tra}
+  \ptcell{30}{Zn}{12}{4}{tra}\ptcell{31}{Ga}{13}{4}{pos}\ptcell{32}{Ge}{14}{4}{mtl}
+  \ptcell{33}{As}{15}{4}{mtl}\ptcell{34}{Se}{16}{4}{nom}\ptcell{35}{Br}{17}{4}{hal}
+  \ptcell{36}{Kr}{18}{4}{nob}
+  % --- Periodo 5
+  \ptcell{37}{Rb}{1}{5}{alk} \ptcell{38}{Sr}{2}{5}{alt}
+  \ptcell{39}{Y}{3}{5}{tra}  \ptcell{40}{Zr}{4}{5}{tra} \ptcell{41}{Nb}{5}{5}{tra}
+  \ptcell{42}{Mo}{6}{5}{tra} \ptcell{43}{Tc}{7}{5}{tra} \ptcell{44}{Ru}{8}{5}{tra}
+  \ptcell{45}{Rh}{9}{5}{tra} \ptcell{46}{Pd}{10}{5}{tra}\ptcell{47}{Ag}{11}{5}{tra}
+  \ptcell{48}{Cd}{12}{5}{tra}\ptcell{49}{In}{13}{5}{pos}\ptcell{50}{Sn}{14}{5}{pos}
+  \ptcell{51}{Sb}{15}{5}{mtl}\ptcell{52}{Te}{16}{5}{mtl}\ptcell{53}{I}{17}{5}{hal}
+  \ptcell{54}{Xe}{18}{5}{nob}
+  % --- Periodo 6
+  \ptcell{55}{Cs}{1}{6}{alk} \ptcell{56}{Ba}{2}{6}{alt}
+  \ptmarker{57–71}{La–Lu}{3}{6}{lan}{lanmark}    % marcador lantánidos
+  \ptcell{72}{Hf}{4}{6}{tra} \ptcell{73}{Ta}{5}{6}{tra} \ptcell{74}{W}{6}{6}{tra}
+  \ptcell{75}{Re}{7}{6}{tra} \ptcell{76}{Os}{8}{6}{tra} \ptcell{77}{Ir}{9}{6}{tra}
+  \ptcell{78}{Pt}{10}{6}{tra}\ptcell{79}{Au}{11}{6}{tra}\ptcell{80}{Hg}{12}{6}{tra}
+  \ptcell{81}{Tl}{13}{6}{pos}\ptcell{82}{Pb}{14}{6}{pos}\ptcell{83}{Bi}{15}{6}{pos}
+  \ptcell{84}{Po}{16}{6}{pos}\ptcell{85}{At}{17}{6}{hal}\ptcell{86}{Rn}{18}{6}{nob}
+  % --- Periodo 7
+  \ptcell{87}{Fr}{1}{7}{alk} \ptcell{88}{Ra}{2}{7}{alt}
+  \ptmarker{89–103}{Ac–Lr}{3}{7}{act}{actmark}  % marcador actínidos
+  \ptcell{104}{Rf}{4}{7}{tra}\ptcell{105}{Db}{5}{7}{tra}\ptcell{106}{Sg}{6}{7}{tra}
+  \ptcell{107}{Bh}{7}{7}{tra}\ptcell{108}{Hs}{8}{7}{tra}\ptcell{109}{Mt}{9}{7}{tra}
+  \ptcell{110}{Ds}{10}{7}{tra}\ptcell{111}{Rg}{11}{7}{tra}\ptcell{112}{Cn}{12}{7}{tra}
+  \ptcell{113}{Nh}{13}{7}{unk}\ptcell{114}{Fl}{14}{7}{unk}\ptcell{115}{Mc}{15}{7}{unk}
+  \ptcell{116}{Lv}{16}{7}{unk}\ptcell{117}{Ts}{17}{7}{unk}\ptcell{118}{Og}{18}{7}{unk}
+  % --- Lantánidos (fila y=-8.7, columnas 3..17)
+  \ptcell{57}{La}{3}{8.7}{lan}\ptcell{58}{Ce}{4}{8.7}{lan}\ptcell{59}{Pr}{5}{8.7}{lan}
+  \ptcell{60}{Nd}{6}{8.7}{lan}\ptcell{61}{Pm}{7}{8.7}{lan}\ptcell{62}{Sm}{8}{8.7}{lan}
+  \ptcell{63}{Eu}{9}{8.7}{lan}\ptcell{64}{Gd}{10}{8.7}{lan}\ptcell{65}{Tb}{11}{8.7}{lan}
+  \ptcell{66}{Dy}{12}{8.7}{lan}\ptcell{67}{Ho}{13}{8.7}{lan}\ptcell{68}{Er}{14}{8.7}{lan}
+  \ptcell{69}{Tm}{15}{8.7}{lan}\ptcell{70}{Yb}{16}{8.7}{lan}\ptcell{71}{Lu}{17}{8.7}{lan}
+  % --- Actínidos (fila y=-9.7, columnas 3..17)
+  \ptcell{89}{Ac}{3}{9.7}{act}\ptcell{90}{Th}{4}{9.7}{act}\ptcell{91}{Pa}{5}{9.7}{act}
+  \ptcell{92}{U}{6}{9.7}{act} \ptcell{93}{Np}{7}{9.7}{act}\ptcell{94}{Pu}{8}{9.7}{act}
+  \ptcell{95}{Am}{9}{9.7}{act}\ptcell{96}{Cm}{10}{9.7}{act}\ptcell{97}{Bk}{11}{9.7}{act}
+  \ptcell{98}{Cf}{12}{9.7}{act}\ptcell{99}{Es}{13}{9.7}{act}\ptcell{100}{Fm}{14}{9.7}{act}
+  \ptcell{101}{Md}{15}{9.7}{act}\ptcell{102}{No}{16}{9.7}{act}\ptcell{103}{Lr}{17}{9.7}{act}
+}
+
+% =====================================================================
+%  LEYENDA — swatches por familia. Se dibuja a partir de (x,y).
+% =====================================================================
+\newcommand{\ptswatch}[4]{% x y color etiqueta
+  \node[ptbox, minimum size=5.4mm, fill=#3, anchor=west] at (#1,#2) {};
+  \node[anchor=west, font=\sffamily\footnotesize, text=black!75]
+     at (#1+0.42,#2) {#4};
+}
+\newcommand{\ptleyendaen}[2]{% x y  (esquina superior izquierda)
+  \ptswatch{#1}{#2}{ptalk}{Metales alcalinos}
+  \ptswatch{#1}{#2-0.62}{ptalt}{Alcalinotérreos}
+  \ptswatch{#1}{#2-1.24}{pttra}{Metales de transición}
+  \ptswatch{#1}{#2-1.86}{ptpos}{Otros metales}
+  \ptswatch{#1+4.6}{#2}{ptmtl}{Metaloides}
+  \ptswatch{#1+4.6}{#2-0.62}{ptnom}{No metales}
+  \ptswatch{#1+4.6}{#2-1.24}{pthal}{Halógenos}
+  \ptswatch{#1+4.6}{#2-1.86}{ptnob}{Gases nobles}
+  \ptswatch{#1+9.2}{#2}{ptlan}{Lantánidos}
+  \ptswatch{#1+9.2}{#2-0.62}{ptact}{Actínidos}
+  \ptswatch{#1+9.2}{#2-1.24}{ptunk}{Propiedades desconocidas}
+}
+
+% =====================================================================
+%  WRAPPER — tabla completa (con leyenda). Opciones vía pgfkeys.
+% =====================================================================
+\pgfkeys{
+  /pt/.is family, /pt/.cd,
+  resaltar/.store in=\ptresaltados,
+  atenuar/.is if=ptfade,
+  leyenda/.is if=ptleyenda,
+}
+\newcommand{\tablaperiodica}[1][]{%
+  \renewcommand{\ptresaltados}{}\ptfadefalse\ptleyendatrue
+  \pgfkeys{/pt/.cd,#1}%
+  \begin{tikzpicture}
+    \tablaperiodicacontenido
+    \ifptleyenda \ptleyendaen{1}{-11.1}\fi
+  \end{tikzpicture}%
+}
+
+% =====================================================================
+%  HELPERS DE TENDENCIAS — una figura por propiedad periódica.
+%  Radio atómico  : ↑ hacia abajo por grupo, ↑ hacia la IZQUIERDA por periodo.
+%  Energía de ionización / Electronegatividad : ↑ hacia ARRIBA por grupo,
+%                                               ↑ hacia la DERECHA por periodo.
+% =====================================================================
+\newcommand{\pttendencia}[1]{% radio | ei | en
+  \renewcommand{\ptresaltados}{}\ptfadetrue
+  \begin{tikzpicture}
+    \tablaperiodicacontenido
+    \ifstrequal{#1}{radio}{%
+      % radio: crece hacia abajo y hacia la izquierda
+      \draw[ptflecha, ptpos!60!black] (18.6,-0.6) -- (0.4,-0.6);
+      \node[font=\sffamily\bfseries, text=ptpos!55!black, anchor=south]
+        at (9.5,-0.35) {El radio atómico AUMENTA \(\leftarrow\)};
+      \draw[ptflecha, ptpos!60!black] (18.7,-0.6) -- (18.7,-7.4);
+      \node[font=\sffamily\bfseries, text=ptpos!55!black, rotate=-90, anchor=south]
+        at (19.05,-4) {AUMENTA \(\downarrow\)};
+    }{}%
+    \ifstrequal{#1}{ei}{%
+      % energía de ionización: crece hacia arriba y hacia la derecha
+      \draw[ptflecha, pthal!55!black] (0.4,-0.6) -- (18.6,-0.6);
+      \node[font=\sffamily\bfseries, text=pthal!45!black, anchor=south]
+        at (9.5,-0.35) {La energía de ionización AUMENTA \(\rightarrow\)};
+      \draw[ptflecha, pthal!55!black] (18.7,-7.4) -- (18.7,-0.6);
+      \node[font=\sffamily\bfseries, text=pthal!45!black, rotate=-90, anchor=north]
+        at (19.05,-4) {AUMENTA \(\uparrow\)};
+    }{}%
+    \ifstrequal{#1}{en}{%
+      % electronegatividad: crece hacia arriba y hacia la derecha (hacia el F)
+      \draw[ptflecha, ptnob!55!black] (0.4,-0.6) -- (18.6,-0.6);
+      \node[font=\sffamily\bfseries, text=ptnob!50!black, anchor=south]
+        at (9.5,-0.35) {La electronegatividad AUMENTA \(\rightarrow\)};
+      \draw[ptflecha, ptnob!55!black] (18.7,-7.4) -- (18.7,-0.6);
+      \node[font=\sffamily\bfseries, text=ptnob!50!black, rotate=-90, anchor=north]
+        at (19.05,-4) {AUMENTA \(\uparrow\)};
+      % resalta el flúor como máximo
+      \node[ptbox, minimum size=9.4mm, draw=ptnob!55!black, line width=1pt,
+            fill=none] at (17,-2) {};
+    }{}%
+  \end{tikzpicture}%
+}

@@ -363,7 +363,10 @@
 \newcounter{figura}[section]
 \newcommand{\figura}[3][0.7\linewidth]{% [ancho]{archivo}{pie}
   \par\addvspace{\bloqueskip}\refstepcounter{figura}%
-  \begin{center}%
+  % Imagen + pie en un bloque INDIVISIBLE (minipage): nunca se parte en un
+  % salto de página (si no cabe, baja entero a la página siguiente).
+  \noindent\begin{center}%
+  \begin{minipage}{\linewidth}\centering
   \IfFileExists{assets/imgs/#2}{%
     \includegraphics[width=#1]{assets/imgs/#2}}{%
     \begin{tikzpicture}
@@ -376,6 +379,7 @@
   \par\vspace{0.4em}%
   {\footnotesize\sffamily\color{black!60}%
     \textbf{Figura \thefigura.}\enspace #3}%
+  \end{minipage}%
   \end{center}\par\addvspace{\bloqueskip}}
 
 % =====================================================================

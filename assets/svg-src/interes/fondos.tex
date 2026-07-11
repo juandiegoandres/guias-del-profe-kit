@@ -1,0 +1,125 @@
+% ============================================================================
+% fondos.tex  —  CONTEXTOS / escenarios planos para el capibara (obra propia, CC0)
+% ----------------------------------------------------------------------------
+% Fondos flat, limpios, tipo escenario. Se dibujan DETRAS del capibara.
+% El capibara (base ~+-1.7 en x, pies en y~-1.96) va CENTRADO al frente; el piso
+% de cada escena esta a y~-1.95 para que "pise" el suelo.
+%
+% Requiere: \input{assets/svg-src/interes/_estilo_interes.tex}
+% Uso:  \fondoneutro  \fondobanco  \fondomercado  \fondofinca
+% Escala: dibujados para un lienzo 16:9 (\escenaframe). El capibara se coloca
+%         encima a escala 1 (misma unidad). Recoloreables via _estilo_interes.tex.
+% ============================================================================
+
+% FRAME de escena 16:9 (para los fondos)
+\newcommand{\escenaframe}{\useasboundingbox (-6.40,-3.60) rectangle (6.40,3.60);}
+
+% piso comun (rectangulo inferior) — top del piso en y=-1.95
+\newcommand{\escpisobase}[1]{% #1 = color del piso
+  \path[fill=#1] (-6.40,-3.60) rectangle (6.40,-1.95);
+}
+
+% ---------------------------------------------------------------------------
+% NEUTRO: pared crema + piso + halo suave detras del personaje. Muy limpio.
+% ---------------------------------------------------------------------------
+\newcommand{\fondoneutro}{%
+  \begin{scope}
+    \path[fill=escpared] (-6.40,-3.60) rectangle (6.40,3.60);
+    \escpisobase{escpiso}
+    % zocalo
+    \path[fill=esczocalo] (-6.40,-1.95) rectangle (6.40,-1.70);
+    % halo / spot detras del personaje
+    \path[fill=escpiso, opacity=0.55] (0,-0.10) ellipse[x radius=2.7, y radius=2.7];
+    % sombra del piso donde se para el personaje
+    \path[fill=esczocalo] (0,-1.98) ellipse[x radius=1.7, y radius=0.30];
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% BANCO: pared + piso + 2 columnas + arco/fronton central + mostrador lateral.
+% ---------------------------------------------------------------------------
+\newcommand{\fondobanco}{%
+  \begin{scope}
+    \path[fill=escpared] (-6.40,-3.60) rectangle (6.40,3.60);
+    \escpisobase{escpiso}
+    % fronton / arco central (semicirculo + cornisa)
+    \path[fill=banqarco] (0,2.05) ellipse[x radius=3.05, y radius=1.05];
+    \path[fill=banqcoldark] (-3.20,1.85) rectangle (3.20,2.15);
+    % columnas (izq y der), con capitel y base
+    \foreach \cx in {-3.55,3.55}{
+      \path[fill=banqcol] (\cx-0.42,-1.95) rectangle (\cx+0.42,1.95);
+      \path[fill=banqcoldark] (\cx-0.52,1.80) rectangle (\cx+0.52,2.05); % capitel
+      \path[fill=banqcoldark] (\cx-0.52,-1.95) rectangle (\cx+0.52,-1.70); % base
+      % estrias
+      \draw[capilineaf, draw=banqcoldark] (\cx-0.18,-1.65) -- (\cx-0.18,1.72);
+      \draw[capilineaf, draw=banqcoldark] (\cx+0.18,-1.65) -- (\cx+0.18,1.72);
+    }
+    % zocalo
+    \path[fill=esczocalo] (-6.40,-1.95) rectangle (6.40,-1.75);
+    % mostrador lateral (a la derecha, no tapa al personaje)
+    \path[capilineaf, fill=mercmadera] (2.35,-1.95) rectangle (5.30,-0.65);
+    \path[capilineaf, fill=mercmaddark] (2.20,-0.65) rectangle (5.45,-0.42);
+    % sombra del piso
+    \path[fill=esczocalo] (0,-1.98) ellipse[x radius=1.8, y radius=0.30];
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% MERCADO: puesto con toldo a rayas rojo/crema + mesa de madera + postes.
+% ---------------------------------------------------------------------------
+\newcommand{\fondomercado}{%
+  \begin{scope}
+    \path[fill=escpared] (-6.40,-3.60) rectangle (6.40,3.60);
+    \escpisobase{escpiso}
+    % postes del puesto
+    \path[fill=mercmaddark] (-4.60,-1.95) rectangle (-4.30,2.55);
+    \path[fill=mercmaddark] ( 4.30,-1.95) rectangle ( 4.60,2.55);
+    % viga superior
+    \path[fill=mercmadera] (-4.75,2.35) rectangle (4.75,2.60);
+    % toldo a rayas (festón ondulado abajo)
+    \foreach \i [evaluate=\i as \x using -4.5+\i*1.0] in {0,...,9}{
+      \pgfmathparse{Mod(\i,2)==0 ? "merctoldoA" : "merctoldoB"}\edef\tcol{\pgfmathresult}
+      \path[fill=\tcol] (\x,2.35) rectangle (\x+1.0,1.55);
+      \path[fill=\tcol] (\x+0.5,1.55) ellipse[x radius=0.5, y radius=0.28];
+    }
+    % mesa/tablero del puesto (delante, bajo, no tapa la cara)
+    \path[capilineaf, fill=mercmadera] (-4.30,-1.95) rectangle (4.30,-0.95);
+    \path[capilineaf, fill=mercmaddark] (-4.55,-0.95) rectangle (4.55,-0.68);
+    % vetas de la madera
+    \draw[capilineaf, draw=mercmaddark] (-4.0,-1.45) -- (4.0,-1.45);
+    % zocalo
+    \path[fill=esczocalo] (-6.40,-1.95) rectangle (6.40,-1.78);
+  \end{scope}
+}
+
+% ---------------------------------------------------------------------------
+% FINCA: cielo + sol + colinas + pasto + matas. Campo colombiano soleado.
+% ---------------------------------------------------------------------------
+\newcommand{\fondofinca}{%
+  \begin{scope}
+    % cielo
+    \path[fill=fincacielo] (-6.40,-3.60) rectangle (6.40,3.60);
+    % sol con rayos (arriba-derecha)
+    \foreach \a in {0,30,...,330}
+      \draw[line width=3pt, line cap=round, draw=fincasol]
+          (4.30,2.35) -- +(\a:1.15);
+    \path[fill=fincasol] (4.30,2.35) circle[radius=0.72];
+    % colinas (dos arcos)
+    \path[fill=fincapastod] (-6.40,-1.95) .. controls (-3.0,-0.35) and (0.0,-1.10) .. (6.40,-0.55) -- (6.40,-3.60) -- (-6.40,-3.60) -- cycle;
+    % pasto (delante)
+    \path[fill=fincapasto] (-6.40,-3.60) rectangle (6.40,-1.60);
+    \draw[capilineaf, draw=fincapastod] (-6.40,-1.60) .. controls (0,-1.35) .. (6.40,-1.60);
+    % matas / arbustos
+    \foreach \bx in {-5.2,-3.4,3.2,5.0}{
+      \path[fill=fincamata] (\bx,-1.65) circle[radius=0.42];
+      \path[fill=fincamata] (\bx-0.35,-1.80) circle[radius=0.30];
+      \path[fill=fincamata] (\bx+0.35,-1.80) circle[radius=0.30];
+    }
+    % nubes
+    \path[fill=escpared] (-3.6,2.2) circle[radius=0.5];
+    \path[fill=escpared] (-3.0,2.3) circle[radius=0.62];
+    \path[fill=escpared] (-2.35,2.2) circle[radius=0.48];
+    % sombra del personaje en el pasto
+    \path[fill=fincapastod] (0,-1.95) ellipse[x radius=1.7, y radius=0.28];
+  \end{scope}
+}

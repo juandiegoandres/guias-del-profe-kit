@@ -1,0 +1,18 @@
+% Driver standalone — tabla periódica completa (a color, con leyenda).
+% Compilar desde la raíz del kit:
+%   ./compile_quiet.sh assets/svg-src/tabla-periodica/tabla_periodica_std.tex tabla_periodica assets/imgs/tabla-periodica
+% Export SVG (fuentes trazadas a paths, apto SVGMobject de Manim):
+%   dvisvgm --pdf --no-fonts -o assets/svg-src/tabla-periodica/tabla_periodica.svg assets/imgs/tabla-periodica/tabla_periodica.pdf
+\documentclass[border=6pt]{standalone}
+\usepackage{fontspec}
+\setsansfont{Inter}[UprightFont=Inter-Regular, BoldFont=Inter-SemiBold,
+  ItalicFont=Inter-Italic]
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc, arrows.meta, positioning}
+\usepackage{etoolbox}
+\usepackage{amsmath}
+\input{tikzlib/ciencias/tabla_periodica.tex}
+\begin{document}
+\tablaperiodica
+\end{document}

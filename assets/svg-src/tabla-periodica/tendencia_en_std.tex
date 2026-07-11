@@ -1,0 +1,16 @@
+% Driver standalone — tendencia: ELECTRONEGATIVIDAD.
+%   ./compile_quiet.sh assets/svg-src/tabla-periodica/tendencia_en_std.tex tendencia_en assets/imgs/tabla-periodica
+%   dvisvgm --pdf --no-fonts -o assets/svg-src/tabla-periodica/tendencia_en.svg assets/imgs/tabla-periodica/tendencia_en.pdf
+\documentclass[border=6pt]{standalone}
+\usepackage{fontspec}
+\setsansfont{Inter}[UprightFont=Inter-Regular, BoldFont=Inter-SemiBold,
+  ItalicFont=Inter-Italic]
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc, arrows.meta, positioning}
+\usepackage{etoolbox}
+\usepackage{amsmath}
+\input{tikzlib/ciencias/tabla_periodica.tex}
+\begin{document}
+\pttendencia{en}
+\end{document}

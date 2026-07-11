@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="144.0392mm"
+   height="146.98567mm"
+   viewBox="0 0 144.0392 146.98567"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed6c4, 2023-07-21)"
+   sodipodi:docname="Bohr_atom_model_Spanish.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.70110129"
+     inkscape:cx="272.42854"
+     inkscape:cy="278.84701"
+     inkscape:window-width="1920"
+     inkscape:window-height="1001"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <filter
+       id="b"
+       x="-0.192"
+       y="-0.192"
+       width="1.384"
+       height="1.384"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         stdDeviation="3.2"
+         id="feGaussianBlur1" />
+    </filter>
+    <filter
+       id="a"
+       x="-0.36300001"
+       y="-0.36300001"
+       width="1.726"
+       height="1.726"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         stdDeviation="3.63"
+         id="feGaussianBlur2" />
+    </filter>
+    <filter
+       id="filter3"
+       x="-0.36300001"
+       y="-0.36300001"
+       width="1.726"
+       height="1.726"
+       color-interpolation-filters="sRGB">
+      <feGaussianBlur
+         stdDeviation="3.63"
+         id="feGaussianBlur3" />
+    </filter>
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-32.808333,-74.877083)">
+    <g
+       id="g20"
+       transform="matrix(0.26458333,0,0,0.26458333,28.707343,68.10282)">
+      <g
+         id="g19">
+        <circle
+           cx="267"
+           cy="318.60001"
+           r="20"
+           fill="#ff7f2a"
+           filter="url(#b)"
+           id="circle2" />
+        <g
+           fill="none"
+           stroke="#ffbe60"
+           stroke-dasharray="3, 6"
+           stroke-linecap="round"
+           stroke-linejoin="round"
+           stroke-width="3"
+           id="g5">
+          <circle
+             cx="267"
+             cy="319"
+             r="250"
+             id="circle3" />
+          <circle
+             cx="267"
+             cy="319"
+             r="175"
+             id="circle4" />
+          <circle
+             cx="267"
+             cy="319"
+             r="100"
+             id="circle5" />
+        </g>
+        <circle
+           cx="217"
+           cy="405.20001"
+           r="12"
+           fill="#00dd00"
+           filter="url(#a)"
+           id="circle6" />
+        <circle
+           cx="179.39999"
+           cy="470.20001"
+           r="12"
+           fill="#00dd00"
+           filter="url(#a)"
+           id="circle7" />
+        <path
+           d="m 184.3,461.5 c 8.72,-15.1 17.44,-30.21 26.16,-45.31"
+           fill="#008800"
+           stroke="#008800"
+           stroke-linecap="round"
+           stroke-width="4"
+           id="path7" />
+        <g
+           fill="#008800"
+           stroke="#0000dd"
+           stroke-linejoin="round"
+           id="g10">
+          <path
+             d="m 267.4,318.6 c 84.8,-76.4 199,-195 283.8,-271.5"
+             fill="none"
+             stroke-linecap="round"
+             stroke-width="4"
+             id="path8" />
+          <path
+             d="m 530.5,51.6 28.9,-12 -14,27.92 c -1.7,-8 -7.6,-14.3 -14.95,-15.94 h 4.6e-4 z"
+             id="path9" />
+          <path
+             d="m 212.9,410.8 -1.744,13.86 c -1.855,-3.188 -5.206,-4.881 -8.564,-4.432 z"
+             stroke="#008800"
+             id="path10" />
+        </g>
+        <path
+           d="m 206.4,442.6 c 15.62,-1.599 32.32,-5.03 43.31,8.839 7.888,9.955 6.018,22 24.25,22.99 8.539,0.4623 17.82,-7.448 32.27,1.55 14.12,8.796 7.333,19.73 18.53,30.93 10.15,10.15 29.4,-5.154 41.27,0.2322 20.39,9.258 0.0468,29.31 17.71,36.49 11.53,4.692 50.6,-18.06 50.6,25.4"
+           fill="none"
+           stroke="#ec0000"
+           stroke-linecap="round"
+           stroke-width="4"
+           id="path11" />
+        <path
+           d="m 442.2,553.8 -5.136,26.84 -13.7,-23.6 c 7.087,1.792 14.42,0.8652 18.84,-3.24 z"
+           fill="#ec0000"
+           stroke="#ec0000"
+           stroke-linejoin="round"
+           id="path12" />
+        <g
+           font-family="'DejaVu Sans', 'Lohit Bengali'"
+           font-size="18px"
+           font-weight="bold"
+           id="g18">
+          <switch
+             transform="translate(546,40)"
+             fill="#0000e0"
+             text-anchor="end"
+             id="switch12">
+            <text
+               id="trsvg106-pt-br"
+               systemLanguage="pt-br"><tspan
+                 id="trsvg36-pt-br">Aumento da energia</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg37-pt-br">dos orbitais</tspan></text>
+            <text
+               systemLanguage="ca"
+               id="trsvg88"><tspan
+                 id="trsvg2">Òrbites d'energia</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg3">creixent</tspan></text>
+            <text
+               systemLanguage="de"
+               id="trsvg89"><tspan
+                 id="trsvg4">zunehmende Energie</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg5">der Umlaufbahnen</tspan></text>
+            <text
+               systemLanguage="en"
+               id="trsvg90"><tspan
+                 id="trsvg6">Increasing energy</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg7">of orbits</tspan></text>
+            <text
+               systemLanguage="es"
+               id="trsvg91"><tspan
+                 id="trsvg8">energía creciente</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg9">de las órbitas</tspan></text>
+            <text
+               systemLanguage="fr"
+               id="trsvg92"><tspan
+                 id="trsvg10">Orbites d'énergie</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg11">croissante</tspan></text>
+            <text
+               systemLanguage="gu"
+               id="trsvg93"><tspan
+                 id="trsvg12">ભ્રમણકક્ષાની</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg13">વધતી ઉર્જા</tspan></text>
+            <text
+               systemLanguage="id"
+               id="trsvg94"><tspan
+                 id="trsvg14">Energi orbit</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg15">meningkat</tspan></text>
+            <text
+               systemLanguage="it"
+               id="trsvg95"><tspan
+                 id="trsvg16">Aumento di energia</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg17">dell'orbita</tspan></text>
+            <text
+               systemLanguage="mk"
+               id="trsvg96"><tspan
+                 id="trsvg18">Растечка енергија</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg19">на орбитите</tspan></text>
+            <text
+               systemLanguage="ml"
+               id="trsvg97"><tspan
+                 id="trsvg20">പരിക്രമണപഥങ്ങളു</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg21">വർദ്ധനവ്</tspan></text>
+            <text
+               systemLanguage="mr"
+               id="trsvg98"><tspan
+                 id="trsvg22">कक्षांच्या वाढत्या उर्जा</tspan></text>
+            <text
+               systemLanguage="pl"
+               id="trsvg99"><tspan
+                 id="trsvg23">Zwiększanie się</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg24">energii orbit</tspan></text>
+            <text
+               systemLanguage="pt"
+               id="trsvg100"><tspan
+                 id="trsvg25">Aumento da energia</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg26">dos orbitais</tspan></text>
+            <text
+               systemLanguage="sr"
+               id="trsvg101"><tspan
+                 id="trsvg27">Повећање енергије</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg28">орбита</tspan></text>
+            <text
+               systemLanguage="ta"
+               id="trsvg102"><tspan
+                 id="trsvg29">சுற்று வட்டப்பதைகளி</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg30">அதிகரிக்கப்படும் ஆற்ற</tspan></text>
+            <text
+               systemLanguage="te"
+               id="trsvg103"><tspan
+                 id="trsvg31">కక్ష్యల శక్తి పెరుగుతుంది</tspan></text>
+            <text
+               systemLanguage="tr"
+               id="trsvg104"><tspan
+                 id="trsvg32">Artan yörünge</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg33">enerjisi</tspan></text>
+            <text
+               systemLanguage="vi"
+               id="trsvg105"><tspan
+                 id="trsvg34">Năng lượng quỹ đạo</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg35">tăng dần</tspan></text>
+            <text
+               systemLanguage="as"
+               id="trsvg87"><tspan
+                 id="trsvg1">শক্তিস্তৰৰ শক্তি বৃদ্ধি</tspan></text>
+            <text
+               systemLanguage="bn"
+               id="text12"><tspan
+                 id="tspan12">শক্তিস্তৰৰ শক্তি বৃদ্ধি</tspan></text>
+            <text
+               id="trsvg106-uk"
+               systemLanguage="uk"><tspan
+                 id="trsvg36-uk">Збільшення енергії</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg37-uk">орбіт</tspan></text>
+            <text
+               id="trsvg106"><tspan
+                 id="trsvg36">Increasing energy</tspan><tspan
+                 x="-20"
+                 y="18"
+                 id="trsvg37">of the orbits</tspan></text>
+          </switch>
+          <switch
+             transform="translate(304,467)"
+             fill="#ec0000"
+             id="switch14">
+            <text
+               id="trsvg126-pt-br"
+               systemLanguage="pt-br"><tspan
+                 id="trsvg76-pt-br">Um fóton é emitido</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg77-pt-br">com energia E = hf</tspan></text>
+            <text
+               systemLanguage="ca"
+               id="trsvg108"><tspan
+                 id="trsvg40">S'emet un fotó</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg41">d'energia E = hf</tspan></text>
+            <text
+               systemLanguage="de"
+               id="trsvg109"><tspan
+                 id="trsvg42">emitiertes Photon</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg43">mit der Energie E = hf</tspan></text>
+            <text
+               systemLanguage="en"
+               id="trsvg110"><tspan
+                 id="trsvg44">A photon is emitted</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg45">with energy E = hf</tspan></text>
+            <text
+               systemLanguage="es"
+               id="trsvg111"><tspan
+                 id="trsvg46">fotón emitido</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg47">con la energía E = hf</tspan></text>
+            <text
+               systemLanguage="fr"
+               id="trsvg112"><tspan
+                 id="trsvg48">Un photon est émis</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg49">avec une énergie E = hf</tspan></text>
+            <text
+               systemLanguage="gu"
+               id="trsvg113"><tspan
+                 id="trsvg50">એક ફોટોન ઉર્જા (E) સાથે</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg51">ઉત્સર્જિત થાય છે E = hf</tspan></text>
+            <text
+               systemLanguage="id"
+               id="trsvg114"><tspan
+                 id="trsvg52">Foton dipancarkan</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg53">dengan energi E = hf</tspan></text>
+            <text
+               systemLanguage="it"
+               id="trsvg115"><tspan
+                 id="trsvg54">Viene emesso un fotone</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg55">fotonecon energia E = hf</tspan></text>
+            <text
+               systemLanguage="mk"
+               id="trsvg116"><tspan
+                 id="trsvg56">Се оддава фотон</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg57">со енергија E = hf</tspan></text>
+            <text
+               systemLanguage="ml"
+               id="trsvg117"><tspan
+                 id="trsvg58">ഒരു ഫോട്ടോൺ E = hf</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg59">ഊർജ്ജത്തോടെ പുറ</tspan></text>
+            <text
+               systemLanguage="mr"
+               id="trsvg118"><tspan
+                 id="trsvg60">एक फोटॉन उत्सर्जित</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg61">होतो E=hf</tspan></text>
+            <text
+               systemLanguage="pl"
+               id="trsvg119"><tspan
+                 id="trsvg62">Emisja fotonu</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg63">o energii E = hf</tspan></text>
+            <text
+               systemLanguage="pt"
+               id="trsvg120"><tspan
+                 id="trsvg64">Um fóton é emitido</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg65">com energia E = hf</tspan></text>
+            <text
+               systemLanguage="sr"
+               id="trsvg121"><tspan
+                 id="trsvg66">Фотон се емитује</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg67">са енергијом E=hf</tspan></text>
+            <text
+               systemLanguage="ta"
+               id="trsvg122"><tspan
+                 id="trsvg68">E=hf என்ற ஆற்றலில்</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg69">உமிழப்படும் போட்டா</tspan></text>
+            <text
+               systemLanguage="te"
+               id="trsvg123"><tspan
+                 id="trsvg70">E = hf శక్తితో</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg71">ఒక ఫోటాన్ విడుదలైంది</tspan></text>
+            <text
+               systemLanguage="tr"
+               id="trsvg124"><tspan
+                 id="trsvg72">E = hf enerjisiyle yayilan</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg73">bir foton</tspan></text>
+            <text
+               systemLanguage="vi"
+               id="trsvg125"><tspan
+                 id="trsvg74">Một photon được phát ra</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg75">với năng lượng E = hf</tspan></text>
+            <text
+               systemLanguage="as"
+               id="trsvg107"><tspan
+                 id="trsvg38">শক্তি বিকিৰণৰ ফলত</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg39">এটা ফ’টন নিৰ্গত হয় E = hf</tspan></text>
+            <text
+               systemLanguage="bn"
+               id="text14"><tspan
+                 id="tspan13">শক্তি বিকিৰণৰ ফলত</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="tspan14">এটা ফ’টন নিৰ্গত হয় E = hf</tspan></text>
+            <text
+               id="trsvg126-uk"
+               systemLanguage="uk"><tspan
+                 id="trsvg76-uk">Випромінюється фотон</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg77-uk">з енергією E = hf</tspan></text>
+            <text
+               id="trsvg126"><tspan
+                 id="trsvg76">Photon is emitted</tspan><tspan
+                 x="20"
+                 y="18"
+                 id="trsvg77">with the energy E = hf</tspan></text>
+          </switch>
+          <g
+             text-anchor="middle"
+             id="g17">
+            <switch
+               transform="translate(267,238)"
+               id="switch15">
+              <text
+                 id="trsvg129-pt-br"
+                 systemLanguage="pt-br"><tspan
+                   id="trsvg80-pt-br">n=1</tspan></text>
+              <text
+                 systemLanguage="mr"
+                 id="trsvg128"><tspan
+                   id="trsvg79">n=१</tspan></text>
+              <text
+                 systemLanguage="as"
+                 id="trsvg127"><tspan
+                   id="trsvg78">n=১</tspan></text>
+              <text
+                 systemLanguage="bn"
+                 id="text15"><tspan
+                   id="tspan15">n=১</tspan></text>
+              <text
+                 id="trsvg129"><tspan
+                   id="trsvg80">n=1</tspan></text>
+            </switch>
+            <switch
+               transform="translate(267,163)"
+               id="switch16">
+              <text
+                 id="trsvg132-pt-br"
+                 systemLanguage="pt-br"><tspan
+                   id="trsvg83-pt-br">n=2</tspan></text>
+              <text
+                 systemLanguage="mr"
+                 id="trsvg131"><tspan
+                   id="trsvg82">n=२</tspan></text>
+              <text
+                 systemLanguage="as"
+                 id="trsvg130"><tspan
+                   id="trsvg81">n=২</tspan></text>
+              <text
+                 systemLanguage="bn"
+                 id="text16"><tspan
+                   id="tspan16">n=২</tspan></text>
+              <text
+                 id="trsvg132"><tspan
+                   id="trsvg83">n=2</tspan></text>
+            </switch>
+            <switch
+               transform="translate(267,87)"
+               id="switch17">
+              <text
+                 id="trsvg135-pt-br"
+                 systemLanguage="pt-br"><tspan
+                   id="trsvg86-pt-br">n=3</tspan></text>
+              <text
+                 systemLanguage="mr"
+                 id="trsvg134"><tspan
+                   id="trsvg85">n=३</tspan></text>
+              <text
+                 systemLanguage="as"
+                 id="trsvg133"><tspan
+                   id="trsvg84">n=৩</tspan></text>
+              <text
+                 systemLanguage="bn"
+                 id="text17"><tspan
+                   id="tspan17">n=৩</tspan></text>
+              <text
+                 id="trsvg135"><tspan
+                   id="trsvg86">n=3</tspan></text>
+            </switch>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

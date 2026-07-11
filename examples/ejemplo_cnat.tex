@@ -1,0 +1,45 @@
+% =====================================================================
+%  EJEMPLO — Hoja de muestra del TEMA CIENCIAS NATURALES (1 página).
+%  Demuestra la identidad esmeralda + cajas de ciencia + iconografía.
+%  Compilar (desde la raíz del kit):
+%    ./compile_quiet.sh examples/ejemplo_cnat.tex ejemplo_cnat pdfs/examples
+% =====================================================================
+\input{design/preamble.tex}
+\input{design/tema-cnat.tex}          % <-- activa el tema (una línea)
+\input{tikzlib/ciencias/punnett.tex}  % figura reutilizable de genética
+
+\renewcommand{\hdrcapitulo}{Ciencias Naturales · Muestra del tema}
+\printmodefalse
+
+\begin{document}
+
+\section{\icogen\ Tema Ciencias Naturales}
+
+Esta hoja demuestra la \textbf{identidad visual de Ciencias Naturales}:
+color esmeralda, iconografía de ciencia (\icobio\ biología, \icoquim\ química,
+\icofis\ física) y las cajas propias del área. Se reconoce de inmediato frente a
+Matemáticas (azul).
+
+\begin{definicion}{Gen y alelo}
+Un \textbf{gen} es un segmento de ADN que codifica un carácter. Sus versiones
+alternativas son los \textbf{alelos}. La \especie{Pisum}{sativum}{arveja} fue el
+organismo modelo de Mendel.
+\end{definicion}
+
+\begin{laboratorio}{Cruce monohíbrido a mano}
+\materiales{esta guía, lápiz y el cuadro de Punnett de abajo.}
+Cruza dos plantas heterocigotas \genotipo{Aa} $\times$ \genotipo{Aa} y completa
+las cuatro casillas. ¿Qué proporción de semillas lisas esperas?
+\begin{center}
+\punnettdos{A}{a}{A}{a}{AA}{Aa}{Aa}{aa}
+\end{center}
+\end{laboratorio}
+
+\begin{sabias}
+Mendel publicó sus leyes en 1866, pero pasaron \textbf{34 años} desapercibidas
+hasta que tres botánicos las redescubrieron en 1900.
+\end{sabias}
+
+\filetehoja
+
+\end{document}

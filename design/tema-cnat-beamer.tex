@@ -1,0 +1,115 @@
+% =====================================================================
+%  TEMA · CIENCIAS NATURALES — variante del design system (BEAMER 16:9)
+%  Identidad propia distinta de Matemáticas (azul):
+%    · color base ESMERALDA (\setsubject{cnat})
+%    · ornamento orgánico de ciencia (hoja / ADN) en las láminas a sangre
+%    · chips de genotipo/fenotipo en verde
+%    · FIX del bug de preflight §5/§6: las láminas a sangre del design
+%      system (\portada \seccion \idea \pregunta \accion) usan
+%      remember picture + current page y salen corridas con
+%      compile_quiet.sh. Aquí se redefinen con background canvas +
+%      coordenadas absolutas (técnica probada) y con el sello de ciencia.
+%
+%  INVOCACIÓN (tras \input{design/beamer.tex}):
+%     \input{design/tema-cnat-beamer.tex}
+% =====================================================================
+
+\usepackage{fontawesome5}         % iconos de ciencia (hoja, ADN, matraz)
+
+% Marca de agua de portada y divisores. Cada serie puede sobreescribirla:
+%   \renewcommand{\marcaciencia}{\faFlask}   % química
+%   \renewcommand{\marcaciencia}{\faThermometerHalf} % física
+\providecommand{\marcaciencia}{\faDna}
+
+\setsubject{cnat}                 % esmeralda RGB(16,110,80)
+\definecolor{cnatlima}{RGB}{124,169,60}   % acento lima (solo ornamento)
+
+% --- Chips para notación genética (NO usan \MakeUppercase: preservan Aa) --
+\newcommand{\chip}[1]{\tikz[baseline=(c.base)]{\node[fill=subjectcolor!15,
+  rounded corners=2.5pt, inner xsep=5pt, inner ysep=2pt,
+  font=\DisplaySB](c){#1};}}
+\newcommand{\chipf}[1]{\tikz[baseline=(c.base)]{\node[fill=subjectcolor,
+  text=white, rounded corners=2.5pt, inner xsep=5pt, inner ysep=2pt,
+  font=\DisplaySB](c){#1};}}
+
+% Titulares grandes NO deben partir palabras (queda feo en video).
+\newcommand{\nohyf}{\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}
+
+% =====================================================================
+%  LÁMINAS A SANGRE — redefinidas con background canvas (fix + ciencia)
+% =====================================================================
+
+% --- PORTADA: ADN tenue arriba-derecha como marca de ciencia ----------
+\renewcommand{\portada}[3]{% {kicker}{TÍTULO}{subtítulo}
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[paper] (0,0) rectangle (\paperwidth,\paperheight);
+    \node[text=subjectcolor!12, anchor=north east]
+      at (\paperwidth-0.15,\paperheight+0.15)
+      {\fontsize{150}{150}\selectfont\marcaciencia};
+    \node[text=ink, align=left, text width=0.80\paperwidth]
+      at (\paperwidth*0.5,\paperheight*0.5) {\nohyf%
+        {\DisplaySB\Large\color{subjectcolor}\faLeaf\enspace #1}\\[0.5em]
+        {\DisplayBlk\fontsize{36}{40}\selectfont #2}\\[0.7em]
+        {\color{subjectcolor}\rule{3.2cm}{0.16cm}}\\[0.6em]
+        {\Display\color{ink!60} #3}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- SECCIÓN (divisor): hoja tenue en la esquina inferior --------------
+\renewcommand{\seccion}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,0) rectangle (\paperwidth,\paperheight);
+    \node[text=white!22, anchor=south west]
+      at (0.35,0.25) {\fontsize{110}{110}\selectfont\marcaciencia};
+    \node[text=white, font=\DisplaySB, align=center, text width=0.85\paperwidth]
+      at (\paperwidth*0.5,\paperheight*0.5) {\nohyf\fontsize{28}{34}\selectfont #1};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- IDEA: afirmación gigante con filete esmeralda superior -----------
+\renewcommand{\idea}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[paper] (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,\paperheight-0.32) rectangle (\paperwidth,\paperheight);
+    \node[text=ink, font=\DisplaySB, align=center, text width=0.82\paperwidth]
+      at (\paperwidth*0.5,\paperheight*0.5) {\nohyf\fontsize{28}{44}\selectfont #1};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- PREGUNTA VIVA: barra esmeralda lateral + signos de interrogación --
+\renewcommand{\pregunta}[1]{%
+{\setbeamertemplate{footline}{}
+\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor!7] (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor] (0,0) rectangle (0.42,\paperheight);
+    \node[anchor=west, text=ink, align=left, text width=0.74\paperwidth]
+      at (1.5,\paperheight*0.5) {\nohyf%
+        {\color{subjectcolor}\DisplayBlk\fontsize{40}{40}\selectfont ¿}\\[0.1em]
+        {\Display\fontsize{22}{34}\selectfont #1}\\[0.15em]
+        {\color{subjectcolor}\DisplayBlk\fontsize{30}{30}\selectfont ?}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
+
+% --- ACCIÓN / cierre --------------------------------------------------
+\renewcommand{\accion}[2][EN RESUMEN]{%
+{\setbeamertemplate{background canvas}{%
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\paperwidth,\paperheight);
+    \fill[subjectcolor!10] (0,0) rectangle (\paperwidth,\paperheight);
+    \node[anchor=west, align=left, text width=0.82\paperwidth]
+      at (1,\paperheight*0.5) {\nohyf%
+        {\DisplaySB\large\color{subjectcolor}\faLeaf\enspace #1}\\[0.7em]
+        {\nohyf\Display\color{ink}\fontsize{19}{26}\selectfont #2}};
+  \end{tikzpicture}}
+\begin{frame}[plain]\strut\end{frame}}}
