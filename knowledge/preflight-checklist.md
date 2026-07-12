@@ -21,8 +21,13 @@
   vacías, desbordes, glifos faltantes, solapamientos.
 - **Edita, no reescribas.** Para corregir algo puntual, `Edit` sobre la parte;
   no regeneres el archivo entero.
-- **El `<nombre_salida>` de `compile_quiet.sh` es el `jobname` y la carpeta de
-  build es `/tmp` (compartida).** · Síntoma: compilas `guia_profe` y el PDF final
+- **[RESUELTO 2026-07] `compile_quiet.sh` ahora compila en un sandbox AISLADO por
+  archivo fuente** (`/tmp/gdp-build/<ruta-del-tex>`), no en `/tmp` plano. Con eso, dos
+  documentos con el mismo `<nombre_salida>` (`guia_profe`, `beamer`, `taller`) se pueden
+  compilar **en paralelo sin colisión** y ya no hace falta el truco del nombre único.
+  Lo de abajo queda como memoria del bug (y por si se compila fuera del script).
+- **(Histórico) El `<nombre_salida>` de `compile_quiet.sh` era el `jobname` y la carpeta de
+  build era `/tmp` (compartida).** · Síntoma: compilas `guia_profe` y el PDF final
   sale con el contenido de OTRO documento (p. ej. la `guia_profe` de otro tema:
   la portada dice «Química» pero el PDF muestra «Factorización»/«Genética»); el nº
   de páginas «cuadra» y no hay error. · Causa: dos documentos con el **mismo**
