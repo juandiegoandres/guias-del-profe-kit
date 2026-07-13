@@ -1,0 +1,12 @@
+{
+  "name": "gdp-viewer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Biblioteca/visor de todos los recursos del kit guias-del-profe (guías, talleres, beamers, iconos e imágenes libres).",
+  "scripts": {
+    "index": "node indexer.mjs",
+    "serve": "node serve.mjs",
+    "start": "node indexer.mjs && node serve.mjs"
+  }
+}

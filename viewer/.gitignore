@@ -1,0 +1,5 @@
+# Artefactos generados por el indexador (derivados de material/ y pdfs/,
+# que ya están en .gitignore). Se regeneran con `npm run index`.
+public/resources.json
+public/thumbs/
+node_modules/

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Biblioteca del kit · guías del profe</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%9A%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">guías del profe · biblioteca de recursos</p>
+    <h1>Todo el material, en un solo lugar</h1>
+    <p class="lede" id="lede">Guías del profe, talleres, beamers, iconos e imágenes libres de todas las series. Cargando índice…</p>
+  </div>
+</header>
+
+<nav class="bar">
+  <div class="wrap barflex">
+    <input id="q" class="search" type="search" placeholder="Buscar por título, serie, tipo…" autocomplete="off">
+    <div class="filtersets" id="filters"></div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <p class="count" id="count"></p>
+  <div class="grid" id="grid"></div>
+  <p class="empty" id="empty" hidden>Nada coincide con esos filtros. <button id="clear2" class="link">Limpiar</button></p>
+</main>
+
+<footer class="wrap foot" id="foot"></footer>
+
+<!-- Modal / visor -->
+<div class="modal" id="modal" hidden>
+  <div class="modal-bg" data-close></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <header class="modal-h">
+      <div>
+        <h2 id="m-title"></h2>
+        <p id="m-sub" class="modal-sub"></p>
+      </div>
+      <div class="modal-actions">
+        <a id="m-open" class="btn" target="_blank" rel="noopener">Abrir en pestaña ↗</a>
+        <button class="btn ghost" data-close aria-label="Cerrar">✕</button>
+      </div>
+    </header>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
