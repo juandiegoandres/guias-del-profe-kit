@@ -35,6 +35,11 @@ async function init() {
   buildFilters();
   document.getElementById('q').addEventListener('input', (e) => { state.q = e.target.value.toLowerCase().trim(); render(); });
   document.getElementById('clear2').addEventListener('click', clearAll);
+  const fbtn = document.getElementById('fbtn'), bar = document.getElementById('bar');
+  fbtn.addEventListener('click', () => {
+    const open = bar.classList.toggle('open');
+    fbtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
   wireModal();
   render();
 }
@@ -93,6 +98,10 @@ function render() {
   document.getElementById('count').textContent =
     `${shown.length} de ${DATA.length} recursos` + (activeCount() ? ' · filtros activos' : '');
   document.getElementById('empty').hidden = shown.length > 0;
+  // botón de filtros (móvil): refleja cuántos filtros de chip hay activos
+  const nchips = Object.values(state.f).reduce((a, s) => a + s.size, 0);
+  const fbtn = document.getElementById('fbtn');
+  fbtn.innerHTML = 'Filtros' + (nchips ? ` <span class="fcount">${nchips}</span>` : '');
   grid.innerHTML = '';
   const frag = document.createDocumentFragment();
   for (const r of shown) frag.appendChild(card(r));

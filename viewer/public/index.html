@@ -16,9 +16,12 @@
   </div>
 </header>
 
-<nav class="bar">
+<nav class="bar" id="bar">
   <div class="wrap barflex">
-    <input id="q" class="search" type="search" placeholder="Buscar por título, serie, tipo…" autocomplete="off">
+    <div class="searchrow">
+      <input id="q" class="search" type="search" placeholder="Buscar por título, serie, tipo…" autocomplete="off">
+      <button id="fbtn" class="fbtn" type="button" aria-expanded="false" aria-controls="filters">Filtros</button>
+    </div>
     <div class="filtersets" id="filters"></div>
   </div>
 </nav>
